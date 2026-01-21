@@ -19,6 +19,11 @@ import Dashboard from "./pages/admin/Dashboard";
 import Products from "./pages/admin/Products";
 import Banners from "./pages/admin/Banners";
 import Orders from "./pages/admin/Orders";
+import Categories from "./pages/admin/Categories";
+import SpecialOffers from "./pages/admin/SpecialOffers";
+import UsersPage from "./pages/admin/Users";
+import Settings from "./pages/admin/Settings";
+import EmailMarketing from "./pages/admin/EmailMarketing";
 
 const queryClient = new QueryClient();
 
@@ -43,10 +48,11 @@ const App = () => (
               <Route path="/admin/products" element={<ProtectedRoute requireAdmin><Products /></ProtectedRoute>} />
               <Route path="/admin/banners" element={<ProtectedRoute requireAdmin><Banners /></ProtectedRoute>} />
               <Route path="/admin/orders" element={<ProtectedRoute requireAdmin><Orders /></ProtectedRoute>} />
-              <Route path="/admin/categories" element={<ProtectedRoute requireAdmin><Dashboard /></ProtectedRoute>} />
-              <Route path="/admin/offers" element={<ProtectedRoute requireAdmin><Dashboard /></ProtectedRoute>} />
-              <Route path="/admin/customers" element={<ProtectedRoute requireAdmin><Dashboard /></ProtectedRoute>} />
-              <Route path="/admin/settings" element={<ProtectedRoute requireAdmin><Dashboard /></ProtectedRoute>} />
+              <Route path="/admin/categories" element={<ProtectedRoute requireAdmin><Categories /></ProtectedRoute>} />
+              <Route path="/admin/offers" element={<ProtectedRoute requireAdmin><SpecialOffers /></ProtectedRoute>} />
+              <Route path="/admin/customers" element={<ProtectedRoute requireAdmin><UsersPage /></ProtectedRoute>} />
+              <Route path="/admin/settings" element={<ProtectedRoute requireAdmin><Settings /></ProtectedRoute>} />
+              <Route path="/admin/email-marketing" element={<ProtectedRoute requireAdmin><EmailMarketing /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

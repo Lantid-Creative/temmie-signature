@@ -1,1 +1,13 @@
 project_id = "hmbjzniekhptqzjfbrin"
+
+[functions.create-user]
+verify_jwt = false
+
+[functions.send-email]
+verify_jwt = false
+
+[functions.send-marketing-email]
+verify_jwt = false
+
+[functions.send-test-email]
+verify_jwt = false
