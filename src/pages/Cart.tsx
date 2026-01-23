@@ -141,8 +141,8 @@ export default function Cart() {
                     </div>
                   </div>
 
-                  <Button className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90 text-base mb-4">
-                    Proceed to Checkout
+                  <Button className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90 text-base mb-4" asChild>
+                    <Link to="/checkout">Proceed to Checkout</Link>
                   </Button>
 
                   <Button variant="outline" className="w-full h-12 text-base" asChild>

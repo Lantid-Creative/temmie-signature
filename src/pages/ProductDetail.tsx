@@ -1,26 +1,116 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ChevronLeft, Heart, Minus, Plus, Star, Truck, Shield, RotateCcw, Check } from 'lucide-react';
+import { ChevronLeft, Heart, Minus, Plus, Star, Truck, Shield, RotateCcw, Check, Loader2, GitCompare } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
 import { WhatsAppButton } from '@/components/layout/WhatsAppButton';
-import { ProductCard } from '@/components/products/ProductCard';
-import { products, reviews } from '@/lib/data';
+import { ProductCardNew } from '@/components/products/ProductCardNew';
+import { products as mockProducts, reviews } from '@/lib/data';
+import { useProduct, useProducts } from '@/hooks/useProducts';
+import { normalizeProduct, type UnifiedProduct } from '@/types/product';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/context/CartContext';
+import { useWishlist } from '@/context/WishlistContext';
+import { useCompare } from '@/context/CompareContext';
+import { useAuth } from '@/context/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 
 export default function ProductDetail() {
   const { id } = useParams();
-  const product = products.find((p) => p.id === id);
   const { addToCart } = useCart();
+  const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist();
+  const { addToCompare, removeFromCompare, isInCompare } = useCompare();
+  const { user } = useAuth();
+  const { toast } = useToast();
+
+  // Try to fetch from database first
+  const { data: dbProduct, isLoading: dbLoading } = useProduct(id || '');
+  const { data: allDbProducts } = useProducts();
+
+  // Normalize the product
+  const product: UnifiedProduct | null = useMemo(() => {
+    if (dbProduct) {
+      return normalizeProduct(dbProduct);
+    }
+    // Fallback to mock data
+    const mockProduct = mockProducts.find((p) => p.id === id);
+    if (mockProduct) {
+      return {
+        ...mockProduct,
+        slug: mockProduct.id,
+        originalPrice: mockProduct.originalPrice,
+        compare_at_price: mockProduct.originalPrice || null,
+        featured_image: mockProduct.image,
+        category_id: null,
+        hair_type: mockProduct.hairType,
+        lace_type: mockProduct.laceType,
+        cap_size: mockProduct.capSize,
+        care_instructions: mockProduct.careInstructions.join('\n'),
+        stock_quantity: mockProduct.inStock ? 10 : 0,
+        is_bestseller: mockProduct.bestseller,
+        is_featured: mockProduct.new,
+      };
+    }
+    return null;
+  }, [dbProduct, id]);
+
+  // Related products
+  const relatedProducts: UnifiedProduct[] = useMemo(() => {
+    if (!product) return [];
+    
+    if (allDbProducts && allDbProducts.length > 0) {
+      return allDbProducts
+        .filter(p => p.id !== product.id && p.category_id === product.category_id)
+        .slice(0, 4)
+        .map(normalizeProduct);
+    }
+    
+    return mockProducts
+      .filter((p) => p.category === product.category && p.id !== product.id)
+      .slice(0, 4)
+      .map(p => ({
+        ...p,
+        slug: p.id,
+        originalPrice: p.originalPrice,
+        compare_at_price: p.originalPrice || null,
+        featured_image: p.image,
+        category_id: null,
+        hair_type: p.hairType,
+        lace_type: p.laceType,
+        cap_size: p.capSize,
+        care_instructions: p.careInstructions.join('\n'),
+        stock_quantity: p.inStock ? 10 : 0,
+        is_bestseller: p.bestseller,
+        is_featured: p.new,
+      }));
+  }, [product, allDbProducts]);
 
   const [selectedImage, setSelectedImage] = useState(0);
-  const [selectedColor, setSelectedColor] = useState(product?.colors[0] || '');
-  const [selectedCapSize, setSelectedCapSize] = useState(product?.capSize[0] || '');
+  const [selectedColor, setSelectedColor] = useState('');
+  const [selectedCapSize, setSelectedCapSize] = useState('');
   const [quantity, setQuantity] = useState(1);
-  const [isWishlisted, setIsWishlisted] = useState(false);
+
+  // Set defaults when product loads
+  useMemo(() => {
+    if (product) {
+      if (!selectedColor && product.colors.length > 0) {
+        setSelectedColor(product.colors[0]);
+      }
+      if (!selectedCapSize && product.capSize.length > 0) {
+        setSelectedCapSize(product.capSize[0]);
+      }
+    }
+  }, [product, selectedColor, selectedCapSize]);
+
+  if (dbLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -35,13 +125,65 @@ export default function ProductDetail() {
     );
   }
 
-  const relatedProducts = products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 4);
   const discount = product.originalPrice
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : null;
 
+  const isWishlisted = isInWishlist(product.id);
+  const isComparing = isInCompare(product.id);
+  const isBestseller = product.bestseller || product.is_bestseller;
+  const isNew = product.new || product.is_featured;
+
   const handleAddToCart = () => {
-    addToCart(product, quantity, selectedColor, selectedCapSize);
+    // Convert to format expected by cart
+    const cartProduct = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      originalPrice: product.originalPrice,
+      image: product.image,
+      images: product.images,
+      category: product.category,
+      hairType: product.hairType as 'Human Hair' | 'Synthetic',
+      laceType: product.laceType,
+      length: product.length,
+      density: product.density,
+      capSize: product.capSize,
+      colors: product.colors,
+      description: product.description,
+      careInstructions: product.careInstructions,
+      rating: product.rating,
+      reviews: product.reviews,
+      inStock: product.inStock,
+      bestseller: product.bestseller,
+      new: product.new,
+    };
+    addToCart(cartProduct, quantity, selectedColor, selectedCapSize);
+  };
+
+  const handleWishlistClick = () => {
+    if (!user) {
+      toast({
+        title: 'Sign in required',
+        description: 'Please sign in to add items to your wishlist.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (isWishlisted) {
+      removeFromWishlist(product.id);
+    } else {
+      addToWishlist(product.id);
+    }
+  };
+
+  const handleCompareClick = () => {
+    if (isComparing) {
+      removeFromCompare(product.id);
+    } else {
+      addToCompare(product.id);
+    }
   };
 
   return (
@@ -64,37 +206,39 @@ export default function ProductDetail() {
             <div className="space-y-4">
               <div className="aspect-square rounded-2xl overflow-hidden bg-muted">
                 <img
-                  src={product.images[selectedImage]}
+                  src={product.images[selectedImage] || product.image}
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="grid grid-cols-4 gap-4">
-                {product.images.map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImage(index)}
-                    className={cn(
-                      'aspect-square rounded-lg overflow-hidden border-2 transition-all',
-                      selectedImage === index ? 'border-gold' : 'border-transparent'
-                    )}
-                  >
-                    <img src={image} alt="" className="w-full h-full object-cover" />
-                  </button>
-                ))}
-              </div>
+              {product.images.length > 1 && (
+                <div className="grid grid-cols-4 gap-4">
+                  {product.images.map((image, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedImage(index)}
+                      className={cn(
+                        'aspect-square rounded-lg overflow-hidden border-2 transition-all',
+                        selectedImage === index ? 'border-gold' : 'border-transparent'
+                      )}
+                    >
+                      <img src={image} alt="" className="w-full h-full object-cover" />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Product Info */}
             <div>
               {/* Badges */}
               <div className="flex gap-2 mb-4">
-                {product.bestseller && (
+                {isBestseller && (
                   <span className="px-3 py-1 bg-gold text-accent-foreground text-xs font-semibold rounded-full">
                     Bestseller
                   </span>
                 )}
-                {product.new && (
+                {isNew && (
                   <span className="px-3 py-1 bg-primary text-primary-foreground text-xs font-semibold rounded-full">
                     New Arrival
                   </span>
@@ -229,9 +373,18 @@ export default function ProductDetail() {
                   variant="outline"
                   size="icon"
                   className={cn('h-12 w-12', isWishlisted && 'text-rose border-rose')}
-                  onClick={() => setIsWishlisted(!isWishlisted)}
+                  onClick={handleWishlistClick}
                 >
                   <Heart className={cn('w-5 h-5', isWishlisted && 'fill-current')} />
+                </Button>
+
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className={cn('h-12 w-12', isComparing && 'text-primary border-primary')}
+                  onClick={handleCompareClick}
+                >
+                  <GitCompare className="w-5 h-5" />
                 </Button>
               </div>
 
@@ -239,8 +392,9 @@ export default function ProductDetail() {
               <Button
                 variant="outline"
                 className="w-full h-12 border-2 border-gold text-gold hover:bg-gold hover:text-accent-foreground mb-8"
+                asChild
               >
-                Buy Now
+                <Link to="/checkout">Buy Now</Link>
               </Button>
 
               {/* Trust Badges */}
@@ -316,7 +470,7 @@ export default function ProductDetail() {
               <h3 className="font-serif text-2xl font-semibold mb-8">You May Also Like</h3>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {relatedProducts.map((p) => (
-                  <ProductCard key={p.id} product={p} />
+                  <ProductCardNew key={p.id} product={p} />
                 ))}
               </div>
             </div>

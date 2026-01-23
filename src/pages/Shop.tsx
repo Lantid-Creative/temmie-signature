@@ -1,25 +1,22 @@
 import { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { SlidersHorizontal, X, ChevronDown } from 'lucide-react';
+import { SlidersHorizontal, X, ChevronDown, Loader2 } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
 import { WhatsAppButton } from '@/components/layout/WhatsAppButton';
-import { ProductCard } from '@/components/products/ProductCard';
-import { products } from '@/lib/data';
+import { ProductCardNew } from '@/components/products/ProductCardNew';
+import { products as mockProducts } from '@/lib/data';
+import { useProducts, useCategories } from '@/hooks/useProducts';
+import { normalizeProduct, type UnifiedProduct } from '@/types/product';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Slider } from '@/components/ui/slider';
 import { cn } from '@/lib/utils';
 
 const hairTypes = ['Human Hair', 'Synthetic'];
 const laceTypes = ['13x4 HD Lace', '13x6 Frontal', '4x4 Closure', '5x5 Closure'];
 const lengths = ['12"', '14"', '16"', '18"', '20"', '22"', '24"', '26"'];
-const priceRanges = [
-  { label: 'Under $100', min: 0, max: 100 },
-  { label: '$100 - $200', min: 100, max: 200 },
-  { label: '$200 - $300', min: 200, max: 300 },
-  { label: 'Over $300', min: 300, max: Infinity },
-];
 const sortOptions = [
   { label: 'Newest', value: 'newest' },
   { label: 'Price: Low to High', value: 'price-asc' },
@@ -33,11 +30,45 @@ export default function Shop() {
   const [selectedHairTypes, setSelectedHairTypes] = useState<string[]>([]);
   const [selectedLaceTypes, setSelectedLaceTypes] = useState<string[]>([]);
   const [selectedLengths, setSelectedLengths] = useState<string[]>([]);
-  const [selectedPriceRange, setSelectedPriceRange] = useState<typeof priceRanges[0] | null>(null);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 500]);
   const [sortBy, setSortBy] = useState('newest');
 
+  // Fetch products from database
+  const { data: dbProducts, isLoading } = useProducts();
+  const { data: categories } = useCategories();
+
+  // Normalize and combine products
+  const allProducts: UnifiedProduct[] = useMemo(() => {
+    if (dbProducts && dbProducts.length > 0) {
+      return dbProducts.map(normalizeProduct);
+    }
+    // Fallback to mock data if no DB products
+    return mockProducts.map(p => ({
+      ...p,
+      slug: p.id,
+      originalPrice: p.originalPrice,
+      compare_at_price: p.originalPrice || null,
+      featured_image: p.image,
+      category_id: null,
+      hair_type: p.hairType,
+      lace_type: p.laceType,
+      cap_size: p.capSize,
+      care_instructions: p.careInstructions.join('\n'),
+      stock_quantity: p.inStock ? 10 : 0,
+      is_bestseller: p.bestseller,
+      is_featured: p.new,
+    }));
+  }, [dbProducts]);
+
   const filteredProducts = useMemo(() => {
-    let result = [...products];
+    let result = [...allProducts];
+
+    // Filter by category from URL
+    const categoryParam = searchParams.get('category');
+    if (categoryParam) {
+      result = result.filter((p) => p.category === categoryParam || p.category_id === categoryParam);
+    }
 
     // Filter by hair type
     if (selectedHairTypes.length > 0) {
@@ -54,12 +85,13 @@ export default function Shop() {
       result = result.filter((p) => selectedLengths.includes(p.length));
     }
 
-    // Filter by price
-    if (selectedPriceRange) {
-      result = result.filter(
-        (p) => p.price >= selectedPriceRange.min && p.price < selectedPriceRange.max
-      );
+    // Filter by category
+    if (selectedCategories.length > 0) {
+      result = result.filter((p) => selectedCategories.includes(p.category_id || ''));
     }
+
+    // Filter by price range
+    result = result.filter((p) => p.price >= priceRange[0] && p.price <= priceRange[1]);
 
     // Sort
     switch (sortBy) {
@@ -78,7 +110,7 @@ export default function Shop() {
     }
 
     return result;
-  }, [selectedHairTypes, selectedLaceTypes, selectedLengths, selectedPriceRange, sortBy]);
+  }, [allProducts, selectedHairTypes, selectedLaceTypes, selectedLengths, selectedCategories, priceRange, sortBy, searchParams]);
 
   const toggleFilter = (
     value: string,
@@ -96,14 +128,17 @@ export default function Shop() {
     setSelectedHairTypes([]);
     setSelectedLaceTypes([]);
     setSelectedLengths([]);
-    setSelectedPriceRange(null);
+    setSelectedCategories([]);
+    setPriceRange([0, 500]);
   };
 
   const hasActiveFilters =
     selectedHairTypes.length > 0 ||
     selectedLaceTypes.length > 0 ||
     selectedLengths.length > 0 ||
-    selectedPriceRange !== null;
+    selectedCategories.length > 0 ||
+    priceRange[0] > 0 ||
+    priceRange[1] < 500;
 
   const FilterSection = ({ title, children }: { title: string; children: React.ReactNode }) => (
     <div className="border-b border-border pb-6 mb-6">
@@ -148,6 +183,25 @@ export default function Shop() {
                     </button>
                   )}
                 </div>
+
+                {/* Categories */}
+                {categories && categories.length > 0 && (
+                  <FilterSection title="Category">
+                    <div className="space-y-3">
+                      {categories.filter(c => c.is_active).map((category) => (
+                        <label key={category.id} className="flex items-center gap-3 cursor-pointer">
+                          <Checkbox
+                            checked={selectedCategories.includes(category.id)}
+                            onCheckedChange={() =>
+                              toggleFilter(category.id, selectedCategories, setSelectedCategories)
+                            }
+                          />
+                          <span className="text-sm">{category.name}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </FilterSection>
+                )}
 
                 <FilterSection title="Hair Type">
                   <div className="space-y-3">
@@ -200,21 +254,20 @@ export default function Shop() {
                   </div>
                 </FilterSection>
 
-                <FilterSection title="Price">
-                  <div className="space-y-3">
-                    {priceRanges.map((range) => (
-                      <label key={range.label} className="flex items-center gap-3 cursor-pointer">
-                        <Checkbox
-                          checked={selectedPriceRange?.label === range.label}
-                          onCheckedChange={() =>
-                            setSelectedPriceRange(
-                              selectedPriceRange?.label === range.label ? null : range
-                            )
-                          }
-                        />
-                        <span className="text-sm">{range.label}</span>
-                      </label>
-                    ))}
+                <FilterSection title="Price Range">
+                  <div className="space-y-4">
+                    <Slider
+                      value={priceRange}
+                      onValueChange={(value) => setPriceRange(value as [number, number])}
+                      max={500}
+                      min={0}
+                      step={10}
+                      className="w-full"
+                    />
+                    <div className="flex justify-between text-sm text-muted-foreground">
+                      <span>${priceRange[0]}</span>
+                      <span>${priceRange[1]}+</span>
+                    </div>
                   </div>
                 </FilterSection>
               </div>
@@ -225,7 +278,16 @@ export default function Shop() {
               {/* Toolbar */}
               <div className="flex items-center justify-between mb-8">
                 <p className="text-muted-foreground">
-                  Showing <span className="font-medium text-foreground">{filteredProducts.length}</span> products
+                  {isLoading ? (
+                    <span className="flex items-center gap-2">
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Loading...
+                    </span>
+                  ) : (
+                    <>
+                      Showing <span className="font-medium text-foreground">{filteredProducts.length}</span> products
+                    </>
+                  )}
                 </p>
 
                 <div className="flex items-center gap-4">
@@ -260,13 +322,25 @@ export default function Shop() {
               </div>
 
               {/* Products */}
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-                {filteredProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
+              {isLoading ? (
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                  {[...Array(6)].map((_, i) => (
+                    <div key={i} className="animate-pulse">
+                      <div className="aspect-[3/4] bg-muted rounded-xl mb-4" />
+                      <div className="h-4 bg-muted rounded w-2/3 mb-2" />
+                      <div className="h-4 bg-muted rounded w-1/2" />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                  {filteredProducts.map((product) => (
+                    <ProductCardNew key={product.id} product={product} />
+                  ))}
+                </div>
+              )}
 
-              {filteredProducts.length === 0 && (
+              {!isLoading && filteredProducts.length === 0 && (
                 <div className="text-center py-16">
                   <p className="text-muted-foreground mb-4">
                     No products found matching your filters.
@@ -301,7 +375,7 @@ export default function Shop() {
               </button>
             </div>
 
-            {/* Same filter sections as desktop */}
+            {/* Mobile filter sections */}
             <FilterSection title="Hair Type">
               <div className="space-y-3">
                 {hairTypes.map((type) => (
@@ -353,21 +427,20 @@ export default function Shop() {
               </div>
             </FilterSection>
 
-            <FilterSection title="Price">
-              <div className="space-y-3">
-                {priceRanges.map((range) => (
-                  <label key={range.label} className="flex items-center gap-3 cursor-pointer">
-                    <Checkbox
-                      checked={selectedPriceRange?.label === range.label}
-                      onCheckedChange={() =>
-                        setSelectedPriceRange(
-                          selectedPriceRange?.label === range.label ? null : range
-                        )
-                      }
-                    />
-                    <span className="text-sm">{range.label}</span>
-                  </label>
-                ))}
+            <FilterSection title="Price Range">
+              <div className="space-y-4">
+                <Slider
+                  value={priceRange}
+                  onValueChange={(value) => setPriceRange(value as [number, number])}
+                  max={500}
+                  min={0}
+                  step={10}
+                  className="w-full"
+                />
+                <div className="flex justify-between text-sm text-muted-foreground">
+                  <span>${priceRange[0]}</span>
+                  <span>${priceRange[1]}+</span>
+                </div>
               </div>
             </FilterSection>
 
