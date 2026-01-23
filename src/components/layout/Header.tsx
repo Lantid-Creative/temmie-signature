@@ -124,11 +124,13 @@ export function Header() {
               </Link>
             ))}
             <div className="flex items-center gap-4 pt-4 border-t border-border">
-              <Button variant="outline" size="sm" className="flex-1">
-                <User className="w-4 h-4 mr-2" />
-                Account
+              <Button variant="outline" size="sm" className="flex-1" asChild>
+                <Link to={user ? "/account" : "/auth"} onClick={() => setMobileMenuOpen(false)}>
+                  <User className="w-4 h-4 mr-2" />
+                  Account
+                </Link>
               </Button>
-              <Button variant="outline" size="sm" className="flex-1">
+              <Button variant="outline" size="sm" className="flex-1" onClick={() => { setMobileMenuOpen(false); setSearchOpen(true); }}>
                 <Search className="w-4 h-4 mr-2" />
                 Search
               </Button>

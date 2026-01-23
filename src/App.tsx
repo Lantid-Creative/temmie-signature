@@ -19,6 +19,7 @@ import Contact from "./pages/Contact";
 import Auth from "./pages/Auth";
 import Wishlist from "./pages/Wishlist";
 import Compare from "./pages/Compare";
+import Account from "./pages/Account";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/admin/Dashboard";
 import Products from "./pages/admin/Products";
@@ -53,6 +54,7 @@ const App = () => (
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/wishlist" element={<Wishlist />} />
                   <Route path="/compare" element={<Compare />} />
+                  <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
                   <Route path="/admin" element={<ProtectedRoute requireAdmin><Dashboard /></ProtectedRoute>} />
                   <Route path="/admin/products" element={<ProtectedRoute requireAdmin><Products /></ProtectedRoute>} />
                   <Route path="/admin/banners" element={<ProtectedRoute requireAdmin><Banners /></ProtectedRoute>} />
