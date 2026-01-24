@@ -174,9 +174,24 @@ const Settings = () => {
                       id="whatsapp_number"
                       value={getValue('whatsapp_number')}
                       onChange={(e) => handleChange('whatsapp_number', `"${e.target.value}"`)}
-                      placeholder="+1234567890"
+                      placeholder="+254700000000"
                     />
+                    <p className="text-xs text-muted-foreground">
+                      Include country code (e.g., +254 for Kenya)
+                    </p>
                   </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="whatsapp_message">WhatsApp Welcome Message</Label>
+                  <Input
+                    id="whatsapp_message"
+                    value={getValue('whatsapp_message')}
+                    onChange={(e) => handleChange('whatsapp_message', `"${e.target.value}"`)}
+                    placeholder="Hello! I have a question about Trazzy Beauty products."
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Pre-filled message when customers click the WhatsApp button
+                  </p>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="store_address">Store Address</Label>

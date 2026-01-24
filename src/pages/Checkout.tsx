@@ -144,6 +144,27 @@ export default function Checkout() {
 
       if (itemsError) throw itemsError;
 
+      // Send order confirmation email
+      try {
+        await supabase.functions.invoke('send-email', {
+          body: {
+            type: 'order_confirmation',
+            to: shippingAddress.email,
+            data: {
+              name: `${shippingAddress.firstName} ${shippingAddress.lastName}`,
+              orderNumber: orderNum,
+              orderDate: new Date().toLocaleDateString(),
+              total: total.toFixed(2),
+              trackingUrl: `${window.location.origin}/account`,
+            }
+          }
+        });
+        console.log('Order confirmation email sent');
+      } catch (emailError) {
+        console.error('Failed to send confirmation email:', emailError);
+        // Don't fail the order if email fails
+      }
+
       setOrderNumber(orderNum);
       setStep('confirmation');
       clearCart();
