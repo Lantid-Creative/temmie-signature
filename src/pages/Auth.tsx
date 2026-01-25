@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Sparkles } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Sparkles, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -131,16 +131,28 @@ const Auth = () => {
   return (
     <div className="min-h-screen bg-background flex">
       {/* Left Side - Form */}
-      <div className="flex-1 flex items-center justify-center p-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-md"
-        >
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-serif mb-2">
-              {isLogin ? 'Welcome Back' : 'Create Account'}
-            </h1>
+      <div className="flex-1 flex flex-col p-8">
+        {/* Back to Home Link */}
+        <div className="mb-8">
+          <Link 
+            to="/" 
+            className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors group"
+          >
+            <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+            <span>Back to Home</span>
+          </Link>
+        </div>
+
+        <div className="flex-1 flex items-center justify-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="w-full max-w-md"
+          >
+            <div className="text-center mb-8">
+              <h1 className="text-4xl font-serif mb-2">
+                {isLogin ? 'Welcome Back' : 'Create Account'}
+              </h1>
             <p className="text-muted-foreground">
               {isLogin
                 ? 'Sign in to access your account'
@@ -238,28 +250,29 @@ const Auth = () => {
             </Button>
           </form>
 
-          <div className="mt-6 text-center">
-            <button
-              onClick={() => {
-                setIsLogin(!isLogin);
-                setErrors({});
-              }}
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              {isLogin ? (
-                <>
-                  Don't have an account?{' '}
-                  <span className="text-accent font-medium">Sign up</span>
-                </>
-              ) : (
-                <>
-                  Already have an account?{' '}
-                  <span className="text-accent font-medium">Sign in</span>
-                </>
-              )}
-            </button>
-          </div>
-        </motion.div>
+            <div className="mt-6 text-center">
+              <button
+                onClick={() => {
+                  setIsLogin(!isLogin);
+                  setErrors({});
+                }}
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {isLogin ? (
+                  <>
+                    Don't have an account?{' '}
+                    <span className="text-accent font-medium">Sign up</span>
+                  </>
+                ) : (
+                  <>
+                    Already have an account?{' '}
+                    <span className="text-accent font-medium">Sign in</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </motion.div>
+        </div>
       </div>
 
       {/* Right Side - Branding */}
