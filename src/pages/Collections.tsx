@@ -4,6 +4,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
 import { WhatsAppButton } from '@/components/layout/WhatsAppButton';
+import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { collections } from '@/lib/data';
 
 export default function Collections() {
@@ -14,6 +15,7 @@ export default function Collections() {
 
       <main className="pt-32 pb-20">
         <div className="container mx-auto px-4 lg:px-8">
+          <Breadcrumbs items={[{ label: 'Collections' }]} />
           {/* Header */}
           <div className="max-w-2xl mx-auto text-center mb-16">
             <p className="text-gold text-sm font-medium tracking-wider uppercase mb-4">

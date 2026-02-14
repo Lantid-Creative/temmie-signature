@@ -16,6 +16,7 @@ import { useCompare } from '@/context/CompareContext';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -193,13 +194,10 @@ export default function ProductDetail() {
 
       <main className="pt-32 pb-20">
         <div className="container mx-auto px-4 lg:px-8">
-          {/* Breadcrumb */}
-          <div className="mb-8">
-            <Link to="/shop" className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors">
-              <ChevronLeft className="w-4 h-4 mr-1" />
-              Back to Shop
-            </Link>
-          </div>
+          <Breadcrumbs items={[
+            { label: 'Shop', href: '/shop' },
+            { label: product.name }
+          ]} />
 
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
             {/* Image Gallery */}

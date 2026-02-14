@@ -31,6 +31,9 @@ import SpecialOffers from "./pages/admin/SpecialOffers";
 import UsersPage from "./pages/admin/Users";
 import Settings from "./pages/admin/Settings";
 import EmailMarketing from "./pages/admin/EmailMarketing";
+import Blog from "./pages/Blog";
+import BlogPostPage from "./pages/BlogPost";
+import BlogPosts from "./pages/admin/BlogPosts";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +58,8 @@ const App = () => (
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/wishlist" element={<Wishlist />} />
                   <Route path="/compare" element={<Compare />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/blog/:slug" element={<BlogPostPage />} />
                   <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
                   <Route path="/checkout" element={<Checkout />} />
                   <Route path="/admin" element={<ProtectedRoute requireAdmin><Dashboard /></ProtectedRoute>} />
@@ -66,6 +71,7 @@ const App = () => (
                   <Route path="/admin/customers" element={<ProtectedRoute requireAdmin><UsersPage /></ProtectedRoute>} />
                   <Route path="/admin/settings" element={<ProtectedRoute requireAdmin><Settings /></ProtectedRoute>} />
                   <Route path="/admin/email-marketing" element={<ProtectedRoute requireAdmin><EmailMarketing /></ProtectedRoute>} />
+                  <Route path="/admin/blog" element={<ProtectedRoute requireAdmin><BlogPosts /></ProtectedRoute>} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
                 <CompareBar />

@@ -13,7 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
-import { User, Package, Heart, Settings, LogOut, Shield, Camera } from 'lucide-react';
+import { User, Package, Heart, Settings, LogOut, Shield, Camera, MapPin, Clock, Truck, CheckCircle, XCircle } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface Profile {
@@ -29,7 +29,21 @@ interface Order {
   order_number: string;
   status: string;
   total: number;
+  subtotal: number;
+  shipping_amount: number | null;
   created_at: string;
+  shipping_address: any;
+  order_items?: OrderItem[];
+}
+
+interface OrderItem {
+  id: string;
+  product_name: string;
+  product_image: string | null;
+  quantity: number;
+  price: number;
+  color: string | null;
+  cap_size: string | null;
 }
 
 export default function Account() {
@@ -79,7 +93,7 @@ export default function Account() {
     
     const { data, error } = await supabase
       .from('orders')
-      .select('id, order_number, status, total, created_at')
+      .select('id, order_number, status, total, subtotal, shipping_amount, created_at, shipping_address, order_items(id, product_name, product_image, quantity, price, color, cap_size)')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
       .limit(10);
@@ -158,14 +172,30 @@ export default function Account() {
   };
 
   const getStatusBadge = (status: string) => {
-    const variants: Record<string, 'default' | 'secondary' | 'destructive' | 'outline'> = {
-      pending: 'secondary',
-      processing: 'default',
-      shipped: 'default',
-      delivered: 'default',
-      cancelled: 'destructive',
+    const config: Record<string, { variant: 'default' | 'secondary' | 'destructive' | 'outline'; icon: React.ElementType }> = {
+      pending: { variant: 'secondary', icon: Clock },
+      processing: { variant: 'default', icon: Package },
+      shipped: { variant: 'default', icon: Truck },
+      delivered: { variant: 'default', icon: CheckCircle },
+      cancelled: { variant: 'destructive', icon: XCircle },
     };
-    return <Badge variant={variants[status] || 'secondary'}>{status}</Badge>;
+    const { variant, icon: Icon } = config[status] || { variant: 'secondary' as const, icon: Clock };
+    return (
+      <Badge variant={variant} className="gap-1">
+        <Icon className="w-3 h-3" />
+        {status.charAt(0).toUpperCase() + status.slice(1)}
+      </Badge>
+    );
+  };
+
+  const getOrderTimeline = (status: string) => {
+    const steps = ['pending', 'processing', 'shipped', 'delivered'];
+    const currentIndex = steps.indexOf(status);
+    return steps.map((step, i) => ({
+      label: step.charAt(0).toUpperCase() + step.slice(1),
+      completed: i <= currentIndex,
+      current: i === currentIndex,
+    }));
   };
 
   const getInitials = (name: string | null) => {
@@ -329,21 +359,67 @@ export default function Account() {
                       </Button>
                     </div>
                   ) : (
-                    <div className="space-y-4">
-                      {orders.map((order) => (
-                        <div key={order.id} className="flex items-center justify-between p-4 border rounded-lg">
-                          <div>
-                            <p className="font-medium">{order.order_number}</p>
-                            <p className="text-sm text-muted-foreground">
-                              {format(new Date(order.created_at), 'MMM d, yyyy')}
-                            </p>
+                    <div className="space-y-6">
+                      {orders.map((order) => {
+                        const timeline = order.status !== 'cancelled' ? getOrderTimeline(order.status) : null;
+                        return (
+                          <div key={order.id} className="border rounded-xl overflow-hidden">
+                            <div className="flex items-center justify-between p-4 bg-muted/30">
+                              <div>
+                                <p className="font-medium">{order.order_number}</p>
+                                <p className="text-sm text-muted-foreground">
+                                  {format(new Date(order.created_at), 'MMMM d, yyyy')}
+                                </p>
+                              </div>
+                              <div className="text-right flex items-center gap-3">
+                                <p className="font-serif font-semibold text-lg">${Number(order.total).toFixed(2)}</p>
+                                {getStatusBadge(order.status)}
+                              </div>
+                            </div>
+                            {timeline && (
+                              <div className="px-4 py-3 border-b">
+                                <div className="flex items-center justify-between">
+                                  {timeline.map((step, i) => (
+                                    <div key={step.label} className="flex items-center flex-1">
+                                      <div className="flex flex-col items-center gap-1">
+                                        <div className={`w-3 h-3 rounded-full ${step.completed ? 'bg-primary' : 'bg-muted-foreground/30'}`} />
+                                        <span className={`text-xs ${step.current ? 'text-primary font-medium' : 'text-muted-foreground'}`}>
+                                          {step.label}
+                                        </span>
+                                      </div>
+                                      {i < timeline.length - 1 && (
+                                        <div className={`flex-1 h-0.5 mx-1 mt-[-1rem] ${step.completed ? 'bg-primary' : 'bg-muted-foreground/30'}`} />
+                                      )}
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                            {order.order_items && order.order_items.length > 0 && (
+                              <div className="p-4 space-y-3">
+                                {order.order_items.map((item) => (
+                                  <div key={item.id} className="flex items-center gap-3">
+                                    {item.product_image ? (
+                                      <img src={item.product_image} alt={item.product_name} className="w-12 h-12 rounded object-cover" />
+                                    ) : (
+                                      <div className="w-12 h-12 rounded bg-muted flex items-center justify-center">
+                                        <Package className="w-5 h-5 text-muted-foreground" />
+                                      </div>
+                                    )}
+                                    <div className="flex-1 min-w-0">
+                                      <p className="text-sm font-medium truncate">{item.product_name}</p>
+                                      <p className="text-xs text-muted-foreground">
+                                        {item.color && item.color}{item.cap_size && ` / ${item.cap_size}`} × {item.quantity}
+                                      </p>
+                                    </div>
+                                    <p className="text-sm font-medium">${(Number(item.price) * item.quantity).toFixed(2)}</p>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
                           </div>
-                          <div className="text-right">
-                            <p className="font-medium">${order.total.toFixed(2)}</p>
-                            {getStatusBadge(order.status)}
-                          </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
                 </CardContent>
