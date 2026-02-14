@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
 import { WhatsAppButton } from '@/components/layout/WhatsAppButton';
 import { ProductCardNew } from '@/components/products/ProductCardNew';
+import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { products as mockProducts } from '@/lib/data';
 import { useProducts, useCategories } from '@/hooks/useProducts';
 import { normalizeProduct, type UnifiedProduct } from '@/types/product';
@@ -157,6 +158,7 @@ export default function Shop() {
 
       <main className="pt-32 pb-20">
         <div className="container mx-auto px-4 lg:px-8">
+          <Breadcrumbs items={[{ label: 'Shop' }]} />
           {/* Page Header */}
           <div className="text-center mb-12">
             <h1 className="font-serif text-4xl lg:text-5xl font-semibold mb-4">

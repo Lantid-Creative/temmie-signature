@@ -16,6 +16,8 @@ import {
   Sparkles,
   Percent,
   FolderTree,
+  FileText,
+  Mail,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
@@ -33,6 +35,8 @@ const navItems = [
   { icon: Image, label: 'Banners', path: '/admin/banners' },
   { icon: Percent, label: 'Special Offers', path: '/admin/offers' },
   { icon: Users, label: 'Customers', path: '/admin/customers' },
+  { icon: FileText, label: 'Blog', path: '/admin/blog' },
+  { icon: Mail, label: 'Email Marketing', path: '/admin/email-marketing' },
   { icon: Settings, label: 'Settings', path: '/admin/settings' },
 ];
 
