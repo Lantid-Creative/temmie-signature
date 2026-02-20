@@ -28,7 +28,7 @@ export function Header() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
         {/* Announcement Bar */}
         <div className="bg-primary text-primary-foreground text-center py-2 text-sm">
-          <p>✨ Free Shipping on Orders Over $200 | Use Code: <span className="font-semibold">LUXE20</span> for 20% Off</p>
+          <p>✨ Free Shipping on Orders Over $200 | Use Code: <span className="font-semibold">TRAZZIE20</span> for 20% Off</p>
         </div>
 
         <nav className="container mx-auto px-4 lg:px-8">
@@ -48,7 +48,7 @@ export function Header() {
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2">
               <span className="font-serif text-2xl lg:text-3xl font-semibold tracking-tight">
-                TRAZZY<span className="text-gold">BEAUTY</span>
+                TRAZZIE<span className="text-accent">✦</span>
               </span>
             </Link>
 
