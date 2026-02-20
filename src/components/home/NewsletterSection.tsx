@@ -12,7 +12,7 @@ export function NewsletterSection() {
           </div>
           
           <h2 className="font-serif text-3xl lg:text-4xl font-semibold mb-4">
-            Join the LuxeHair Family
+            Join the Trazzie Family
           </h2>
           <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
             Subscribe for exclusive offers, styling tips, and be the first to know about new arrivals. 

@@ -80,7 +80,7 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
             {sidebarOpen && (
               <Link to="/" className="flex items-center gap-2">
                 <Sparkles className="h-6 w-6 text-accent" />
-                <span className="font-serif text-lg">Trazzy Admin</span>
+                <span className="font-serif text-lg">Trazzie Admin</span>
               </Link>
             )}
             <Button

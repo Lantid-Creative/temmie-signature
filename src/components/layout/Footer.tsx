@@ -65,7 +65,7 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Link to="/" className="inline-block mb-6">
               <span className="font-serif text-3xl font-semibold tracking-tight">
-                LUXE<span className="text-gold">HAIR</span>
+                TRAZZIE<span className="text-gold">✦</span>
               </span>
             </Link>
             <p className="text-primary-foreground/70 mb-6 max-w-sm">
@@ -177,13 +177,13 @@ export function Footer() {
         <div className="mt-12 pt-8 border-t border-primary-foreground/10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-primary-foreground/50 text-sm">
-              © 2024 LuxeHair. All rights reserved.
+              © 2026 Trazzie. All rights reserved.
             </p>
             <div className="flex gap-6 text-sm">
-              <Link to="/privacy" className="text-primary-foreground/50 hover:text-gold transition-colors">
+              <Link to="/privacy-policy" className="text-primary-foreground/50 hover:text-gold transition-colors">
                 Privacy Policy
               </Link>
-              <Link to="/terms" className="text-primary-foreground/50 hover:text-gold transition-colors">
+              <Link to="/terms-of-service" className="text-primary-foreground/50 hover:text-gold transition-colors">
                 Terms of Service
               </Link>
             </div>

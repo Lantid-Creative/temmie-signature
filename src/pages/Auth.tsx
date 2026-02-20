@@ -118,7 +118,7 @@ const Auth = () => {
         } else {
           toast({
             title: 'Account Created!',
-            description: 'Welcome to Trazzy Beauty. Your account has been created.',
+            description: 'Welcome to Trazzie. Your account has been created.',
           });
           navigate(from, { replace: true });
         }
@@ -156,7 +156,7 @@ const Auth = () => {
             <p className="text-muted-foreground">
               {isLogin
                 ? 'Sign in to access your account'
-                : 'Join Trazzy Beauty for exclusive offers'}
+                : 'Join Trazzie for exclusive offers'}
             </p>
           </div>
 
@@ -289,7 +289,7 @@ const Auth = () => {
             transition={{ delay: 0.2 }}
           >
             <Sparkles className="h-16 w-16 mx-auto mb-6 text-accent" />
-            <h2 className="text-4xl font-serif mb-4">Trazzy Beauty</h2>
+            <h2 className="text-4xl font-serif mb-4">TRAZZIE✦</h2>
             <p className="text-xl text-muted-foreground max-w-md mx-auto">
               Discover luxury wigs and hair products crafted for confidence and beauty.
             </p>

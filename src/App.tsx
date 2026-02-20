@@ -34,6 +34,8 @@ import EmailMarketing from "./pages/admin/EmailMarketing";
 import Blog from "./pages/Blog";
 import BlogPostPage from "./pages/BlogPost";
 import BlogPosts from "./pages/admin/BlogPosts";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
 
 const queryClient = new QueryClient();
 
@@ -60,6 +62,8 @@ const App = () => (
                   <Route path="/compare" element={<Compare />} />
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/blog/:slug" element={<BlogPostPage />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="/terms-of-service" element={<TermsOfService />} />
                   <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
                   <Route path="/checkout" element={<Checkout />} />
                   <Route path="/admin" element={<ProtectedRoute requireAdmin><Dashboard /></ProtectedRoute>} />

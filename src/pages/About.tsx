@@ -22,8 +22,8 @@ const values = [
   },
   {
     icon: Users,
-    title: 'Community',
-    description: 'Join our community of 50,000+ women who have transformed their look and confidence with LuxeHair.',
+            title: 'Community',
+            description: 'Join our community of 50,000+ women who have transformed their look and confidence with Trazzie.',
   },
 ];
 
@@ -44,7 +44,7 @@ export default function About() {
               Empowering Women Through Beautiful Hair
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              LuxeHair was founded with a simple yet powerful mission: to help every woman 
+              Trazzie was founded with a simple yet powerful mission: to help every woman 
               feel confident and beautiful. We believe that great hair isn't just about 
               appearance—it's about how you feel when you look in the mirror.
             </p>
@@ -81,7 +81,7 @@ export default function About() {
                 </h2>
                 <div className="space-y-4 text-muted-foreground leading-relaxed">
                   <p>
-                    Founded in 2018, LuxeHair started as a small passion project by founder 
+                    Founded in 2020, Trazzie started as a small passion project by founder 
                     Amara Johnson. After struggling to find quality wigs that looked natural 
                     and felt comfortable, she decided to create her own.
                   </p>
@@ -91,7 +91,7 @@ export default function About() {
                     customer service, and empowerment remains at the heart of everything we do.
                   </p>
                   <p>
-                    Today, LuxeHair offers the finest selection of human hair wigs, 
+                    Today, Trazzie offers the finest selection of human hair wigs, 
                     each piece carefully crafted to deliver the natural look and feel 
                     that our customers deserve.
                   </p>
