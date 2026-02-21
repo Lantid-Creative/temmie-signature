@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ChevronLeft, CreditCard, Truck, Shield, Check, Loader2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { ChevronLeft, Truck, Shield, Check, Loader2 } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { WhatsAppButton } from '@/components/layout/WhatsAppButton';
@@ -31,13 +31,13 @@ interface ShippingAddress {
 
 export default function Checkout() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { items, totalPrice, clearCart } = useCart();
   const { user } = useAuth();
   const { toast } = useToast();
   
   const [step, setStep] = useState<CheckoutStep>('information');
   const [isProcessing, setIsProcessing] = useState(false);
-  const [orderNumber, setOrderNumber] = useState<string | null>(null);
   
   const [shippingAddress, setShippingAddress] = useState<ShippingAddress>({
     firstName: '',
@@ -53,8 +53,19 @@ export default function Checkout() {
   });
 
   const shipping = totalPrice >= 200 ? 0 : 15;
-  const tax = totalPrice * 0.08; // 8% tax
+  const tax = totalPrice * 0.08;
   const total = totalPrice + shipping + tax;
+
+  // Handle Stripe redirect
+  useEffect(() => {
+    const status = searchParams.get('status');
+    if (status === 'success') {
+      clearCart();
+      setStep('confirmation');
+    } else if (status === 'cancelled') {
+      toast({ title: 'Payment cancelled', description: 'You can try again when ready.' });
+    }
+  }, [searchParams]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -83,7 +94,6 @@ export default function Checkout() {
 
   const nextStep = () => {
     if (!validateStep()) return;
-    
     const steps: CheckoutStep[] = ['information', 'shipping', 'payment', 'confirmation'];
     const currentIndex = steps.indexOf(step);
     if (currentIndex < steps.length - 1) {
@@ -99,83 +109,39 @@ export default function Checkout() {
     }
   };
 
-  const processOrder = async () => {
+  const processPayment = async () => {
     setIsProcessing(true);
     try {
-      // Generate order number
-      const orderNum = `ORD-${Date.now()}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
-      
-      // Create order in database
-      const { data: order, error: orderError } = await supabase
-        .from('orders')
-        .insert([{
-          order_number: orderNum,
-          user_id: user?.id || null,
-          email: shippingAddress.email,
-          phone: shippingAddress.phone,
-          status: 'pending',
-          subtotal: totalPrice,
-          shipping_amount: shipping,
-          discount_amount: 0,
-          total: total,
-          shipping_address: JSON.parse(JSON.stringify(shippingAddress)),
-          billing_address: JSON.parse(JSON.stringify(shippingAddress)),
-        }])
-        .select()
-        .single();
-
-      if (orderError) throw orderError;
-
-      // Create order items
-      const orderItems = items.map(item => ({
-        order_id: order.id,
-        product_id: item.product.id.length === 36 ? item.product.id : null, // Only if valid UUID
+      const cartItems = items.map(item => ({
         product_name: item.product.name,
         product_image: item.product.image,
-        quantity: item.quantity,
         price: item.product.price,
+        quantity: item.quantity,
         color: item.selectedColor,
         cap_size: item.selectedCapSize,
       }));
 
-      const { error: itemsError } = await supabase
-        .from('order_items')
-        .insert(orderItems);
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        body: {
+          items: cartItems,
+          shippingAddress,
+          shipping,
+          tax,
+        },
+      });
 
-      if (itemsError) throw itemsError;
-
-      // Send order confirmation email
-      try {
-        await supabase.functions.invoke('send-email', {
-          body: {
-            type: 'order_confirmation',
-            to: shippingAddress.email,
-            data: {
-              name: `${shippingAddress.firstName} ${shippingAddress.lastName}`,
-              orderNumber: orderNum,
-              orderDate: new Date().toLocaleDateString(),
-              total: total.toFixed(2),
-              trackingUrl: `${window.location.origin}/account`,
-            }
-          }
-        });
-        console.log('Order confirmation email sent');
-      } catch (emailError) {
-        console.error('Failed to send confirmation email:', emailError);
-        // Don't fail the order if email fails
+      if (error) throw error;
+      if (data?.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error('No checkout URL returned');
       }
-
-      setOrderNumber(orderNum);
-      setStep('confirmation');
-      clearCart();
-      
-      toast({ title: 'Order placed successfully!' });
-    } catch (error) {
-      console.error('Error processing order:', error);
-      toast({ 
-        title: 'Error processing order', 
-        description: 'Please try again or contact support.',
-        variant: 'destructive' 
+    } catch (error: any) {
+      console.error('Error creating checkout session:', error);
+      toast({
+        title: 'Payment error',
+        description: error.message || 'Please try again or contact support.',
+        variant: 'destructive',
       });
     } finally {
       setIsProcessing(false);
@@ -183,21 +149,26 @@ export default function Checkout() {
   };
 
   if (items.length === 0 && step !== 'confirmation') {
-    return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <main className="pt-32 pb-20">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="font-serif text-3xl font-semibold mb-4">Your cart is empty</h1>
-            <p className="text-muted-foreground mb-8">Add some items to your cart to checkout.</p>
-            <Button asChild>
-              <Link to="/shop">Continue Shopping</Link>
-            </Button>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
+    const status = searchParams.get('status');
+    if (status === 'success') {
+      // Show confirmation even if cart is empty (it was cleared)
+    } else {
+      return (
+        <div className="min-h-screen bg-background">
+          <Header />
+          <main className="pt-32 pb-20">
+            <div className="container mx-auto px-4 text-center">
+              <h1 className="font-serif text-3xl font-semibold mb-4">Your cart is empty</h1>
+              <p className="text-muted-foreground mb-8">Add some items to your cart to checkout.</p>
+              <Button asChild>
+                <Link to="/shop">Continue Shopping</Link>
+              </Button>
+            </div>
+          </main>
+          <Footer />
+        </div>
+      );
+    }
   }
 
   const stepIndicator = (
@@ -206,19 +177,16 @@ export default function Checkout() {
         const stepNames: CheckoutStep[] = ['information', 'shipping', 'payment'];
         const isActive = step === stepNames[index];
         const isCompleted = stepNames.indexOf(step) > index || step === 'confirmation';
-        
         return (
           <div key={label} className="flex items-center">
             <div className={cn(
               'flex items-center gap-2',
-              isActive && 'text-primary',
-              isCompleted && 'text-primary',
+              (isActive || isCompleted) && 'text-primary',
               !isActive && !isCompleted && 'text-muted-foreground'
             )}>
               <div className={cn(
                 'w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium',
-                isActive && 'bg-primary text-primary-foreground',
-                isCompleted && 'bg-primary text-primary-foreground',
+                (isActive || isCompleted) && 'bg-primary text-primary-foreground',
                 !isActive && !isCompleted && 'bg-muted text-muted-foreground'
               )}>
                 {isCompleted && !isActive ? <Check className="w-4 h-4" /> : index + 1}
@@ -240,7 +208,6 @@ export default function Checkout() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
       <main className="pt-32 pb-20">
         <div className="container mx-auto px-4 lg:px-8">
           {step !== 'confirmation' && (
@@ -257,60 +224,29 @@ export default function Checkout() {
           {step !== 'confirmation' && stepIndicator}
 
           <div className="grid lg:grid-cols-3 gap-12">
-            {/* Main Content */}
             <div className="lg:col-span-2">
               {/* Information Step */}
               {step === 'information' && (
                 <div className="space-y-6">
                   <h2 className="font-serif text-2xl font-semibold">Contact Information</h2>
-                  
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="firstName">First Name *</Label>
-                      <Input
-                        id="firstName"
-                        name="firstName"
-                        value={shippingAddress.firstName}
-                        onChange={handleInputChange}
-                        className="mt-1"
-                      />
+                      <Input id="firstName" name="firstName" value={shippingAddress.firstName} onChange={handleInputChange} className="mt-1" />
                     </div>
                     <div>
                       <Label htmlFor="lastName">Last Name *</Label>
-                      <Input
-                        id="lastName"
-                        name="lastName"
-                        value={shippingAddress.lastName}
-                        onChange={handleInputChange}
-                        className="mt-1"
-                      />
+                      <Input id="lastName" name="lastName" value={shippingAddress.lastName} onChange={handleInputChange} className="mt-1" />
                     </div>
                   </div>
-
                   <div>
                     <Label htmlFor="email">Email *</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={shippingAddress.email}
-                      onChange={handleInputChange}
-                      className="mt-1"
-                    />
+                    <Input id="email" name="email" type="email" value={shippingAddress.email} onChange={handleInputChange} className="mt-1" />
                   </div>
-
                   <div>
                     <Label htmlFor="phone">Phone</Label>
-                    <Input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      value={shippingAddress.phone}
-                      onChange={handleInputChange}
-                      className="mt-1"
-                    />
+                    <Input id="phone" name="phone" type="tel" value={shippingAddress.phone} onChange={handleInputChange} className="mt-1" />
                   </div>
-
                   <Button onClick={nextStep} className="w-full h-12 bg-primary text-primary-foreground">
                     Continue to Shipping
                   </Button>
@@ -321,134 +257,64 @@ export default function Checkout() {
               {step === 'shipping' && (
                 <div className="space-y-6">
                   <h2 className="font-serif text-2xl font-semibold">Shipping Address</h2>
-                  
                   <div>
                     <Label htmlFor="address">Street Address *</Label>
-                    <Input
-                      id="address"
-                      name="address"
-                      value={shippingAddress.address}
-                      onChange={handleInputChange}
-                      className="mt-1"
-                    />
+                    <Input id="address" name="address" value={shippingAddress.address} onChange={handleInputChange} className="mt-1" />
                   </div>
-
                   <div>
                     <Label htmlFor="apartment">Apartment, suite, etc.</Label>
-                    <Input
-                      id="apartment"
-                      name="apartment"
-                      value={shippingAddress.apartment}
-                      onChange={handleInputChange}
-                      className="mt-1"
-                    />
+                    <Input id="apartment" name="apartment" value={shippingAddress.apartment} onChange={handleInputChange} className="mt-1" />
                   </div>
-
                   <div className="grid sm:grid-cols-3 gap-4">
                     <div>
                       <Label htmlFor="city">City *</Label>
-                      <Input
-                        id="city"
-                        name="city"
-                        value={shippingAddress.city}
-                        onChange={handleInputChange}
-                        className="mt-1"
-                      />
+                      <Input id="city" name="city" value={shippingAddress.city} onChange={handleInputChange} className="mt-1" />
                     </div>
                     <div>
                       <Label htmlFor="state">State *</Label>
-                      <Input
-                        id="state"
-                        name="state"
-                        value={shippingAddress.state}
-                        onChange={handleInputChange}
-                        className="mt-1"
-                      />
+                      <Input id="state" name="state" value={shippingAddress.state} onChange={handleInputChange} className="mt-1" />
                     </div>
                     <div>
                       <Label htmlFor="zipCode">ZIP Code *</Label>
-                      <Input
-                        id="zipCode"
-                        name="zipCode"
-                        value={shippingAddress.zipCode}
-                        onChange={handleInputChange}
-                        className="mt-1"
-                      />
+                      <Input id="zipCode" name="zipCode" value={shippingAddress.zipCode} onChange={handleInputChange} className="mt-1" />
                     </div>
                   </div>
-
                   <div className="flex gap-4">
-                    <Button variant="outline" onClick={prevStep} className="flex-1 h-12">
-                      Back
-                    </Button>
-                    <Button onClick={nextStep} className="flex-1 h-12 bg-primary text-primary-foreground">
-                      Continue to Payment
-                    </Button>
+                    <Button variant="outline" onClick={prevStep} className="flex-1 h-12">Back</Button>
+                    <Button onClick={nextStep} className="flex-1 h-12 bg-primary text-primary-foreground">Continue to Payment</Button>
                   </div>
                 </div>
               )}
 
-              {/* Payment Step */}
+              {/* Payment Step - Stripe Checkout */}
               {step === 'payment' && (
                 <div className="space-y-6">
                   <h2 className="font-serif text-2xl font-semibold">Payment</h2>
                   
-                  <div className="bg-secondary/50 rounded-xl p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <CreditCard className="w-6 h-6 text-primary" />
-                      <span className="font-medium">Credit / Debit Card</span>
-                    </div>
-                    
-                    <div className="space-y-4">
-                      <div>
-                        <Label htmlFor="cardNumber">Card Number</Label>
-                        <Input
-                          id="cardNumber"
-                          placeholder="1234 5678 9012 3456"
-                          className="mt-1"
-                        />
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <Label htmlFor="expiry">Expiry Date</Label>
-                          <Input
-                            id="expiry"
-                            placeholder="MM/YY"
-                            className="mt-1"
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="cvv">CVV</Label>
-                          <Input
-                            id="cvv"
-                            placeholder="123"
-                            className="mt-1"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-4 p-4 bg-muted rounded-lg">
-                    <Shield className="w-5 h-5 text-primary" />
-                    <p className="text-sm text-muted-foreground">
-                      Your payment information is encrypted and secure.
+                  <div className="bg-secondary/50 rounded-xl p-8 text-center">
+                    <Shield className="w-12 h-12 text-primary mx-auto mb-4" />
+                    <h3 className="font-serif text-xl font-semibold mb-2">Secure Payment via Stripe</h3>
+                    <p className="text-muted-foreground mb-6">
+                      You'll be redirected to Stripe's secure checkout to complete your payment. 
+                      All major credit cards, debit cards, and digital wallets are accepted.
                     </p>
+                    <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                      <Shield className="w-4 h-4" />
+                      <span>256-bit SSL encryption • PCI compliant</span>
+                    </div>
                   </div>
 
                   <div className="flex gap-4">
-                    <Button variant="outline" onClick={prevStep} className="flex-1 h-12">
-                      Back
-                    </Button>
-                    <Button 
-                      onClick={processOrder} 
+                    <Button variant="outline" onClick={prevStep} className="flex-1 h-12">Back</Button>
+                    <Button
+                      onClick={processPayment}
                       disabled={isProcessing}
                       className="flex-1 h-12 bg-primary text-primary-foreground"
                     >
                       {isProcessing ? (
                         <>
                           <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                          Processing...
+                          Redirecting to Stripe...
                         </>
                       ) : (
                         `Pay $${total.toFixed(2)}`
@@ -464,19 +330,9 @@ export default function Checkout() {
                   <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
                     <Check className="w-10 h-10 text-primary" />
                   </div>
-                  
                   <h2 className="font-serif text-3xl font-semibold mb-4">Thank You!</h2>
-                  <p className="text-muted-foreground mb-2">
-                    Your order has been successfully placed.
-                  </p>
-                  <p className="text-lg font-medium mb-8">
-                    Order Number: <span className="text-primary">{orderNumber}</span>
-                  </p>
-                  
-                  <p className="text-muted-foreground mb-8">
-                    A confirmation email has been sent to <strong>{shippingAddress.email}</strong>
-                  </p>
-
+                  <p className="text-muted-foreground mb-2">Your payment was successful and your order has been placed.</p>
+                  <p className="text-muted-foreground mb-8">A confirmation email will be sent shortly.</p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Button asChild>
                       <Link to="/shop">Continue Shopping</Link>
@@ -492,20 +348,15 @@ export default function Checkout() {
             </div>
 
             {/* Order Summary Sidebar */}
-            {step !== 'confirmation' && (
+            {step !== 'confirmation' && items.length > 0 && (
               <div className="lg:sticky lg:top-32 h-fit">
                 <div className="bg-card rounded-xl border border-border p-6">
                   <h2 className="font-serif text-xl font-semibold mb-6">Order Summary</h2>
-                  
                   <div className="space-y-4 mb-6">
                     {items.map((item) => (
                       <div key={`${item.product.id}-${item.selectedColor}-${item.selectedCapSize}`} className="flex gap-4">
                         <div className="relative">
-                          <img
-                            src={item.product.image}
-                            alt={item.product.name}
-                            className="w-16 h-16 object-cover rounded-lg"
-                          />
+                          <img src={item.product.image} alt={item.product.name} className="w-16 h-16 object-cover rounded-lg" />
                           <span className="absolute -top-2 -right-2 w-5 h-5 bg-primary text-primary-foreground text-xs rounded-full flex items-center justify-center">
                             {item.quantity}
                           </span>
@@ -518,9 +369,7 @@ export default function Checkout() {
                       </div>
                     ))}
                   </div>
-
                   <Separator className="my-4" />
-
                   <div className="space-y-3">
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">Subtotal</span>
@@ -534,15 +383,12 @@ export default function Checkout() {
                       <span className="text-muted-foreground">Tax</span>
                       <span>${tax.toFixed(2)}</span>
                     </div>
-                    
                     <Separator />
-                    
                     <div className="flex justify-between text-lg font-semibold">
                       <span>Total</span>
                       <span className="font-serif text-primary">${total.toFixed(2)}</span>
                     </div>
                   </div>
-
                   <div className="flex items-center gap-2 mt-6 pt-6 border-t border-border">
                     <Truck className="w-4 h-4 text-primary" />
                     <span className="text-sm text-muted-foreground">
@@ -555,7 +401,6 @@ export default function Checkout() {
           </div>
         </div>
       </main>
-
       <Footer />
       <WhatsAppButton />
     </div>
