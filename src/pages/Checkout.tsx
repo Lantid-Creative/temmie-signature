@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -29,16 +30,28 @@ interface ShippingAddress {
   country: string;
 }
 
+const COUNTRIES = [
+  'United States', 'Canada', 'United Kingdom', 'Australia', 'Germany',
+  'France', 'Nigeria', 'Kenya', 'South Africa', 'Ghana', 'Tanzania',
+  'India', 'Brazil', 'Mexico', 'Japan', 'South Korea',
+];
+
+const validatePhone = (phone: string): boolean => {
+  if (!phone) return true; // optional field
+  const cleaned = phone.replace(/[\s\-\(\)]/g, '');
+  return /^\+?\d{7,15}$/.test(cleaned);
+};
+
 export default function Checkout() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { items, totalPrice, clearCart } = useCart();
   const { user } = useAuth();
   const { toast } = useToast();
-  
+
   const [step, setStep] = useState<CheckoutStep>('information');
   const [isProcessing, setIsProcessing] = useState(false);
-  
+
   const [shippingAddress, setShippingAddress] = useState<ShippingAddress>({
     firstName: '',
     lastName: '',
@@ -82,9 +95,13 @@ export default function Checkout() {
         toast({ title: 'Please enter a valid email address', variant: 'destructive' });
         return false;
       }
+      if (shippingAddress.phone && !validatePhone(shippingAddress.phone)) {
+        toast({ title: 'Please enter a valid phone number (e.g. +1234567890)', variant: 'destructive' });
+        return false;
+      }
     }
     if (step === 'shipping') {
-      if (!shippingAddress.address || !shippingAddress.city || !shippingAddress.state || !shippingAddress.zipCode) {
+      if (!shippingAddress.address || !shippingAddress.city || !shippingAddress.state || !shippingAddress.zipCode || !shippingAddress.country) {
         toast({ title: 'Please fill in all shipping details', variant: 'destructive' });
         return false;
       }
@@ -245,7 +262,8 @@ export default function Checkout() {
                   </div>
                   <div>
                     <Label htmlFor="phone">Phone</Label>
-                    <Input id="phone" name="phone" type="tel" value={shippingAddress.phone} onChange={handleInputChange} className="mt-1" />
+                    <Input id="phone" name="phone" type="tel" placeholder="+1234567890" value={shippingAddress.phone} onChange={handleInputChange} className="mt-1" />
+                    <p className="text-xs text-muted-foreground mt-1">Include country code (e.g. +1 for US)</p>
                   </div>
                   <Button onClick={nextStep} className="w-full h-12 bg-primary text-primary-foreground">
                     Continue to Shipping
@@ -257,6 +275,22 @@ export default function Checkout() {
               {step === 'shipping' && (
                 <div className="space-y-6">
                   <h2 className="font-serif text-2xl font-semibold">Shipping Address</h2>
+                  <div>
+                    <Label htmlFor="country">Country *</Label>
+                    <Select
+                      value={shippingAddress.country}
+                      onValueChange={(value) => setShippingAddress(prev => ({ ...prev, country: value }))}
+                    >
+                      <SelectTrigger className="mt-1">
+                        <SelectValue placeholder="Select country" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {COUNTRIES.map(c => (
+                          <SelectItem key={c} value={c}>{c}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                   <div>
                     <Label htmlFor="address">Street Address *</Label>
                     <Input id="address" name="address" value={shippingAddress.address} onChange={handleInputChange} className="mt-1" />
@@ -290,12 +324,12 @@ export default function Checkout() {
               {step === 'payment' && (
                 <div className="space-y-6">
                   <h2 className="font-serif text-2xl font-semibold">Payment</h2>
-                  
+
                   <div className="bg-secondary/50 rounded-xl p-8 text-center">
                     <Shield className="w-12 h-12 text-primary mx-auto mb-4" />
                     <h3 className="font-serif text-xl font-semibold mb-2">Secure Payment via Stripe</h3>
                     <p className="text-muted-foreground mb-6">
-                      You'll be redirected to Stripe's secure checkout to complete your payment. 
+                      You'll be redirected to Stripe's secure checkout to complete your payment.
                       All major credit cards, debit cards, and digital wallets are accepted.
                     </p>
                     <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">

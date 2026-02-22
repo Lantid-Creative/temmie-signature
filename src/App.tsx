@@ -65,7 +65,7 @@ const App = () => (
                   <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                   <Route path="/terms-of-service" element={<TermsOfService />} />
                   <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
-                  <Route path="/checkout" element={<Checkout />} />
+                  <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
                   <Route path="/admin" element={<ProtectedRoute requireAdmin><Dashboard /></ProtectedRoute>} />
                   <Route path="/admin/products" element={<ProtectedRoute requireAdmin><Products /></ProtectedRoute>} />
                   <Route path="/admin/banners" element={<ProtectedRoute requireAdmin><Banners /></ProtectedRoute>} />
