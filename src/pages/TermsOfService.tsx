@@ -24,7 +24,7 @@ export default function TermsOfService() {
             <section>
               <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">1. Agreement to Terms</h2>
               <p>
-                By accessing or using the Trazzie website at <span className="text-foreground font-medium">trazzies.lovable.app</span> (the "Site") and purchasing our products, you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, please do not use our Site.
+                By accessing or using the Trazzie website at <span className="text-foreground font-medium">trazzie.com</span> (the "Site") and purchasing our products, you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, please do not use our Site.
               </p>
               <p className="mt-3">
                 These Terms apply to all visitors, users, and customers of the Site.
@@ -154,7 +154,7 @@ export default function TermsOfService() {
               <div className="mt-4 space-y-2">
                 <p><span className="text-foreground font-medium">Email:</span> <a href="mailto:legal@trazzie.com" className="text-accent hover:underline">legal@trazzie.com</a></p>
                 <p><span className="text-foreground font-medium">Company:</span> Trazzie</p>
-                <p><span className="text-foreground font-medium">Website:</span> trazzies.lovable.app</p>
+                <p><span className="text-foreground font-medium">Website:</span> <a href="https://trazzie.com" className="text-accent hover:underline">trazzie.com</a></p>
               </div>
             </section>
           </div>

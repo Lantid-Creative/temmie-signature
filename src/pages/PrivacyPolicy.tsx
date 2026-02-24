@@ -24,7 +24,7 @@ export default function PrivacyPolicy() {
             <section>
               <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">1. Introduction</h2>
               <p>
-                Welcome to Trazzie ("we," "our," or "us"). We are committed to protecting your personal information and your right to privacy. This Privacy Policy describes how we collect, use, and share information about you when you use our website at <span className="text-foreground font-medium">trazzies.lovable.app</span> (the "Site") and purchase our products.
+                Welcome to Trazzie ("we," "our," or "us"). We are committed to protecting your personal information and your right to privacy. This Privacy Policy describes how we collect, use, and share information about you when you use our website at <span className="text-foreground font-medium">trazzie.com</span> (the "Site") and purchase our products.
               </p>
               <p className="mt-3">
                 Please read this policy carefully. If you disagree with its terms, please discontinue use of our Site.
@@ -139,7 +139,7 @@ export default function PrivacyPolicy() {
               <div className="mt-4 space-y-2">
                 <p><span className="text-foreground font-medium">Email:</span> <a href="mailto:privacy@trazzie.com" className="text-accent hover:underline">privacy@trazzie.com</a></p>
                 <p><span className="text-foreground font-medium">Company:</span> Trazzie</p>
-                <p><span className="text-foreground font-medium">Website:</span> trazzies.lovable.app</p>
+                <p><span className="text-foreground font-medium">Website:</span> <a href="https://trazzie.com" className="text-accent hover:underline">trazzie.com</a></p>
               </div>
             </section>
           </div>

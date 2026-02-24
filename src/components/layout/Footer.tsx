@@ -12,18 +12,14 @@ const footerLinks = {
     { name: 'Bundles & Frontals', href: '/shop?category=frontals' },
   ],
   help: [
-    { name: 'Shipping & Delivery', href: '/shipping' },
-    { name: 'Returns & Exchanges', href: '/returns' },
-    { name: 'Size Guide', href: '/size-guide' },
-    { name: 'Care Instructions', href: '/care' },
-    { name: 'FAQs', href: '/faqs' },
-  ],
-  company: [
     { name: 'About Us', href: '/about' },
     { name: 'Contact', href: '/contact' },
-    { name: 'Careers', href: '/careers' },
-    { name: 'Press', href: '/press' },
-    { name: 'Affiliates', href: '/affiliates' },
+    { name: 'Blog', href: '/blog' },
+    { name: 'FAQs', href: '/contact' },
+  ],
+  legal: [
+    { name: 'Privacy Policy', href: '/privacy-policy' },
+    { name: 'Terms of Service', href: '/terms-of-service' },
   ],
 };
 
@@ -122,7 +118,7 @@ export function Footer() {
 
           {/* Help Links */}
           <div>
-            <h4 className="font-serif text-lg font-semibold mb-4">Help</h4>
+            <h4 className="font-serif text-lg font-semibold mb-4">Company</h4>
             <ul className="space-y-3">
               {footerLinks.help.map((link) => (
                 <li key={link.name}>
@@ -137,11 +133,11 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Company Links */}
+          {/* Legal Links */}
           <div>
-            <h4 className="font-serif text-lg font-semibold mb-4">Company</h4>
+            <h4 className="font-serif text-lg font-semibold mb-4">Legal</h4>
             <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
+              {footerLinks.legal.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}

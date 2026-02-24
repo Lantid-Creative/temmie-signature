@@ -9,6 +9,8 @@ import { WishlistProvider } from "@/context/WishlistContext";
 import { CompareProvider } from "@/context/CompareContext";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { CompareBar } from "@/components/compare/CompareBar";
+import { ScrollToTop } from "@/components/layout/ScrollToTop";
+import { BackToTopButton } from "@/components/layout/BackToTopButton";
 import Index from "./pages/Index";
 import Shop from "./pages/Shop";
 import ProductDetail from "./pages/ProductDetail";
@@ -49,6 +51,8 @@ const App = () => (
               <Toaster />
               <Sonner />
               <BrowserRouter>
+                <ScrollToTop />
+                <BackToTopButton />
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/shop" element={<Shop />} />
