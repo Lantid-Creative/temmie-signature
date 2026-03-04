@@ -7,7 +7,6 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-// Initialize Stripe once at module level for faster cold starts
 const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
   apiVersion: "2025-08-27.basil",
 });
@@ -18,7 +17,7 @@ serve(async (req) => {
   }
 
   try {
-    const { items, shippingAddress, shipping, tax } = await req.json();
+    const { items, shippingAddress, shipping, tax, discount, couponId } = await req.json();
 
     if (!items || items.length === 0) {
       throw new Error("No items provided");
@@ -59,10 +58,26 @@ serve(async (req) => {
       });
     }
 
-    // Create checkout session directly — skip customer lookup for speed
+    // Add tax as a line item
+    if (tax > 0) {
+      lineItems.push({
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: "Tax",
+            images: [],
+            metadata: {},
+          },
+          unit_amount: Math.round(tax * 100),
+        },
+        quantity: 1,
+      });
+    }
+
     const origin = req.headers.get("origin") || "https://trazzie.com";
 
-    const session = await stripe.checkout.sessions.create({
+    // Build session params
+    const sessionParams: any = {
       customer_email: email,
       line_items: lineItems,
       mode: "payment",
@@ -72,8 +87,23 @@ serve(async (req) => {
         shipping_address: JSON.stringify(shippingAddress),
         shipping_amount: shipping.toString(),
         tax_amount: tax.toString(),
+        discount_amount: (discount || 0).toString(),
+        coupon_id: couponId || "",
       },
-    });
+    };
+
+    // Apply discount as a coupon in Stripe
+    if (discount && discount > 0) {
+      const stripeCoupon = await stripe.coupons.create({
+        amount_off: Math.round(discount * 100),
+        currency: "usd",
+        duration: "once",
+        name: "Trazzie Discount",
+      });
+      sessionParams.discounts = [{ coupon: stripeCoupon.id }];
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionParams);
 
     return new Response(JSON.stringify({ url: session.url, sessionId: session.id }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },

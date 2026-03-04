@@ -3,6 +3,7 @@ import { X, ShoppingBag, Star, ArrowLeft } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
+import { PageMeta } from '@/components/seo/PageMeta';
 
 import { Button } from '@/components/ui/button';
 import { useCompare } from '@/context/CompareContext';
@@ -31,6 +32,7 @@ export default function Compare() {
   if (compareProducts.length === 0) {
     return (
       <>
+        <PageMeta title="Compare Products | Trazzie" description="Compare wigs side by side — hair type, lace, length, price and more." />
         <Header />
         <main className="pt-32 pb-20">
           <div className="container mx-auto px-4 lg:px-8 text-center">
@@ -53,8 +55,9 @@ export default function Compare() {
   }
 
   return (
-    <>
-      <Header />
+      <>
+        <PageMeta title="Compare Products | Trazzie" description="Compare wigs side by side to find your perfect match." />
+        <Header />
       <main className="pt-32 pb-20">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between mb-8">
