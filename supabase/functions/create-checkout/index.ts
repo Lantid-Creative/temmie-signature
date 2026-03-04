@@ -60,7 +60,7 @@ serve(async (req) => {
     }
 
     // Create checkout session directly — skip customer lookup for speed
-    const origin = req.headers.get("origin") || "https://trazzies.lovable.app";
+    const origin = req.headers.get("origin") || "https://trazzie.com";
 
     const session = await stripe.checkout.sessions.create({
       customer_email: email,

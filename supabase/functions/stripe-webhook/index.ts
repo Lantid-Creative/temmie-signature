@@ -117,7 +117,7 @@ serve(async (req) => {
                 data: {
                   name: shippingAddress
                     ? `${shippingAddress.firstName} ${shippingAddress.lastName}`
-                    : "Customer",
+                    : "Valued Customer",
                   orderNumber: orderNum,
                   orderDate: new Date().toLocaleDateString(),
                   total: ((session.amount_total || 0) / 100).toFixed(2),

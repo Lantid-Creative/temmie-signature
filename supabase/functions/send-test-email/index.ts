@@ -10,18 +10,18 @@ async function sendEmail(to: string[], subject: string, html: string) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: "Trazzy Beauty <onboarding@resend.dev>",
+      from: "Trazzie <onboarding@resend.dev>",
       to,
       subject,
       html,
     }),
   });
-  
+
   if (!response.ok) {
     const error = await response.json();
     throw new Error(error.message || "Failed to send email");
   }
-  
+
   return response.json();
 }
 
@@ -48,75 +48,61 @@ serve(async (req: Request) => {
       orderNumber: "TEST-12345",
       orderDate: new Date().toLocaleDateString(),
       total: "299.99",
-      shopUrl: "https://trazzybeauty.com/shop",
-      cartUrl: "https://trazzybeauty.com/cart",
-      wishlistUrl: "https://trazzybeauty.com/wishlist",
-      trackingUrl: "https://trazzybeauty.com/track",
+      shopUrl: "https://trazzie.com/shop",
+      cartUrl: "https://trazzie.com/cart",
+      wishlistUrl: "https://trazzie.com/wishlist",
+      trackingUrl: "https://trazzie.com/account",
       trackingNumber: "1Z999AA10123456784",
       carrier: "UPS",
-      estimatedDelivery: "January 25, 2024",
-      resetUrl: "https://trazzybeauty.com/reset-password?token=test",
+      estimatedDelivery: "January 25, 2026",
+      resetUrl: "https://trazzie.com/reset-password?token=test",
     };
 
-    const baseStyles = `
-      <style>
-        body { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f8f8f8; }
-        .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; }
-        .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 40px 30px; text-align: center; }
-        .logo { font-size: 28px; font-weight: bold; color: #d4af37; letter-spacing: 2px; }
-        .content { padding: 40px 30px; }
-        .button { display: inline-block; background: linear-gradient(135deg, #d4af37 0%, #b8962e 100%); color: #1a1a2e !important; text-decoration: none; padding: 14px 30px; border-radius: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-        .footer { background-color: #1a1a2e; color: #999; padding: 30px; text-align: center; font-size: 12px; }
-        .footer a { color: #d4af37; text-decoration: none; }
-        h1 { color: #1a1a2e; margin: 0 0 20px; }
-      </style>
-    `;
-
-    let subject = `[TEST] ${templateType.replace(/_/g, ' ').toUpperCase()} Email`;
-    let html = `
-      <!DOCTYPE html>
-      <html>
-      <head>${baseStyles}</head>
-      <body>
+    const subject = `[TEST] ${templateType.replace(/_/g, ' ').toUpperCase()} Email — Trazzie`;
+    const html = `
+      <!DOCTYPE html><html><head>
+        <style>
+          body { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.7; color: #2d2d2d; margin: 0; padding: 0; background-color: #f5f0eb; }
+          .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+          .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 48px 30px; text-align: center; }
+          .logo { font-size: 32px; font-weight: 700; color: #d4af37; letter-spacing: 3px; font-family: Georgia, 'Times New Roman', serif; }
+          .content { padding: 48px 36px; }
+          .footer { background: #1a1a2e; color: rgba(255,255,255,0.5); padding: 36px; text-align: center; font-size: 12px; }
+          h1 { font-family: Georgia, 'Times New Roman', serif; color: #1a1a2e; font-size: 24px; }
+          pre { background: #faf8f5; border: 1px solid #ebe6de; padding: 16px; border-radius: 8px; overflow: auto; font-size: 12px; }
+        </style>
+      </head><body>
         <div class="container">
           <div class="header">
-            <div class="logo">✨ TRAZZY BEAUTY</div>
-            <p style="color: #ff6b6b; font-size: 12px;">⚠️ TEST EMAIL</p>
+            <div class="logo">TRAZZIE✦</div>
+            <p style="color: #ff6b6b; font-size: 12px; margin-top: 8px;">⚠️ TEST EMAIL</p>
           </div>
           <div class="content">
             <h1>Test: ${templateType.replace(/_/g, ' ')}</h1>
-            <p>This is a test email for the <strong>${templateType}</strong> template.</p>
-            <p>Test data used:</p>
-            <pre style="background: #f5f5f5; padding: 15px; border-radius: 8px; overflow: auto;">${JSON.stringify(testData, null, 2)}</pre>
+            <p style="color: #555;">This is a test email for the <strong>${templateType}</strong> template.</p>
+            <p style="color: #888; font-size: 13px;">Test data used:</p>
+            <pre>${JSON.stringify(testData, null, 2)}</pre>
           </div>
           <div class="footer">
-            <p>This is a test email from Trazzy Beauty Admin</p>
+            <p>This is a test email from Trazzie Admin</p>
           </div>
         </div>
-      </body>
-      </html>
+      </body></html>
     `;
 
     const data = await sendEmail([toEmail], subject, html);
-
     console.log("Test email sent:", data);
 
     return new Response(
       JSON.stringify({ success: true, data }),
-      {
-        status: 200,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
+      { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
     console.error("Error sending test email:", errorMessage);
     return new Response(
       JSON.stringify({ error: errorMessage }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
 });
