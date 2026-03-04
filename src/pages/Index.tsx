@@ -1,6 +1,7 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
+import { PageMeta } from '@/components/seo/PageMeta';
 
 import { HeroSection } from '@/components/home/HeroSection';
 import { CollectionsSection } from '@/components/home/CollectionsSection';
@@ -13,6 +14,7 @@ import { NewsletterSection } from '@/components/home/NewsletterSection';
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <PageMeta title="Trazzie — Premium Wigs & Hair Extensions" description="Shop luxury human hair wigs, lace fronts & closures. Free shipping over $200. Handcrafted quality trusted by 50,000+ women worldwide." />
       <Header />
       <CartDrawer />
       <main>

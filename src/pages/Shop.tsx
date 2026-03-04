@@ -4,6 +4,7 @@ import { SlidersHorizontal, X, ChevronDown, Loader2 } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
+import { PageMeta } from '@/components/seo/PageMeta';
 
 import { ProductCardNew } from '@/components/products/ProductCardNew';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
@@ -153,6 +154,7 @@ export default function Shop() {
 
   return (
     <div className="min-h-screen bg-background">
+      <PageMeta title="Shop All Wigs | Trazzie" description="Browse our collection of premium human hair wigs. Filter by hair type, lace type, length & price. Free shipping on orders over $200." />
       <Header />
       <CartDrawer />
 

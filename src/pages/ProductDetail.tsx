@@ -4,9 +4,11 @@ import { ChevronLeft, Heart, Minus, Plus, Star, Truck, Shield, RotateCcw, Check,
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
+import { PageMeta } from '@/components/seo/PageMeta';
+import { ProductReviews } from '@/components/products/ProductReviews';
 
 import { ProductCardNew } from '@/components/products/ProductCardNew';
-import { products as mockProducts, reviews } from '@/lib/data';
+import { products as mockProducts } from '@/lib/data';
 import { useProduct, useProducts } from '@/hooks/useProducts';
 import { normalizeProduct, type UnifiedProduct } from '@/types/product';
 import { Button } from '@/components/ui/button';
@@ -192,6 +194,7 @@ export default function ProductDetail() {
       <Header />
       <CartDrawer />
 
+      <PageMeta title={`${product.name} | Trazzie`} description={product.description.slice(0, 155)} />
       <main className="pt-32 pb-20">
         <div className="container mx-auto px-4 lg:px-8">
           <Breadcrumbs items={[
@@ -433,34 +436,7 @@ export default function ProductDetail() {
           </div>
 
           {/* Reviews */}
-          <div className="mt-16 pt-16 border-t border-border">
-            <h3 className="font-serif text-2xl font-semibold mb-8">Customer Reviews</h3>
-            <div className="grid md:grid-cols-2 gap-6">
-              {reviews.slice(0, 2).map((review) => (
-                <div key={review.id} className="bg-card rounded-xl p-6 border border-border">
-                  <div className="flex gap-1 mb-3">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={cn(
-                          'w-4 h-4',
-                          i < review.rating ? 'text-gold fill-gold' : 'text-muted-foreground'
-                        )}
-                      />
-                    ))}
-                  </div>
-                  <p className="text-muted-foreground mb-4">"{review.content}"</p>
-                  <div className="flex items-center gap-3">
-                    <img src={review.avatar} alt={review.author} className="w-10 h-10 rounded-full object-cover" />
-                    <div>
-                      <p className="font-medium text-sm">{review.author}</p>
-                      <p className="text-xs text-muted-foreground">{review.date}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <ProductReviews productId={product.id} />
 
           {/* Related Products */}
           {relatedProducts.length > 0 && (

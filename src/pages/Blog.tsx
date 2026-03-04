@@ -3,6 +3,7 @@ import { Calendar, ArrowRight, Loader2 } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
+import { PageMeta } from '@/components/seo/PageMeta';
 
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { Badge } from '@/components/ui/badge';
@@ -14,6 +15,7 @@ export default function Blog() {
 
   return (
     <div className="min-h-screen bg-background">
+      <PageMeta title="Blog — Hair Care Tips & Trends | Trazzie" description="Hair care tips, styling guides, and the latest trends in wigs and beauty from the Trazzie team." />
       <Header />
       <CartDrawer />
 

@@ -3,6 +3,7 @@ import { Heart, ShoppingBag, Trash2, ArrowLeft } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
+import { PageMeta } from '@/components/seo/PageMeta';
 
 import { Button } from '@/components/ui/button';
 import { useWishlist } from '@/context/WishlistContext';
@@ -24,6 +25,7 @@ export default function Wishlist() {
   if (!user) {
     return (
       <>
+        <PageMeta title="My Wishlist | Trazzie" description="Sign in to view and manage your saved products on Trazzie." />
         <Header />
         <main className="pt-32 pb-20">
           <div className="container mx-auto px-4 lg:px-8 text-center">
@@ -46,6 +48,7 @@ export default function Wishlist() {
   if (wishlistProducts.length === 0) {
     return (
       <>
+        <PageMeta title="My Wishlist | Trazzie" description="Browse your saved wigs and add them to cart when you're ready." />
         <Header />
         <main className="pt-32 pb-20">
           <div className="container mx-auto px-4 lg:px-8 text-center">
@@ -69,8 +72,9 @@ export default function Wishlist() {
   }
 
   return (
-    <>
-      <Header />
+      <>
+        <PageMeta title="My Wishlist | Trazzie" description="Your saved wigs and accessories. Add to cart anytime." />
+        <Header />
       <main className="pt-32 pb-20">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="mb-8">

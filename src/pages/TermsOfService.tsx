@@ -1,11 +1,13 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
+import { PageMeta } from '@/components/seo/PageMeta';
 
 
 export default function TermsOfService() {
   return (
     <div className="min-h-screen bg-background">
+      <PageMeta title="Terms of Service | Trazzie" description="Read the terms and conditions that govern your use of the Trazzie website and services." />
       <Header />
       <CartDrawer />
 

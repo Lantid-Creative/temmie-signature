@@ -1,11 +1,13 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
+import { PageMeta } from '@/components/seo/PageMeta';
 
 
 export default function PrivacyPolicy() {
   return (
     <div className="min-h-screen bg-background">
+      <PageMeta title="Privacy Policy | Trazzie" description="Learn how Trazzie collects, uses, and protects your personal data. Your privacy matters to us." />
       <Header />
       <CartDrawer />
 

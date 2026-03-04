@@ -1,6 +1,7 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
+import { PageMeta } from '@/components/seo/PageMeta';
 
 import { Sparkles, Heart, Award, Users } from 'lucide-react';
 
@@ -30,6 +31,7 @@ const values = [
 export default function About() {
   return (
     <div className="min-h-screen bg-background">
+      <PageMeta title="About Trazzie — Our Story" description="Founded in 2020, Trazzie empowers women through premium quality wigs. Trusted by 50,000+ customers worldwide with a 4.9 average rating." />
       <Header />
       <CartDrawer />
 

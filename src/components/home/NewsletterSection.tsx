@@ -1,8 +1,40 @@
+import { useState } from 'react';
 import { Mail } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 export function NewsletterSection() {
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      toast({ title: 'Please enter a valid email address', variant: 'destructive' });
+      return;
+    }
+
+    setIsSubmitting(true);
+    const { error } = await supabase
+      .from('newsletter_subscribers' as any)
+      .insert({ email } as any);
+
+    if (error) {
+      if (error.code === '23505') {
+        toast({ title: 'You\'re already subscribed!', description: 'Check your inbox for updates.' });
+      } else {
+        toast({ title: 'Something went wrong', description: 'Please try again later.', variant: 'destructive' });
+      }
+    } else {
+      toast({ title: 'Welcome to the Trazzie family! 🎉', description: 'Use code WELCOME15 for 15% off your first order.' });
+      setEmail('');
+    }
+    setIsSubmitting(false);
+  };
+
   return (
     <section className="py-20 lg:py-28 bg-background">
       <div className="container mx-auto px-4 lg:px-8">
@@ -19,17 +51,21 @@ export function NewsletterSection() {
             Get 15% off your first order!
           </p>
 
-          <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
             <Input
               type="email"
               placeholder="Enter your email address"
               className="h-14 px-6 bg-secondary border-border"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={isSubmitting}
             />
             <Button
               type="submit"
+              disabled={isSubmitting}
               className="h-14 px-8 bg-primary text-primary-foreground hover:bg-primary/90 whitespace-nowrap"
             >
-              Subscribe
+              {isSubmitting ? 'Subscribing...' : 'Subscribe'}
             </Button>
           </form>
 

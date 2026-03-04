@@ -2,6 +2,7 @@ import { Mail, MapPin, Clock, Instagram, Facebook } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
+import { PageMeta } from '@/components/seo/PageMeta';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,6 +32,7 @@ const contactInfo = [
 export default function Contact() {
   return (
     <div className="min-h-screen bg-background">
+      <PageMeta title="Contact Us | Trazzie" description="Get in touch with the Trazzie team. Email us at hello@trazzie.com for questions about products, orders, or styling advice." />
       <Header />
       <CartDrawer />
 

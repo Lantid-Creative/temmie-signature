@@ -14,6 +14,8 @@ import { useAuth } from '@/context/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { PageMeta } from '@/components/seo/PageMeta';
+import { CouponInput, calculateDiscount } from '@/components/checkout/CouponInput';
 
 type CheckoutStep = 'information' | 'shipping' | 'payment' | 'confirmation';
 
@@ -51,6 +53,7 @@ export default function Checkout() {
 
   const [step, setStep] = useState<CheckoutStep>('information');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [appliedCoupon, setAppliedCoupon] = useState<any>(null);
 
   const [shippingAddress, setShippingAddress] = useState<ShippingAddress>({
     firstName: '',
@@ -65,9 +68,10 @@ export default function Checkout() {
     country: 'United States',
   });
 
+  const discount = calculateDiscount(appliedCoupon, totalPrice);
   const shipping = totalPrice >= 200 ? 0 : 15;
-  const tax = totalPrice * 0.08;
-  const total = totalPrice + shipping + tax;
+  const tax = (totalPrice - discount) * 0.08;
+  const total = totalPrice - discount + shipping + tax;
 
   // Handle Stripe redirect
   useEffect(() => {
@@ -144,6 +148,8 @@ export default function Checkout() {
           shippingAddress,
           shipping,
           tax,
+          discount,
+          couponId: appliedCoupon?.id || null,
         },
       });
 
@@ -224,6 +230,7 @@ export default function Checkout() {
 
   return (
     <div className="min-h-screen bg-background">
+      <PageMeta title="Checkout | Trazzie" description="Complete your Trazzie order securely with Stripe. Free shipping on orders over $200." />
       <Header />
       <main className="pt-32 pb-20">
         <div className="container mx-auto px-4 lg:px-8">
@@ -404,11 +411,25 @@ export default function Checkout() {
                     ))}
                   </div>
                   <Separator className="my-4" />
+                  <div className="mb-4">
+                    <CouponInput
+                      subtotal={totalPrice}
+                      appliedCoupon={appliedCoupon}
+                      onApply={setAppliedCoupon}
+                      onRemove={() => setAppliedCoupon(null)}
+                    />
+                  </div>
                   <div className="space-y-3">
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">Subtotal</span>
                       <span>${totalPrice.toFixed(2)}</span>
                     </div>
+                    {discount > 0 && (
+                      <div className="flex justify-between text-sm text-primary">
+                        <span>Discount</span>
+                        <span>-${discount.toFixed(2)}</span>
+                      </div>
+                    )}
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">Shipping</span>
                       <span>{shipping === 0 ? <span className="text-primary">FREE</span> : `$${shipping.toFixed(2)}`}</span>

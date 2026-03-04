@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
+import { PageMeta } from '@/components/seo/PageMeta';
 
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { collections } from '@/lib/data';
@@ -10,6 +11,7 @@ import { collections } from '@/lib/data';
 export default function Collections() {
   return (
     <div className="min-h-screen bg-background">
+      <PageMeta title="Collections | Trazzie" description="Explore our curated wig collections — lace fronts, closures, and more. Find your perfect style and express your beauty." />
       <Header />
       <CartDrawer />
 
