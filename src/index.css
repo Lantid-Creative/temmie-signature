@@ -6,57 +6,57 @@
 
 @layer base {
   :root {
-    /* Feminine Blush & Rose Gold Palette */
-    --background: 20 40% 98%;
-    --foreground: 340 15% 15%;
+    /* Royal Purple & Gold Palette */
+    --background: 270 20% 98%;
+    --foreground: 270 30% 12%;
 
-    --card: 20 35% 99%;
-    --card-foreground: 340 15% 15%;
+    --card: 270 15% 99%;
+    --card-foreground: 270 30% 12%;
 
-    --popover: 20 35% 99%;
-    --popover-foreground: 340 15% 15%;
+    --popover: 270 15% 99%;
+    --popover-foreground: 270 30% 12%;
 
-    --primary: 340 45% 40%;
-    --primary-foreground: 20 40% 98%;
+    --primary: 270 50% 30%;
+    --primary-foreground: 45 80% 95%;
 
-    --secondary: 20 30% 94%;
-    --secondary-foreground: 340 15% 15%;
+    --secondary: 270 20% 93%;
+    --secondary-foreground: 270 30% 12%;
 
-    --muted: 20 25% 93%;
-    --muted-foreground: 340 10% 48%;
+    --muted: 270 15% 93%;
+    --muted-foreground: 270 10% 45%;
 
-    --accent: 350 55% 65%;
-    --accent-foreground: 20 40% 98%;
+    --accent: 45 75% 55%;
+    --accent-foreground: 270 50% 15%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 20 25% 90%;
-    --input: 20 25% 90%;
-    --ring: 340 45% 55%;
+    --border: 270 15% 90%;
+    --input: 270 15% 90%;
+    --ring: 270 50% 45%;
 
     --radius: 0.75rem;
 
     /* Custom Brand Colors */
-    --gold: 15 60% 60%;
-    --gold-light: 15 55% 75%;
-    --gold-dark: 15 65% 45%;
-    --cream: 20 40% 98%;
-    --cream-dark: 20 30% 92%;
-    --nude: 15 35% 85%;
-    --nude-dark: 15 30% 75%;
-    --charcoal: 340 15% 18%;
-    --rose: 340 50% 55%;
-    --rose-light: 340 60% 92%;
+    --gold: 45 75% 55%;
+    --gold-light: 45 65% 72%;
+    --gold-dark: 45 80% 40%;
+    --cream: 270 20% 98%;
+    --cream-dark: 270 15% 92%;
+    --nude: 270 15% 88%;
+    --nude-dark: 270 12% 78%;
+    --charcoal: 270 30% 12%;
+    --rose: 280 45% 50%;
+    --rose-light: 280 40% 92%;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 340 45% 40%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 20 25% 95%;
-    --sidebar-accent-foreground: 340 15% 15%;
-    --sidebar-border: 20 20% 91%;
-    --sidebar-ring: 340 45% 55%;
+    --sidebar-background: 270 15% 98%;
+    --sidebar-foreground: 270 20% 26%;
+    --sidebar-primary: 270 50% 30%;
+    --sidebar-primary-foreground: 45 80% 95%;
+    --sidebar-accent: 270 15% 95%;
+    --sidebar-accent-foreground: 270 30% 12%;
+    --sidebar-border: 270 12% 91%;
+    --sidebar-ring: 270 50% 45%;
   }
 
   .dark {
