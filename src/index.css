@@ -121,22 +121,22 @@
   }
 
   .text-gold-gradient {
-    background: linear-gradient(135deg, hsl(340 45% 40%) 0%, hsl(350 55% 65%) 100%);
+    background: linear-gradient(135deg, hsl(270 50% 30%) 0%, hsl(45 75% 55%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .bg-gold-gradient {
-    background: linear-gradient(135deg, hsl(340 45% 40%) 0%, hsl(350 55% 65%) 100%);
+    background: linear-gradient(135deg, hsl(270 50% 35%) 0%, hsl(275 55% 50%) 100%);
   }
 
   .bg-cream-gradient {
-    background: linear-gradient(180deg, hsl(20 40% 98%) 0%, hsl(20 30% 94%) 100%);
+    background: linear-gradient(180deg, hsl(270 20% 98%) 0%, hsl(270 20% 93%) 100%);
   }
 
   .gold-border {
-    border: 1px solid hsl(340 45% 55% / 0.3);
+    border: 1px solid hsl(45 75% 55% / 0.4);
   }
 
   .gold-glow {
