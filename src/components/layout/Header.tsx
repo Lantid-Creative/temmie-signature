@@ -47,8 +47,8 @@ export function Header() {
 
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2">
-              <span className="font-serif text-2xl lg:text-3xl font-semibold tracking-tight">
-                TRAZZIE<span className="text-accent">✦</span>
+              <span className="font-serif text-2xl lg:text-3xl font-semibold tracking-tight text-gold">
+                TRAZZIE✦
               </span>
             </Link>
 

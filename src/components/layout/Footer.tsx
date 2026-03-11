@@ -60,8 +60,8 @@ export function Footer() {
           {/* Brand Column */}
           <div className="lg:col-span-2">
             <Link to="/" className="inline-block mb-6">
-              <span className="font-serif text-3xl font-semibold tracking-tight">
-                TRAZZIE<span className="text-gold">✦</span>
+              <span className="font-serif text-3xl font-semibold tracking-tight text-gold">
+                TRAZZIE✦
               </span>
             </Link>
             <p className="text-primary-foreground/70 mb-6 max-w-sm">
