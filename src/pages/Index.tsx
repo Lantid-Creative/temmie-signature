@@ -10,24 +10,25 @@ import { WhyChooseUsSection } from '@/components/home/WhyChooseUsSection';
 import { TestimonialsSection } from '@/components/home/TestimonialsSection';
 import { InstagramSection } from '@/components/home/InstagramSection';
 import { NewsletterSection } from '@/components/home/NewsletterSection';
+import { CategoriesSection } from '@/components/home/CategoriesSection';
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      <PageMeta title="Trazzie — Premium Wigs & Hair Extensions" description="Shop luxury human hair wigs, lace fronts & closures. Free shipping over $200. Handcrafted quality trusted by 50,000+ women worldwide." />
+      <PageMeta title="Temmie Signature — Best Feet, Best Fits" description="Discover Temmie Signature's luxury fashion collections. Agbada, Kaftan, Casual Wears, Shoes & Accessories. Worldwide shipping." />
       <Header />
       <CartDrawer />
       <main>
         <HeroSection />
+        <WhyChooseUsSection />
         <CollectionsSection />
         <BestsellersSection />
-        <WhyChooseUsSection />
+        <CategoriesSection />
         <TestimonialsSection />
         <InstagramSection />
         <NewsletterSection />
       </main>
       <Footer />
-      
     </div>
   );
 };

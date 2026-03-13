@@ -1,4 +1,4 @@
-import { Mail, MapPin, Clock, Instagram, Facebook } from 'lucide-react';
+import { Mail, MapPin, Clock, Instagram, Facebook, Phone } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
@@ -12,19 +12,25 @@ const contactInfo = [
   {
     icon: Mail,
     title: 'Email',
-    value: 'hello@trazzie.com',
-    href: 'mailto:hello@trazzie.com',
+    value: 'hello@temmiesignature.com',
+    href: 'mailto:hello@temmiesignature.com',
+  },
+  {
+    icon: Phone,
+    title: 'Phone',
+    value: '+234 816 985 0284',
+    href: 'tel:+2348169850284',
   },
   {
     icon: MapPin,
-    title: 'Address',
-    value: '123 Beauty Avenue, New York, NY 10001',
+    title: 'Store Location',
+    value: '3, Gbongan - Ibadan Rd, beside old Jaiz Bank Building, Olaiya, Osogbo, Osun.',
     href: '#',
   },
   {
     icon: Clock,
     title: 'Hours',
-    value: 'Mon - Fri: 9AM - 6PM EST',
+    value: 'Monday - Sunday: 24/7 Active',
     href: '#',
   },
 ];
@@ -32,7 +38,7 @@ const contactInfo = [
 export default function Contact() {
   return (
     <div className="min-h-screen bg-background">
-      <PageMeta title="Contact Us | Trazzie" description="Get in touch with the Trazzie team. Email us at hello@trazzie.com for questions about products, orders, or styling advice." />
+      <PageMeta title="Contact Us | Temmie Signature" description="Get in touch with Temmie Signature. Email us at hello@temmiesignature.com or call +234 816 985 0284." />
       <Header />
       <CartDrawer />
 
@@ -40,27 +46,27 @@ export default function Contact() {
         <div className="container mx-auto px-4 lg:px-8">
           {/* Header */}
           <div className="max-w-2xl mx-auto text-center mb-16">
-            <p className="text-gold text-sm font-medium tracking-wider uppercase mb-4">
+            <p className="text-accent text-sm font-medium tracking-wider uppercase mb-4">
               Get in Touch
             </p>
             <h1 className="font-serif text-4xl lg:text-5xl font-semibold mb-4">
               We'd Love to Hear From You
             </h1>
             <p className="text-muted-foreground">
-              Have questions about our products? Need styling advice? 
-              Our team is here to help you find your perfect look.
+              Have questions about our products? Need help with sizing? 
+              Our team is here to help you find your perfect style.
             </p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
             {/* Contact Form */}
-            <div className="bg-card rounded-2xl border border-border p-8">
+            <div className="bg-card rounded-lg border border-border p-8">
               <h2 className="font-serif text-2xl font-semibold mb-6">Send Us a Message</h2>
               <form className="space-y-6">
                 <div className="grid sm:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium mb-2">First Name</label>
-                    <Input placeholder="Jane" />
+                    <Input placeholder="John" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-2">Last Name</label>
@@ -69,7 +75,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2">Email</label>
-                  <Input type="email" placeholder="jane@example.com" />
+                  <Input type="email" placeholder="john@example.com" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2">Subject</label>
@@ -82,7 +88,7 @@ export default function Contact() {
                     rows={5}
                   />
                 </div>
-                <Button className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90">
+                <Button className="w-full h-12 bg-accent text-accent-foreground hover:bg-accent/90">
                   Send Message
                 </Button>
               </form>
@@ -95,10 +101,10 @@ export default function Contact() {
                   <a
                     key={info.title}
                     href={info.href}
-                    className="flex items-start gap-4 p-4 rounded-xl bg-secondary/50 hover:bg-secondary transition-colors"
+                    className="flex items-start gap-4 p-4 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
                   >
-                    <div className="w-12 h-12 rounded-full bg-gold/20 flex items-center justify-center shrink-0">
-                      <info.icon className="w-5 h-5 text-gold" />
+                    <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
+                      <info.icon className="w-5 h-5 text-accent" />
                     </div>
                     <div>
                       <p className="font-medium">{info.title}</p>
@@ -113,14 +119,16 @@ export default function Contact() {
                 <h3 className="font-serif text-xl font-semibold mb-4">Follow Us</h3>
                 <div className="flex gap-4">
                   <a
-                    href="#"
-                    className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center hover:bg-gold hover:text-accent-foreground transition-colors"
+                    href="https://instagram.com/officialtemmiesignature"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center hover:bg-accent hover:text-accent-foreground transition-colors"
                   >
                     <Instagram className="w-5 h-5" />
                   </a>
                   <a
                     href="#"
-                    className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center hover:bg-gold hover:text-accent-foreground transition-colors"
+                    className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center hover:bg-accent hover:text-accent-foreground transition-colors"
                   >
                     <Facebook className="w-5 h-5" />
                   </a>
@@ -132,7 +140,6 @@ export default function Contact() {
       </main>
 
       <Footer />
-      
     </div>
   );
 }

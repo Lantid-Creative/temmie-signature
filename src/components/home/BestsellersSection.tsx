@@ -14,7 +14,6 @@ export function BestsellersSection() {
     if (dbProducts && dbProducts.length > 0) {
       return dbProducts.map(normalizeProduct);
     }
-    // Fallback to mock data
     return mockProducts
       .filter((p) => p.bestseller)
       .slice(0, 4)
@@ -39,31 +38,22 @@ export function BestsellersSection() {
     <section className="py-20 lg:py-28 bg-secondary/30">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
-          <div>
-            <p className="text-gold text-sm font-medium tracking-wider uppercase mb-3">
-              Customer Favorites
-            </p>
-            <h2 className="font-serif text-3xl lg:text-5xl font-semibold">
-              Bestselling Wigs
-            </h2>
-          </div>
-          <Button
-            variant="outline"
-            className="self-start lg:self-auto border-2 group"
-            asChild
-          >
-            <Link to="/shop">
-              View All Products
-              <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </Link>
-          </Button>
+        <div className="text-center mb-12">
+          <p className="text-accent text-sm font-medium tracking-wider uppercase mb-3">
+            Made for Timeless Elegance
+          </p>
+          <h2 className="font-serif text-3xl lg:text-5xl font-semibold mb-4">
+            Discover Our Products
+          </h2>
+          <p className="text-muted-foreground max-w-lg mx-auto">
+            Best Fits and Best Feet — crafted with passion and precision
+          </p>
         </div>
 
         {/* Products Grid */}
         {isLoading ? (
           <div className="flex items-center justify-center py-16">
-            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            <Loader2 className="w-8 h-8 animate-spin text-accent" />
           </div>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
@@ -78,6 +68,20 @@ export function BestsellersSection() {
             ))}
           </div>
         )}
+
+        <div className="text-center mt-12">
+          <Button
+            variant="outline"
+            size="lg"
+            className="border-2 group"
+            asChild
+          >
+            <Link to="/shop">
+              Shop More
+              <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </Button>
+        </div>
       </div>
     </section>
   );
