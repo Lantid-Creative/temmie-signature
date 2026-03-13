@@ -18,7 +18,7 @@ import { cn } from '@/lib/utils';
 
 const productTypes = ['Loafers', 'Half Shoe', 'Party Shoes', 'Agbada', 'Kaftan', 'Casual Wear'];
 const materialTypes = ['Leather', 'Suede', 'Cotton', 'Linen'];
-const sizes = ['38', '39', '40', '41', '42', '43', '44', '45'];
+const sizeOptions = ['38', '39', '40', '41', '42', '43', '44', '45'];
 const sortOptions = [
   { label: 'Newest', value: 'newest' },
   { label: 'Price: Low to High', value: 'price-asc' },
@@ -29,23 +29,20 @@ const sortOptions = [
 export default function Shop() {
   const [searchParams] = useSearchParams();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const [selectedHairTypes, setSelectedHairTypes] = useState<string[]>([]);
-  const [selectedLaceTypes, setSelectedLaceTypes] = useState<string[]>([]);
-  const [selectedLengths, setSelectedLengths] = useState<string[]>([]);
+  const [selectedProductTypes, setSelectedProductTypes] = useState<string[]>([]);
+  const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
+  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 500]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]);
   const [sortBy, setSortBy] = useState('newest');
 
-  // Fetch products from database
   const { data: dbProducts, isLoading } = useProducts();
   const { data: categories } = useCategories();
 
-  // Normalize and combine products
   const allProducts: UnifiedProduct[] = useMemo(() => {
     if (dbProducts && dbProducts.length > 0) {
       return dbProducts.map(normalizeProduct);
     }
-    // Fallback to mock data if no DB products
     return mockProducts.map(p => ({
       ...p,
       slug: p.id,
@@ -66,36 +63,29 @@ export default function Shop() {
   const filteredProducts = useMemo(() => {
     let result = [...allProducts];
 
-    // Filter by category from URL
     const categoryParam = searchParams.get('category');
     if (categoryParam) {
       result = result.filter((p) => p.category === categoryParam || p.category_id === categoryParam);
     }
 
-    // Filter by hair type
-    if (selectedHairTypes.length > 0) {
-      result = result.filter((p) => selectedHairTypes.includes(p.hairType));
+    if (selectedProductTypes.length > 0) {
+      result = result.filter((p) => selectedProductTypes.includes(p.hairType));
     }
 
-    // Filter by lace type
-    if (selectedLaceTypes.length > 0) {
-      result = result.filter((p) => selectedLaceTypes.includes(p.laceType));
+    if (selectedMaterials.length > 0) {
+      result = result.filter((p) => selectedMaterials.includes(p.laceType));
     }
 
-    // Filter by length
-    if (selectedLengths.length > 0) {
-      result = result.filter((p) => selectedLengths.includes(p.length));
+    if (selectedSizes.length > 0) {
+      result = result.filter((p) => selectedSizes.some(s => p.capSize.includes(s)));
     }
 
-    // Filter by category
     if (selectedCategories.length > 0) {
       result = result.filter((p) => selectedCategories.includes(p.category_id || ''));
     }
 
-    // Filter by price range
     result = result.filter((p) => p.price >= priceRange[0] && p.price <= priceRange[1]);
 
-    // Sort
     switch (sortBy) {
       case 'price-asc':
         result.sort((a, b) => a.price - b.price);
@@ -107,12 +97,11 @@ export default function Shop() {
         result.sort((a, b) => b.reviews - a.reviews);
         break;
       default:
-        // newest - keep original order
         break;
     }
 
     return result;
-  }, [allProducts, selectedHairTypes, selectedLaceTypes, selectedLengths, selectedCategories, priceRange, sortBy, searchParams]);
+  }, [allProducts, selectedProductTypes, selectedMaterials, selectedSizes, selectedCategories, priceRange, sortBy, searchParams]);
 
   const toggleFilter = (
     value: string,
@@ -127,20 +116,20 @@ export default function Shop() {
   };
 
   const clearFilters = () => {
-    setSelectedHairTypes([]);
-    setSelectedLaceTypes([]);
-    setSelectedLengths([]);
+    setSelectedProductTypes([]);
+    setSelectedMaterials([]);
+    setSelectedSizes([]);
     setSelectedCategories([]);
-    setPriceRange([0, 500]);
+    setPriceRange([0, 100000]);
   };
 
   const hasActiveFilters =
-    selectedHairTypes.length > 0 ||
-    selectedLaceTypes.length > 0 ||
-    selectedLengths.length > 0 ||
+    selectedProductTypes.length > 0 ||
+    selectedMaterials.length > 0 ||
+    selectedSizes.length > 0 ||
     selectedCategories.length > 0 ||
     priceRange[0] > 0 ||
-    priceRange[1] < 500;
+    priceRange[1] < 100000;
 
   const FilterSection = ({ title, children }: { title: string; children: React.ReactNode }) => (
     <div className="border-b border-border pb-6 mb-6">
@@ -152,6 +141,96 @@ export default function Shop() {
     </div>
   );
 
+  const renderFilters = () => (
+    <>
+      {categories && categories.length > 0 && (
+        <FilterSection title="Category">
+          <div className="space-y-3">
+            {categories.filter(c => c.is_active).map((category) => (
+              <label key={category.id} className="flex items-center gap-3 cursor-pointer">
+                <Checkbox
+                  checked={selectedCategories.includes(category.id)}
+                  onCheckedChange={() =>
+                    toggleFilter(category.id, selectedCategories, setSelectedCategories)
+                  }
+                />
+                <span className="text-sm">{category.name}</span>
+              </label>
+            ))}
+          </div>
+        </FilterSection>
+      )}
+
+      <FilterSection title="Product Type">
+        <div className="space-y-3">
+          {productTypes.map((type) => (
+            <label key={type} className="flex items-center gap-3 cursor-pointer">
+              <Checkbox
+                checked={selectedProductTypes.includes(type)}
+                onCheckedChange={() =>
+                  toggleFilter(type, selectedProductTypes, setSelectedProductTypes)
+                }
+              />
+              <span className="text-sm">{type}</span>
+            </label>
+          ))}
+        </div>
+      </FilterSection>
+
+      <FilterSection title="Material">
+        <div className="space-y-3">
+          {materialTypes.map((type) => (
+            <label key={type} className="flex items-center gap-3 cursor-pointer">
+              <Checkbox
+                checked={selectedMaterials.includes(type)}
+                onCheckedChange={() =>
+                  toggleFilter(type, selectedMaterials, setSelectedMaterials)
+                }
+              />
+              <span className="text-sm">{type}</span>
+            </label>
+          ))}
+        </div>
+      </FilterSection>
+
+      <FilterSection title="Size">
+        <div className="grid grid-cols-2 gap-2">
+          {sizeOptions.map((size) => (
+            <button
+              key={size}
+              onClick={() => toggleFilter(size, selectedSizes, setSelectedSizes)}
+              className={cn(
+                'px-3 py-2 text-sm rounded-lg border transition-colors',
+                selectedSizes.includes(size)
+                  ? 'bg-primary text-primary-foreground border-primary'
+                  : 'border-border hover:border-accent'
+              )}
+            >
+              {size}
+            </button>
+          ))}
+        </div>
+      </FilterSection>
+
+      <FilterSection title="Price Range">
+        <div className="space-y-4">
+          <Slider
+            value={priceRange}
+            onValueChange={(value) => setPriceRange(value as [number, number])}
+            max={100000}
+            min={0}
+            step={5000}
+            className="w-full"
+          />
+          <div className="flex justify-between text-sm text-muted-foreground">
+            <span>₦{priceRange[0].toLocaleString()}</span>
+            <span>₦{priceRange[1].toLocaleString()}+</span>
+          </div>
+        </div>
+      </FilterSection>
+    </>
+  );
+
   return (
     <div className="min-h-screen bg-background">
       <PageMeta title="Shop All Products | Temmie Signature" description="Browse our collection of premium fashion — shoes, agbada, kaftan, casual wears & accessories. Worldwide shipping." />
@@ -161,7 +240,6 @@ export default function Shop() {
       <main className="pt-32 pb-20">
         <div className="container mx-auto px-4 lg:px-8">
           <Breadcrumbs items={[{ label: 'Shop' }]} />
-          {/* Page Header */}
           <div className="text-center mb-12">
             <h1 className="font-serif text-4xl lg:text-5xl font-semibold mb-4">
               Shop All Products
@@ -173,113 +251,23 @@ export default function Shop() {
           </div>
 
           <div className="flex gap-8">
-            {/* Desktop Filters Sidebar */}
+            {/* Desktop Filters */}
             <aside className="hidden lg:block w-64 shrink-0">
               <div className="sticky top-32">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="font-serif text-lg font-semibold">Filters</h3>
                   {hasActiveFilters && (
-                    <button
-                      onClick={clearFilters}
-                      className="text-sm text-gold hover:underline"
-                    >
+                    <button onClick={clearFilters} className="text-sm text-accent hover:underline">
                       Clear All
                     </button>
                   )}
                 </div>
-
-                {/* Categories */}
-                {categories && categories.length > 0 && (
-                  <FilterSection title="Category">
-                    <div className="space-y-3">
-                      {categories.filter(c => c.is_active).map((category) => (
-                        <label key={category.id} className="flex items-center gap-3 cursor-pointer">
-                          <Checkbox
-                            checked={selectedCategories.includes(category.id)}
-                            onCheckedChange={() =>
-                              toggleFilter(category.id, selectedCategories, setSelectedCategories)
-                            }
-                          />
-                          <span className="text-sm">{category.name}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </FilterSection>
-                )}
-
-                <FilterSection title="Hair Type">
-                  <div className="space-y-3">
-                    {hairTypes.map((type) => (
-                      <label key={type} className="flex items-center gap-3 cursor-pointer">
-                        <Checkbox
-                          checked={selectedHairTypes.includes(type)}
-                          onCheckedChange={() =>
-                            toggleFilter(type, selectedHairTypes, setSelectedHairTypes)
-                          }
-                        />
-                        <span className="text-sm">{type}</span>
-                      </label>
-                    ))}
-                  </div>
-                </FilterSection>
-
-                <FilterSection title="Lace Type">
-                  <div className="space-y-3">
-                    {laceTypes.map((type) => (
-                      <label key={type} className="flex items-center gap-3 cursor-pointer">
-                        <Checkbox
-                          checked={selectedLaceTypes.includes(type)}
-                          onCheckedChange={() =>
-                            toggleFilter(type, selectedLaceTypes, setSelectedLaceTypes)
-                          }
-                        />
-                        <span className="text-sm">{type}</span>
-                      </label>
-                    ))}
-                  </div>
-                </FilterSection>
-
-                <FilterSection title="Length">
-                  <div className="grid grid-cols-2 gap-2">
-                    {lengths.map((length) => (
-                      <button
-                        key={length}
-                        onClick={() => toggleFilter(length, selectedLengths, setSelectedLengths)}
-                        className={cn(
-                          'px-3 py-2 text-sm rounded-lg border transition-colors',
-                          selectedLengths.includes(length)
-                            ? 'bg-primary text-primary-foreground border-primary'
-                            : 'border-border hover:border-gold'
-                        )}
-                      >
-                        {length}
-                      </button>
-                    ))}
-                  </div>
-                </FilterSection>
-
-                <FilterSection title="Price Range">
-                  <div className="space-y-4">
-                    <Slider
-                      value={priceRange}
-                      onValueChange={(value) => setPriceRange(value as [number, number])}
-                      max={500}
-                      min={0}
-                      step={10}
-                      className="w-full"
-                    />
-                    <div className="flex justify-between text-sm text-muted-foreground">
-                      <span>${priceRange[0]}</span>
-                      <span>${priceRange[1]}+</span>
-                    </div>
-                  </div>
-                </FilterSection>
+                {renderFilters()}
               </div>
             </aside>
 
             {/* Products Grid */}
             <div className="flex-1">
-              {/* Toolbar */}
               <div className="flex items-center justify-between mb-8">
                 <p className="text-muted-foreground">
                   {isLoading ? (
@@ -295,7 +283,6 @@ export default function Shop() {
                 </p>
 
                 <div className="flex items-center gap-4">
-                  {/* Mobile Filter Button */}
                   <Button
                     variant="outline"
                     className="lg:hidden"
@@ -304,17 +291,16 @@ export default function Shop() {
                     <SlidersHorizontal className="w-4 h-4 mr-2" />
                     Filters
                     {hasActiveFilters && (
-                      <span className="ml-2 w-5 h-5 bg-gold text-accent-foreground text-xs rounded-full flex items-center justify-center">
+                      <span className="ml-2 w-5 h-5 bg-accent text-accent-foreground text-xs rounded-full flex items-center justify-center">
                         !
                       </span>
                     )}
                   </Button>
 
-                  {/* Sort Dropdown */}
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="h-10 px-4 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-gold"
+                    className="h-10 px-4 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-accent"
                   >
                     {sortOptions.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -325,12 +311,11 @@ export default function Shop() {
                 </div>
               </div>
 
-              {/* Products */}
               {isLoading ? (
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                   {[...Array(6)].map((_, i) => (
                     <div key={i} className="animate-pulse">
-                      <div className="aspect-[3/4] bg-muted rounded-xl mb-4" />
+                      <div className="aspect-[3/4] bg-muted rounded-lg mb-4" />
                       <div className="h-4 bg-muted rounded w-2/3 mb-2" />
                       <div className="h-4 bg-muted rounded w-1/2" />
                     </div>
@@ -360,16 +345,8 @@ export default function Shop() {
       </main>
 
       {/* Mobile Filters Drawer */}
-      <div
-        className={cn(
-          'fixed inset-0 z-50 lg:hidden',
-          mobileFiltersOpen ? 'block' : 'hidden'
-        )}
-      >
-        <div
-          className="absolute inset-0 bg-foreground/50"
-          onClick={() => setMobileFiltersOpen(false)}
-        />
+      <div className={cn('fixed inset-0 z-50 lg:hidden', mobileFiltersOpen ? 'block' : 'hidden')}>
+        <div className="absolute inset-0 bg-foreground/50" onClick={() => setMobileFiltersOpen(false)} />
         <div className="absolute left-0 top-0 bottom-0 w-80 max-w-full bg-background overflow-y-auto">
           <div className="p-6">
             <div className="flex items-center justify-between mb-6">
@@ -379,81 +356,14 @@ export default function Shop() {
               </button>
             </div>
 
-            {/* Mobile filter sections */}
-            <FilterSection title="Hair Type">
-              <div className="space-y-3">
-                {hairTypes.map((type) => (
-                  <label key={type} className="flex items-center gap-3 cursor-pointer">
-                    <Checkbox
-                      checked={selectedHairTypes.includes(type)}
-                      onCheckedChange={() =>
-                        toggleFilter(type, selectedHairTypes, setSelectedHairTypes)
-                      }
-                    />
-                    <span className="text-sm">{type}</span>
-                  </label>
-                ))}
-              </div>
-            </FilterSection>
-
-            <FilterSection title="Lace Type">
-              <div className="space-y-3">
-                {laceTypes.map((type) => (
-                  <label key={type} className="flex items-center gap-3 cursor-pointer">
-                    <Checkbox
-                      checked={selectedLaceTypes.includes(type)}
-                      onCheckedChange={() =>
-                        toggleFilter(type, selectedLaceTypes, setSelectedLaceTypes)
-                      }
-                    />
-                    <span className="text-sm">{type}</span>
-                  </label>
-                ))}
-              </div>
-            </FilterSection>
-
-            <FilterSection title="Length">
-              <div className="grid grid-cols-2 gap-2">
-                {lengths.map((length) => (
-                  <button
-                    key={length}
-                    onClick={() => toggleFilter(length, selectedLengths, setSelectedLengths)}
-                    className={cn(
-                      'px-3 py-2 text-sm rounded-lg border transition-colors',
-                      selectedLengths.includes(length)
-                        ? 'bg-primary text-primary-foreground border-primary'
-                        : 'border-border hover:border-gold'
-                    )}
-                  >
-                    {length}
-                  </button>
-                ))}
-              </div>
-            </FilterSection>
-
-            <FilterSection title="Price Range">
-              <div className="space-y-4">
-                <Slider
-                  value={priceRange}
-                  onValueChange={(value) => setPriceRange(value as [number, number])}
-                  max={500}
-                  min={0}
-                  step={10}
-                  className="w-full"
-                />
-                <div className="flex justify-between text-sm text-muted-foreground">
-                  <span>${priceRange[0]}</span>
-                  <span>${priceRange[1]}+</span>
-                </div>
-              </div>
-            </FilterSection>
+            {renderFilters()}
 
             <div className="flex gap-4 mt-6">
               <Button variant="outline" className="flex-1" onClick={clearFilters}>
                 Clear All
               </Button>
               <Button
-                className="flex-1 bg-primary text-primary-foreground"
+                className="flex-1 bg-accent text-accent-foreground"
                 onClick={() => setMobileFiltersOpen(false)}
               >
                 Apply Filters
@@ -464,7 +374,6 @@ export default function Shop() {
       </div>
 
       <Footer />
-      
     </div>
   );
 }
