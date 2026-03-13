@@ -16,9 +16,9 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 import { cn } from '@/lib/utils';
 
-const hairTypes = ['Human Hair', 'Synthetic'];
-const laceTypes = ['13x4 HD Lace', '13x6 Frontal', '4x4 Closure', '5x5 Closure'];
-const lengths = ['12"', '14"', '16"', '18"', '20"', '22"', '24"', '26"'];
+const productTypes = ['Loafers', 'Half Shoe', 'Party Shoes', 'Agbada', 'Kaftan', 'Casual Wear'];
+const materialTypes = ['Leather', 'Suede', 'Cotton', 'Linen'];
+const sizes = ['38', '39', '40', '41', '42', '43', '44', '45'];
 const sortOptions = [
   { label: 'Newest', value: 'newest' },
   { label: 'Price: Low to High', value: 'price-asc' },
