@@ -29,7 +29,7 @@ export function NewsletterSection() {
         toast({ title: 'Something went wrong', description: 'Please try again later.', variant: 'destructive' });
       }
     } else {
-      toast({ title: 'Welcome to the Trazzie family! 🎉', description: 'Use code WELCOME15 for 15% off your first order.' });
+      toast({ title: 'Welcome to the Temmie Signature family! 🎉', description: 'Stay tuned for exclusive offers and new arrivals.' });
       setEmail('');
     }
     setIsSubmitting(false);
@@ -39,16 +39,15 @@ export function NewsletterSection() {
     <section className="py-20 lg:py-28 bg-background">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="max-w-3xl mx-auto text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gold/20 text-gold mb-6">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-accent/10 text-accent mb-6">
             <Mail className="w-8 h-8" />
           </div>
           
           <h2 className="font-serif text-3xl lg:text-4xl font-semibold mb-4">
-            Join the Trazzie Family
+            Join the Temmie Signature Family
           </h2>
           <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
-            Subscribe for exclusive offers, styling tips, and be the first to know about new arrivals. 
-            Get 15% off your first order!
+            Subscribe for exclusive offers, new collection drops, and be the first to know about our latest designs.
           </p>
 
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
@@ -63,7 +62,7 @@ export function NewsletterSection() {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="h-14 px-8 bg-primary text-primary-foreground hover:bg-primary/90 whitespace-nowrap"
+              className="h-14 px-8 bg-accent text-accent-foreground hover:bg-accent/90 whitespace-nowrap"
             >
               {isSubmitting ? 'Subscribing...' : 'Subscribe'}
             </Button>

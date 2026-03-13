@@ -1,114 +1,102 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+
+const slides = [
+  {
+    title: 'Adedotun',
+    subtitle: 'Revel in the regal allure of traditional Nigerian styles',
+    image: 'https://temmiesignature.com/wp-content/uploads/2025/11/5.png',
+    link: '/shop?collection=adedotun',
+  },
+  {
+    title: 'TMS GM01',
+    subtitle: 'Make your Wedding Day Memorable',
+    image: 'https://temmiesignature.com/wp-content/uploads/2025/11/2.png',
+    link: '/shop?collection=tms-gm01',
+  },
+  {
+    title: 'Urban Safari',
+    subtitle: 'Conquer the street with Afro inspired modern casual wears',
+    image: 'https://temmiesignature.com/wp-content/uploads/2025/11/DSC03812.jpg',
+    link: '/shop?collection=urban-safari',
+  },
+];
 
 export function HeroSection() {
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % slides.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <section className="relative min-h-screen flex items-center bg-cream-gradient overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-gold/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-rose/10 rounded-full blur-3xl" />
-      </div>
+    <section className="relative min-h-screen flex items-center overflow-hidden bg-secondary">
+      {/* Background Images */}
+      {slides.map((slide, index) => (
+        <div
+          key={index}
+          className={cn(
+            'absolute inset-0 transition-opacity duration-1000',
+            index === current ? 'opacity-100' : 'opacity-0'
+          )}
+        >
+          <img
+            src={slide.image}
+            alt={slide.title}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 via-foreground/40 to-transparent" />
+        </div>
+      ))}
 
-      <div className="container mx-auto px-4 lg:px-8 pt-32 pb-16 lg:py-0">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Content */}
-          <div className="relative z-10 text-center lg:text-left">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gold/10 rounded-full text-sm font-medium text-gold mb-6 animate-fade-up">
-              <Sparkles className="w-4 h-4" />
-              <span>Luxury Hair Collection</span>
-            </div>
-
-            <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold leading-tight mb-6 animate-fade-up stagger-1">
-              Embrace Your
-              <span className="block text-gold-gradient">Natural Beauty</span>
-            </h1>
-
-            <p className="text-lg lg:text-xl text-muted-foreground max-w-lg mx-auto lg:mx-0 mb-8 animate-fade-up stagger-2">
-              Discover premium quality wigs crafted for confidence, 
-              beauty, and effortless elegance. Your perfect look awaits.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-up stagger-3">
+      <div className="container mx-auto px-4 lg:px-8 pt-32 pb-16 lg:py-0 relative z-10">
+        <div className="max-w-xl">
+          {slides.map((slide, index) => (
+            <div
+              key={index}
+              className={cn(
+                'transition-all duration-700',
+                index === current ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 absolute pointer-events-none'
+              )}
+            >
+              <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight mb-6 text-background">
+                {slide.title}
+              </h1>
+              <p className="text-lg lg:text-xl text-background/80 max-w-lg mb-8">
+                {slide.subtitle}
+              </p>
               <Button
                 size="lg"
-                className="bg-primary text-primary-foreground hover:bg-primary/90 h-14 px-8 text-base font-medium group"
+                className="bg-accent text-accent-foreground hover:bg-accent/90 h-14 px-8 text-base font-medium group"
                 asChild
               >
-                <Link to="/shop">
-                  Shop Wigs
+                <Link to={slide.link}>
+                  Shop Collection
                   <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-2 border-primary h-14 px-8 text-base font-medium hover:bg-primary hover:text-primary-foreground"
-                asChild
-              >
-                <Link to="/collections">
-                  View Collections
-                </Link>
-              </Button>
             </div>
+          ))}
+        </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-8 mt-12 pt-12 border-t border-border animate-fade-up stagger-4">
-              <div className="text-center lg:text-left">
-                <p className="font-serif text-3xl lg:text-4xl font-semibold text-foreground">50K+</p>
-                <p className="text-sm text-muted-foreground mt-1">Happy Customers</p>
-              </div>
-              <div className="text-center lg:text-left">
-                <p className="font-serif text-3xl lg:text-4xl font-semibold text-foreground">100%</p>
-                <p className="text-sm text-muted-foreground mt-1">Human Hair</p>
-              </div>
-              <div className="text-center lg:text-left">
-                <p className="font-serif text-3xl lg:text-4xl font-semibold text-foreground">4.9★</p>
-                <p className="text-sm text-muted-foreground mt-1">Average Rating</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Hero Image */}
-          <div className="relative animate-fade-up stagger-2">
-            <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl gold-glow">
-              <img
-                src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&q=80"
-                alt="Beautiful woman with luxurious hair"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-foreground/20 to-transparent" />
-            </div>
-
-            {/* Floating Card */}
-            <div className="absolute -bottom-6 -left-6 lg:-left-12 bg-background rounded-xl p-4 shadow-xl border border-border animate-float">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-gold/20 flex items-center justify-center">
-                  <span className="text-2xl">✨</span>
-                </div>
-                <div>
-                  <p className="font-medium text-sm">Premium Quality</p>
-                  <p className="text-xs text-muted-foreground">100% Virgin Human Hair</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Second Floating Card */}
-            <div className="absolute -top-4 -right-4 lg:-right-8 bg-background rounded-xl p-4 shadow-xl border border-border animate-float" style={{ animationDelay: '1s' }}>
-              <div className="flex items-center gap-3">
-                <div className="flex -space-x-2">
-                  <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=100&q=80" alt="Customer" className="w-8 h-8 rounded-full border-2 border-background object-cover" />
-                  <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80" alt="Customer" className="w-8 h-8 rounded-full border-2 border-background object-cover" />
-                  <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&q=80" alt="Customer" className="w-8 h-8 rounded-full border-2 border-background object-cover" />
-                </div>
-                <div>
-                  <p className="font-medium text-sm">50K+ Reviews</p>
-                  <div className="flex text-gold text-xs">★★★★★</div>
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* Slide Indicators */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrent(index)}
+              className={cn(
+                'h-2 rounded-full transition-all duration-300',
+                index === current ? 'w-8 bg-accent' : 'w-2 bg-background/50'
+              )}
+            />
+          ))}
         </div>
       </div>
     </section>

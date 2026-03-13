@@ -8,30 +8,30 @@ import { Sparkles, Heart, Award, Users } from 'lucide-react';
 const values = [
   {
     icon: Sparkles,
-    title: 'Premium Quality',
-    description: 'We source only the finest 100% virgin human hair, ensuring each wig looks and feels completely natural.',
+    title: 'Premium Craftsmanship',
+    description: 'Every piece is handcrafted with meticulous attention to detail, ensuring the finest quality for our customers.',
   },
   {
     icon: Heart,
-    title: 'Confidence First',
-    description: 'We believe every woman deserves to feel beautiful. Our wigs are designed to enhance your natural beauty and boost confidence.',
+    title: 'African Heritage',
+    description: 'We celebrate African fashion and culture, blending traditional aesthetics with contemporary design.',
   },
   {
     icon: Award,
-    title: 'Expert Craftsmanship',
-    description: 'Each wig is handcrafted by skilled artisans with decades of experience in hair construction and styling.',
+    title: 'Best Fits & Feet',
+    description: 'From agbadas to shoes, we ensure every product fits perfectly and makes you stand out.',
   },
   {
     icon: Users,
-            title: 'Community',
-            description: 'Join our community of 50,000+ women who have transformed their look and confidence with Trazzie.',
+    title: 'Community',
+    description: 'Join our growing community of fashion-forward individuals who trust Temmie Signature for their wardrobe.',
   },
 ];
 
 export default function About() {
   return (
     <div className="min-h-screen bg-background">
-      <PageMeta title="About Trazzie — Our Story" description="Founded in 2020, Trazzie empowers women through premium quality wigs. Trusted by 50,000+ customers worldwide with a 4.9 average rating." />
+      <PageMeta title="About Us | Temmie Signature" description="Temmie Signature — crafted for those who value strength, style, and sophistication. Best Feet, Best Fits." />
       <Header />
       <CartDrawer />
 
@@ -39,16 +39,16 @@ export default function About() {
         {/* Hero */}
         <section className="container mx-auto px-4 lg:px-8 mb-20">
           <div className="max-w-4xl mx-auto text-center">
-            <p className="text-gold text-sm font-medium tracking-wider uppercase mb-4">
+            <p className="text-accent text-sm font-medium tracking-wider uppercase mb-4">
               Our Story
             </p>
             <h1 className="font-serif text-4xl lg:text-6xl font-semibold mb-6">
-              Empowering Women Through Beautiful Hair
+              Best Feet, Best Fits
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Trazzie was founded with a simple yet powerful mission: to help every woman 
-              feel confident and beautiful. We believe that great hair isn't just about 
-              appearance—it's about how you feel when you look in the mirror.
+              Temmie Signature was founded with a passion for African fashion and 
+              a mission to deliver premium quality clothing, shoes, and accessories 
+              that celebrate style, culture, and individuality.
             </p>
           </div>
         </section>
@@ -56,17 +56,17 @@ export default function About() {
         {/* Image Section */}
         <section className="container mx-auto px-4 lg:px-8 mb-20">
           <div className="grid lg:grid-cols-2 gap-8">
-            <div className="aspect-[4/5] rounded-2xl overflow-hidden">
+            <div className="aspect-[4/5] rounded-lg overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&q=80"
-                alt="Beautiful woman with luxurious hair"
+                src="https://temmiesignature.com/wp-content/uploads/2025/11/5.png"
+                alt="Temmie Signature Adedotun Collection"
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="aspect-[4/5] rounded-2xl overflow-hidden lg:mt-16">
+            <div className="aspect-[4/5] rounded-lg overflow-hidden lg:mt-16">
               <img
-                src="https://images.unsplash.com/photo-1595959183082-7b570b7e1dfa?w=800&q=80"
-                alt="Woman with natural looking wig"
+                src="https://temmiesignature.com/wp-content/uploads/2025/11/DSC03812.jpg"
+                alt="Temmie Signature Urban Safari Collection"
                 className="w-full h-full object-cover"
               />
             </div>
@@ -83,38 +83,37 @@ export default function About() {
                 </h2>
                 <div className="space-y-4 text-muted-foreground leading-relaxed">
                   <p>
-                    Founded in 2020, Trazzie started as a small passion project by founder 
-                    Amara Johnson. After struggling to find quality wigs that looked natural 
-                    and felt comfortable, she decided to create her own.
+                    Temmie Signature was born from a deep love for African fashion and 
+                    the desire to bring world-class quality to traditional and contemporary styles.
                   </p>
                   <p>
-                    What began in her apartment has grown into a globally recognized brand, 
-                    trusted by over 50,000 women worldwide. Our commitment to quality, 
-                    customer service, and empowerment remains at the heart of everything we do.
+                    Based in Osogbo, Osun State, Nigeria, we've grown into a trusted fashion 
+                    brand known for our signature collections — TMS GM01 for unforgettable weddings, 
+                    Adedotun for regal traditional styles, and Urban Safari for modern street fashion.
                   </p>
                   <p>
-                    Today, Trazzie offers the finest selection of human hair wigs, 
-                    each piece carefully crafted to deliver the natural look and feel 
-                    that our customers deserve.
+                    Every piece we create is a testament to our commitment to quality, style, and 
+                    the celebration of African heritage. From handcrafted shoes to bespoke agbadas, 
+                    we put our heart into every stitch.
                   </p>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-background rounded-xl p-6 text-center">
-                  <p className="font-serif text-4xl font-semibold text-gold">50K+</p>
-                  <p className="text-sm text-muted-foreground mt-2">Happy Customers</p>
+                <div className="bg-background rounded-lg p-6 text-center">
+                  <p className="font-serif text-4xl font-semibold text-accent">3</p>
+                  <p className="text-sm text-muted-foreground mt-2">Collections</p>
                 </div>
-                <div className="bg-background rounded-xl p-6 text-center">
-                  <p className="font-serif text-4xl font-semibold text-gold">4.9</p>
-                  <p className="text-sm text-muted-foreground mt-2">Average Rating</p>
+                <div className="bg-background rounded-lg p-6 text-center">
+                  <p className="font-serif text-4xl font-semibold text-accent">24/7</p>
+                  <p className="text-sm text-muted-foreground mt-2">Support</p>
                 </div>
-                <div className="bg-background rounded-xl p-6 text-center">
-                  <p className="font-serif text-4xl font-semibold text-gold">200+</p>
-                  <p className="text-sm text-muted-foreground mt-2">Wig Styles</p>
+                <div className="bg-background rounded-lg p-6 text-center">
+                  <p className="font-serif text-4xl font-semibold text-accent">🌍</p>
+                  <p className="text-sm text-muted-foreground mt-2">Worldwide Shipping</p>
                 </div>
-                <div className="bg-background rounded-xl p-6 text-center">
-                  <p className="font-serif text-4xl font-semibold text-gold">30+</p>
-                  <p className="text-sm text-muted-foreground mt-2">Countries</p>
+                <div className="bg-background rounded-lg p-6 text-center">
+                  <p className="font-serif text-4xl font-semibold text-accent">✨</p>
+                  <p className="text-sm text-muted-foreground mt-2">Premium Quality</p>
                 </div>
               </div>
             </div>
@@ -125,7 +124,7 @@ export default function About() {
         <section className="py-20">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="text-center mb-12">
-              <p className="text-gold text-sm font-medium tracking-wider uppercase mb-3">
+              <p className="text-accent text-sm font-medium tracking-wider uppercase mb-3">
                 What We Stand For
               </p>
               <h2 className="font-serif text-3xl lg:text-4xl font-semibold">
@@ -136,7 +135,7 @@ export default function About() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {values.map((value) => (
                 <div key={value.title} className="text-center">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gold/20 text-gold mb-4">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-accent/10 text-accent mb-4">
                     <value.icon className="w-8 h-8" />
                   </div>
                   <h3 className="font-serif text-xl font-semibold mb-3">{value.title}</h3>
@@ -151,7 +150,6 @@ export default function About() {
       </main>
 
       <Footer />
-      
     </div>
   );
 }

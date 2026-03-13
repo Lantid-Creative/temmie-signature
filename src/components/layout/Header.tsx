@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingBag, Heart, User, Menu, X, Search } from 'lucide-react';
+import { ShoppingBag, Heart, User, Menu, X, Search, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
@@ -11,8 +11,7 @@ const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Shop', href: '/shop' },
   { name: 'Collections', href: '/collections' },
-  { name: 'Blog', href: '/blog' },
-  { name: 'About', href: '/about' },
+  { name: 'About Us', href: '/about' },
   { name: 'Contact', href: '/contact' },
 ];
 
@@ -25,10 +24,15 @@ export function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
         {/* Announcement Bar */}
-        <div className="bg-primary text-primary-foreground text-center py-2 text-sm">
-          <p>✨ Free Shipping on Orders Over $200 | Use Code: <span className="font-semibold">TRAZZIE20</span> for 20% Off</p>
+        <div className="bg-foreground text-background text-center py-2 text-sm flex items-center justify-between px-4">
+          <span className="hidden md:inline-flex items-center gap-1 text-xs">
+            <Phone className="w-3 h-3" />
+            +234 816 985 0284
+          </span>
+          <p className="flex-1 text-center">✦ Worldwide Shipping — Best Feet, Best Fits ✦</p>
+          <span className="hidden md:inline text-xs">Store Location</span>
         </div>
 
         <nav className="container mx-auto px-4 lg:px-8">
@@ -47,9 +51,11 @@ export function Header() {
 
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2">
-              <span className="font-serif text-2xl lg:text-3xl font-semibold tracking-tight text-gold">
-                TRAZZIE✦
-              </span>
+              <img 
+                src="/images/temmie-logo.png" 
+                alt="Temmie Signature" 
+                className="h-12 lg:h-14 w-auto"
+              />
             </Link>
 
             {/* Desktop Navigation */}
@@ -59,9 +65,9 @@ export function Header() {
                   key={item.name}
                   to={item.href}
                   className={cn(
-                    'text-sm font-medium transition-colors hover:text-gold relative py-2',
+                    'text-sm font-medium transition-colors hover:text-accent relative py-2 uppercase tracking-wide',
                     location.pathname === item.href
-                      ? 'text-foreground after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-gold'
+                      ? 'text-foreground after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-accent'
                       : 'text-muted-foreground'
                   )}
                 >
@@ -93,7 +99,7 @@ export function Header() {
             >
               <ShoppingBag className="w-5 h-5" />
               {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-gold text-accent-foreground text-xs font-semibold rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-accent text-accent-foreground text-xs font-semibold rounded-full flex items-center justify-center">
                   {totalItems}
                 </span>
               )}
@@ -115,7 +121,7 @@ export function Header() {
                 to={item.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className={cn(
-                  'text-lg font-medium transition-colors hover:text-gold',
+                  'text-lg font-medium transition-colors hover:text-accent uppercase tracking-wide',
                   location.pathname === item.href
                     ? 'text-foreground'
                     : 'text-muted-foreground'
