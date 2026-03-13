@@ -154,7 +154,7 @@ export default function Shop() {
 
   return (
     <div className="min-h-screen bg-background">
-      <PageMeta title="Shop All Wigs | Trazzie" description="Browse our collection of premium human hair wigs. Filter by hair type, lace type, length & price. Free shipping on orders over $200." />
+      <PageMeta title="Shop All Products | Temmie Signature" description="Browse our collection of premium fashion — shoes, agbada, kaftan, casual wears & accessories. Worldwide shipping." />
       <Header />
       <CartDrawer />
 
@@ -164,11 +164,11 @@ export default function Shop() {
           {/* Page Header */}
           <div className="text-center mb-12">
             <h1 className="font-serif text-4xl lg:text-5xl font-semibold mb-4">
-              Shop All Wigs
+              Shop All Products
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Discover our complete collection of premium quality wigs. 
-              From lace fronts to closures, find your perfect match.
+              Discover our complete collection of premium fashion. 
+              From shoes to agbada, find your perfect style.
             </p>
           </div>
 
