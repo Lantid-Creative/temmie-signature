@@ -96,7 +96,7 @@ export function HeroSection() {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="h-14 px-10 text-sm font-semibold tracking-wide uppercase rounded-full border-background/30 text-background hover:bg-background/10 hover:text-background"
+                  className="h-14 px-10 text-sm font-semibold tracking-wide uppercase rounded-full border-2 border-background/40 text-background bg-transparent hover:bg-background/15 hover:border-background/60"
                   asChild
                 >
                   <Link to="/shop">View All</Link>
