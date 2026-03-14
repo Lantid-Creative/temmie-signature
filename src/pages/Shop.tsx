@@ -129,7 +129,7 @@ export default function Shop() {
     selectedSizes.length > 0 ||
     selectedCategories.length > 0 ||
     priceRange[0] > 0 ||
-    priceRange[1] < 100000;
+    priceRange[1] < 400000;
 
   const FilterSection = ({ title, children }: { title: string; children: React.ReactNode }) => (
     <div className="border-b border-border pb-6 mb-6">
