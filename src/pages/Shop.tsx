@@ -120,7 +120,7 @@ export default function Shop() {
     setSelectedMaterials([]);
     setSelectedSizes([]);
     setSelectedCategories([]);
-    setPriceRange([0, 100000]);
+    setPriceRange([0, 400000]);
   };
 
   const hasActiveFilters =
