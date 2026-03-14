@@ -14,6 +14,10 @@ interface ProductCardProps {
   className?: string;
 }
 
+const formatNaira = (amount: number) => {
+  return `₦${amount.toLocaleString()}`;
+};
+
 export const ProductCardNew = forwardRef<HTMLDivElement, ProductCardProps>(function ProductCardNew({ product, className }, ref) {
   const [isHovered, setIsHovered] = useState(false);
   const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist();
@@ -72,19 +76,19 @@ export const ProductCardNew = forwardRef<HTMLDivElement, ProductCardProps>(funct
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image Container */}
-      <div className="relative overflow-hidden rounded-xl bg-muted aspect-[3/4]">
+      <div className="relative overflow-hidden rounded-2xl bg-muted aspect-[3/4]">
         <Link to={productUrl} className="block w-full h-full">
           <img
             src={product.image}
             alt={product.name}
-            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
           />
         </Link>
         
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">
           {isBestseller && (
-            <span className="px-3 py-1 bg-gold text-accent-foreground text-xs font-semibold rounded-full">
+            <span className="px-3 py-1 bg-accent text-accent-foreground text-xs font-semibold rounded-full">
               Bestseller
             </span>
           )}
@@ -101,14 +105,17 @@ export const ProductCardNew = forwardRef<HTMLDivElement, ProductCardProps>(funct
         </div>
 
         {/* Action Buttons */}
-        <div className="absolute top-3 right-3 flex flex-col gap-2">
+        <div className={cn(
+          'absolute top-3 right-3 flex flex-col gap-2 transition-all duration-300',
+          isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-2'
+        )}>
           <button
             onClick={handleWishlistClick}
             className={cn(
-              'w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300',
+              'w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 shadow-md',
               isWishlisted
-                ? 'bg-rose text-white'
-                : 'bg-background/80 text-foreground hover:bg-background'
+                ? 'bg-destructive text-destructive-foreground'
+                : 'bg-background/90 text-foreground hover:bg-background'
             )}
           >
             <Heart className={cn('w-4 h-4', isWishlisted && 'fill-current')} />
@@ -116,10 +123,10 @@ export const ProductCardNew = forwardRef<HTMLDivElement, ProductCardProps>(funct
           <button
             onClick={handleCompareClick}
             className={cn(
-              'w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300',
+              'w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 shadow-md',
               isComparing
                 ? 'bg-primary text-primary-foreground'
-                : 'bg-background/80 text-foreground hover:bg-background'
+                : 'bg-background/90 text-foreground hover:bg-background'
             )}
           >
             <GitCompare className="w-4 h-4" />
@@ -129,13 +136,12 @@ export const ProductCardNew = forwardRef<HTMLDivElement, ProductCardProps>(funct
         {/* Quick Add Button */}
         <div
           className={cn(
-            'absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-foreground/80 to-transparent transition-all duration-300',
+            'absolute bottom-0 left-0 right-0 p-4 transition-all duration-300',
             isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           )}
         >
           <Button
-            variant="secondary"
-            className="w-full bg-background hover:bg-gold hover:text-accent-foreground transition-colors"
+            className="w-full bg-primary/90 backdrop-blur-sm text-primary-foreground hover:bg-primary transition-colors rounded-xl h-11"
             asChild
           >
             <Link to={productUrl}>
@@ -147,12 +153,12 @@ export const ProductCardNew = forwardRef<HTMLDivElement, ProductCardProps>(funct
       </div>
 
       {/* Product Info */}
-      <div className="mt-4 space-y-2">
+      <div className="mt-4 space-y-1.5">
         <p className="text-xs text-muted-foreground uppercase tracking-wider">
-          {product.hairType} • {product.laceType}
+          {product.category.replace('-', ' ')}
         </p>
         <Link to={productUrl}>
-          <h3 className="font-medium text-foreground hover:text-gold transition-colors line-clamp-2">
+          <h3 className="font-medium text-foreground hover:text-accent transition-colors line-clamp-2 leading-snug">
             {product.name}
           </h3>
         </Link>
@@ -164,10 +170,10 @@ export const ProductCardNew = forwardRef<HTMLDivElement, ProductCardProps>(funct
               <Star
                 key={i}
                 className={cn(
-                  'w-3.5 h-3.5',
+                  'w-3 h-3',
                   i < Math.floor(product.rating)
-                    ? 'text-gold fill-gold'
-                    : 'text-muted-foreground'
+                    ? 'text-accent fill-accent'
+                    : 'text-muted-foreground/30'
                 )}
               />
             ))}
@@ -178,13 +184,13 @@ export const ProductCardNew = forwardRef<HTMLDivElement, ProductCardProps>(funct
         </div>
 
         {/* Price */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 pt-1">
           <span className="font-serif text-lg font-semibold text-foreground">
-            ${product.price}
+            {formatNaira(product.price)}
           </span>
           {product.originalPrice && (
             <span className="text-sm text-muted-foreground line-through">
-              ${product.originalPrice}
+              {formatNaira(product.originalPrice)}
             </span>
           )}
         </div>

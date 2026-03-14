@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Mail } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
@@ -36,25 +35,24 @@ export function NewsletterSection() {
   };
 
   return (
-    <section className="py-20 lg:py-28 bg-background">
+    <section className="py-24 lg:py-32 bg-primary text-primary-foreground">
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-accent/10 text-accent mb-6">
-            <Mail className="w-8 h-8" />
-          </div>
-          
+        <div className="max-w-2xl mx-auto text-center">
+          <p className="text-accent text-sm font-medium tracking-[0.15em] uppercase mb-4">
+            Stay Connected
+          </p>
           <h2 className="font-serif text-3xl lg:text-4xl font-semibold mb-4">
             Join the Temmie Signature Family
           </h2>
-          <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
-            Subscribe for exclusive offers, new collection drops, and be the first to know about our latest designs.
+          <p className="text-primary-foreground/60 mb-10 max-w-md mx-auto">
+            Subscribe for exclusive offers, new collection drops, and style inspiration.
           </p>
 
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
             <Input
               type="email"
               placeholder="Enter your email address"
-              className="h-14 px-6 bg-secondary border-border"
+              className="h-14 px-6 bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/40 rounded-full focus:border-accent"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={isSubmitting}
@@ -62,13 +60,13 @@ export function NewsletterSection() {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="h-14 px-8 bg-accent text-accent-foreground hover:bg-accent/90 whitespace-nowrap"
+              className="h-14 px-10 bg-accent text-accent-foreground hover:bg-accent/90 whitespace-nowrap rounded-full font-semibold tracking-wide"
             >
               {isSubmitting ? 'Subscribing...' : 'Subscribe'}
             </Button>
           </form>
 
-          <p className="text-xs text-muted-foreground mt-4">
+          <p className="text-xs text-primary-foreground/40 mt-6">
             By subscribing, you agree to our Privacy Policy. Unsubscribe anytime.
           </p>
         </div>

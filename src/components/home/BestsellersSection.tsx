@@ -8,7 +8,7 @@ import { ProductCardNew } from '@/components/products/ProductCardNew';
 import { Button } from '@/components/ui/button';
 
 export function BestsellersSection() {
-  const { data: dbProducts, isLoading } = useProducts({ bestseller: true, limit: 4 });
+  const { data: dbProducts, isLoading } = useProducts({ bestseller: true, limit: 8 });
 
   const bestsellers: UnifiedProduct[] = useMemo(() => {
     if (dbProducts && dbProducts.length > 0) {
@@ -16,7 +16,7 @@ export function BestsellersSection() {
     }
     return mockProducts
       .filter((p) => p.bestseller)
-      .slice(0, 4)
+      .slice(0, 8)
       .map(p => ({
         ...p,
         slug: p.id,
@@ -35,19 +35,24 @@ export function BestsellersSection() {
   }, [dbProducts]);
 
   return (
-    <section className="py-20 lg:py-28 bg-secondary/30">
+    <section className="py-20 lg:py-28 bg-secondary/40">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-12">
-          <p className="text-accent text-sm font-medium tracking-wider uppercase mb-3">
-            Made for Timeless Elegance
-          </p>
-          <h2 className="font-serif text-3xl lg:text-5xl font-semibold mb-4">
-            Discover Our Products
-          </h2>
-          <p className="text-muted-foreground max-w-lg mx-auto">
-            Best Fits and Best Feet — crafted with passion and precision
-          </p>
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-12">
+          <div>
+            <p className="text-accent text-sm font-medium tracking-[0.15em] uppercase mb-3">
+              Best Sellers
+            </p>
+            <h2 className="font-serif text-3xl lg:text-5xl font-semibold">
+              Most Popular
+            </h2>
+          </div>
+          <Button variant="outline" size="lg" className="hidden lg:inline-flex group mt-4 lg:mt-0 rounded-full" asChild>
+            <Link to="/shop">
+              Shop All
+              <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </Button>
         </div>
 
         {/* Products Grid */}
@@ -56,12 +61,12 @@ export function BestsellersSection() {
             <Loader2 className="w-8 h-8 animate-spin text-accent" />
           </div>
         ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
             {bestsellers.map((product, index) => (
               <div
                 key={product.id}
                 className="animate-fade-up"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                style={{ animationDelay: `${index * 0.05}s` }}
               >
                 <ProductCardNew product={product} />
               </div>
@@ -69,15 +74,10 @@ export function BestsellersSection() {
           </div>
         )}
 
-        <div className="text-center mt-12">
-          <Button
-            variant="outline"
-            size="lg"
-            className="border-2 group"
-            asChild
-          >
+        <div className="text-center mt-10 lg:hidden">
+          <Button variant="outline" size="lg" className="group rounded-full" asChild>
             <Link to="/shop">
-              Shop More
+              Shop All
               <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </Button>
