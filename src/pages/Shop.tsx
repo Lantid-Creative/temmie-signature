@@ -16,9 +16,9 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 import { cn } from '@/lib/utils';
 
-const productTypes = ['Loafers', 'Half Shoe', 'Party Shoes', 'Agbada', 'Kaftan', 'Casual Wear'];
-const materialTypes = ['Leather', 'Suede', 'Cotton', 'Linen'];
-const sizeOptions = ['38', '39', '40', '41', '42', '43', '44', '45'];
+const productTypes = ['Two Piece', 'Kaftan', 'Agbada', 'Suit', 'Bubu', 'Loafers', 'Half Shoe', 'Party Shoes'];
+const materialTypes = ['Leather', 'Suede'];
+const sizeOptions = ['S', 'M', 'L', 'XL', 'XXL', '40', '41', '42', '43', '44', '45'];
 const sortOptions = [
   { label: 'Newest', value: 'newest' },
   { label: 'Price: Low to High', value: 'price-asc' },
