@@ -1,25 +1,28 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 const slides = [
   {
-    title: 'Adedotun',
-    subtitle: 'Revel in the regal allure of traditional Nigerian styles',
-    image: 'https://temmiesignature.com/wp-content/uploads/2025/11/5.png',
-    link: '/shop?collection=adedotun',
-  },
-  {
     title: 'TMS GM01',
     subtitle: 'Make your Wedding Day Memorable',
+    cta: 'Shop Collection',
     image: 'https://temmiesignature.com/wp-content/uploads/2025/11/2.png',
     link: '/shop?collection=tms-gm01',
   },
   {
+    title: 'Adedotun',
+    subtitle: 'Revel in the regal allure of traditional Nigerian styles',
+    cta: 'Explore Now',
+    image: 'https://temmiesignature.com/wp-content/uploads/2025/11/5.png',
+    link: '/shop?collection=adedotun',
+  },
+  {
     title: 'Urban Safari',
     subtitle: 'Conquer the street with Afro inspired modern casual wears',
+    cta: 'Discover More',
     image: 'https://temmiesignature.com/wp-content/uploads/2025/11/DSC03812.jpg',
     link: '/shop?collection=urban-safari',
   },
@@ -35,15 +38,17 @@ export function HeroSection() {
     return () => clearInterval(timer);
   }, []);
 
+  const goTo = (idx: number) => setCurrent((idx + slides.length) % slides.length);
+
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-secondary">
+    <section className="relative h-[100svh] min-h-[600px] flex items-center overflow-hidden">
       {/* Background Images */}
       {slides.map((slide, index) => (
         <div
           key={index}
           className={cn(
-            'absolute inset-0 transition-opacity duration-1000',
-            index === current ? 'opacity-100' : 'opacity-0'
+            'absolute inset-0 transition-all duration-[1.2s] ease-in-out',
+            index === current ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
           )}
         >
           <img
@@ -51,53 +56,92 @@ export function HeroSection() {
             alt={slide.title}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 via-foreground/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-foreground/75 via-foreground/40 to-foreground/10" />
         </div>
       ))}
 
-      <div className="container mx-auto px-4 lg:px-8 pt-32 pb-16 lg:py-0 relative z-10">
-        <div className="max-w-xl">
+      {/* Content */}
+      <div className="container mx-auto px-4 lg:px-8 relative z-10">
+        <div className="max-w-2xl">
           {slides.map((slide, index) => (
             <div
               key={index}
               className={cn(
                 'transition-all duration-700',
-                index === current ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 absolute pointer-events-none'
+                index === current
+                  ? 'opacity-100 translate-y-0'
+                  : 'opacity-0 translate-y-8 absolute pointer-events-none'
               )}
             >
-              <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight mb-6 text-background">
+              <span className="inline-block text-accent text-sm font-medium tracking-[0.2em] uppercase mb-4">
+                New Collection
+              </span>
+              <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[0.95] mb-6 text-background">
                 {slide.title}
               </h1>
-              <p className="text-lg lg:text-xl text-background/80 max-w-lg mb-8">
+              <p className="text-lg lg:text-xl text-background/75 max-w-md mb-10 leading-relaxed">
                 {slide.subtitle}
               </p>
-              <Button
-                size="lg"
-                className="bg-accent text-accent-foreground hover:bg-accent/90 h-14 px-8 text-base font-medium group"
-                asChild
-              >
-                <Link to={slide.link}>
-                  Shop Collection
-                  <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </Button>
+              <div className="flex items-center gap-4">
+                <Button
+                  size="lg"
+                  className="bg-accent text-accent-foreground hover:bg-accent/90 h-14 px-10 text-sm font-semibold tracking-wide uppercase rounded-full group"
+                  asChild
+                >
+                  <Link to={slide.link}>
+                    {slide.cta}
+                    <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="h-14 px-10 text-sm font-semibold tracking-wide uppercase rounded-full border-2 border-background/40 text-background bg-transparent hover:bg-background/15 hover:border-background/60"
+                  asChild
+                >
+                  <Link to="/shop">View All</Link>
+                </Button>
+              </div>
             </div>
           ))}
         </div>
+      </div>
 
-        {/* Slide Indicators */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3">
-          {slides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrent(index)}
+      {/* Navigation Arrows */}
+      <div className="absolute bottom-12 right-8 lg:right-16 z-10 flex items-center gap-3">
+        <button
+          onClick={() => goTo(current - 1)}
+          className="w-12 h-12 rounded-full border border-background/30 flex items-center justify-center text-background/70 hover:bg-background/10 hover:text-background transition-colors"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+        <button
+          onClick={() => goTo(current + 1)}
+          className="w-12 h-12 rounded-full border border-background/30 flex items-center justify-center text-background/70 hover:bg-background/10 hover:text-background transition-colors"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
+      </div>
+
+      {/* Slide Counter */}
+      <div className="absolute bottom-12 left-8 lg:left-16 z-10 flex items-center gap-4">
+        {slides.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrent(index)}
+            className="group flex items-center gap-2"
+          >
+            <div
               className={cn(
-                'h-2 rounded-full transition-all duration-300',
-                index === current ? 'w-8 bg-accent' : 'w-2 bg-background/50'
+                'h-[2px] transition-all duration-500',
+                index === current ? 'w-10 bg-accent' : 'w-5 bg-background/30 group-hover:bg-background/50'
               )}
             />
-          ))}
-        </div>
+          </button>
+        ))}
+        <span className="text-background/50 text-sm font-medium ml-2">
+          {String(current + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
+        </span>
       </div>
     </section>
   );

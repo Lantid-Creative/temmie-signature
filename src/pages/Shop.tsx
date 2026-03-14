@@ -16,9 +16,9 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 import { cn } from '@/lib/utils';
 
-const productTypes = ['Loafers', 'Half Shoe', 'Party Shoes', 'Agbada', 'Kaftan', 'Casual Wear'];
-const materialTypes = ['Leather', 'Suede', 'Cotton', 'Linen'];
-const sizeOptions = ['38', '39', '40', '41', '42', '43', '44', '45'];
+const productTypes = ['Two Piece', 'Kaftan', 'Agbada', 'Suit', 'Bubu', 'Loafers', 'Half Shoe', 'Party Shoes'];
+const materialTypes = ['Leather', 'Suede'];
+const sizeOptions = ['S', 'M', 'L', 'XL', 'XXL', '40', '41', '42', '43', '44', '45'];
 const sortOptions = [
   { label: 'Newest', value: 'newest' },
   { label: 'Price: Low to High', value: 'price-asc' },
@@ -33,7 +33,7 @@ export default function Shop() {
   const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 400000]);
   const [sortBy, setSortBy] = useState('newest');
 
   const { data: dbProducts, isLoading } = useProducts();
@@ -120,7 +120,7 @@ export default function Shop() {
     setSelectedMaterials([]);
     setSelectedSizes([]);
     setSelectedCategories([]);
-    setPriceRange([0, 100000]);
+    setPriceRange([0, 400000]);
   };
 
   const hasActiveFilters =
@@ -129,7 +129,7 @@ export default function Shop() {
     selectedSizes.length > 0 ||
     selectedCategories.length > 0 ||
     priceRange[0] > 0 ||
-    priceRange[1] < 100000;
+    priceRange[1] < 400000;
 
   const FilterSection = ({ title, children }: { title: string; children: React.ReactNode }) => (
     <div className="border-b border-border pb-6 mb-6">
@@ -217,9 +217,9 @@ export default function Shop() {
           <Slider
             value={priceRange}
             onValueChange={(value) => setPriceRange(value as [number, number])}
-            max={100000}
+            max={400000}
             min={0}
-            step={5000}
+            step={10000}
             className="w-full"
           />
           <div className="flex justify-between text-sm text-muted-foreground">
