@@ -220,7 +220,6 @@ export default function Shop() {
             max={400000}
             min={0}
             step={10000}
-            step={5000}
             className="w-full"
           />
           <div className="flex justify-between text-sm text-muted-foreground">
