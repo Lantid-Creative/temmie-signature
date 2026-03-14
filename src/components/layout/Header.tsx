@@ -24,15 +24,15 @@ export function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md">
         {/* Announcement Bar */}
-        <div className="bg-foreground text-background text-center py-2 text-sm flex items-center justify-between px-4">
-          <span className="hidden md:inline-flex items-center gap-1 text-xs">
+        <div className="bg-primary text-primary-foreground text-center py-2 text-xs flex items-center justify-between px-4">
+          <span className="hidden md:inline-flex items-center gap-1">
             <Phone className="w-3 h-3" />
             +234 816 985 0284
           </span>
-          <p className="flex-1 text-center">✦ Worldwide Shipping — Best Feet, Best Fits ✦</p>
-          <span className="hidden md:inline text-xs">Store Location</span>
+          <p className="flex-1 text-center tracking-wide">✦ Worldwide Shipping — Best Feet, Best Fits ✦</p>
+          <span className="hidden md:inline">Store Location</span>
         </div>
 
         <nav className="container mx-auto px-4 lg:px-8">

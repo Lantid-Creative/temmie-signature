@@ -33,7 +33,7 @@ export default function Shop() {
   const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 400000]);
   const [sortBy, setSortBy] = useState('newest');
 
   const { data: dbProducts, isLoading } = useProducts();
