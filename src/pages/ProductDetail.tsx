@@ -28,16 +28,13 @@ export default function ProductDetail() {
   const { user } = useAuth();
   const { toast } = useToast();
 
-  // Try to fetch from database first
   const { data: dbProduct, isLoading: dbLoading } = useProduct(id || '');
   const { data: allDbProducts } = useProducts();
 
-  // Normalize the product
   const product: UnifiedProduct | null = useMemo(() => {
     if (dbProduct) {
       return normalizeProduct(dbProduct);
     }
-    // Fallback to mock data
     const mockProduct = mockProducts.find((p) => p.id === id);
     if (mockProduct) {
       return {
@@ -59,7 +56,6 @@ export default function ProductDetail() {
     return null;
   }, [dbProduct, id]);
 
-  // Related products
   const relatedProducts: UnifiedProduct[] = useMemo(() => {
     if (!product) return [];
     
@@ -92,20 +88,19 @@ export default function ProductDetail() {
 
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedColor, setSelectedColor] = useState('');
-  const [selectedCapSize, setSelectedCapSize] = useState('');
+  const [selectedSize, setSelectedSize] = useState('');
   const [quantity, setQuantity] = useState(1);
 
-  // Set defaults when product loads
   useMemo(() => {
     if (product) {
       if (!selectedColor && product.colors.length > 0) {
         setSelectedColor(product.colors[0]);
       }
-      if (!selectedCapSize && product.capSize.length > 0) {
-        setSelectedCapSize(product.capSize[0]);
+      if (!selectedSize && product.capSize.length > 0) {
+        setSelectedSize(product.capSize[0]);
       }
     }
-  }, [product, selectedColor, selectedCapSize]);
+  }, [product, selectedColor, selectedSize]);
 
   if (dbLoading) {
     return (
@@ -138,7 +133,6 @@ export default function ProductDetail() {
   const isNew = product.new || product.is_featured;
 
   const handleAddToCart = () => {
-    // Convert to format expected by cart
     const cartProduct = {
       id: product.id,
       name: product.name,
@@ -161,7 +155,7 @@ export default function ProductDetail() {
       bestseller: product.bestseller,
       new: product.new,
     };
-    addToCart(cartProduct, quantity, selectedColor, selectedCapSize);
+    addToCart(cartProduct, quantity, selectedColor, selectedSize);
   };
 
   const handleWishlistClick = () => {
@@ -189,12 +183,19 @@ export default function ProductDetail() {
     }
   };
 
+  // Build specs based on available data
+  const specs = [];
+  if (product.hairType) specs.push({ label: 'Product Type', value: product.hairType });
+  if (product.laceType) specs.push({ label: 'Material', value: product.laceType });
+  if (product.length) specs.push({ label: 'Fit / Style', value: product.length });
+  if (product.density) specs.push({ label: 'Collection', value: product.density });
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <CartDrawer />
 
-      <PageMeta title={`${product.name} | Trazzie`} description={product.description.slice(0, 155)} />
+      <PageMeta title={`${product.name} | Temmie Signature`} description={product.description.slice(0, 155)} />
       <main className="pt-32 pb-20">
         <div className="container mx-auto px-4 lg:px-8">
           <Breadcrumbs items={[
@@ -220,7 +221,7 @@ export default function ProductDetail() {
                       onClick={() => setSelectedImage(index)}
                       className={cn(
                         'aspect-square rounded-lg overflow-hidden border-2 transition-all',
-                        selectedImage === index ? 'border-gold' : 'border-transparent'
+                        selectedImage === index ? 'border-accent' : 'border-transparent'
                       )}
                     >
                       <img src={image} alt="" className="w-full h-full object-cover" />
@@ -235,7 +236,7 @@ export default function ProductDetail() {
               {/* Badges */}
               <div className="flex gap-2 mb-4">
                 {isBestseller && (
-                  <span className="px-3 py-1 bg-gold text-accent-foreground text-xs font-semibold rounded-full">
+                  <span className="px-3 py-1 bg-accent text-accent-foreground text-xs font-semibold rounded-full">
                     Bestseller
                   </span>
                 )}
@@ -258,7 +259,7 @@ export default function ProductDetail() {
                       key={i}
                       className={cn(
                         'w-5 h-5',
-                        i < Math.floor(product.rating) ? 'text-gold fill-gold' : 'text-muted-foreground'
+                        i < Math.floor(product.rating) ? 'text-accent fill-accent' : 'text-muted-foreground'
                       )}
                     />
                   ))}
@@ -270,13 +271,13 @@ export default function ProductDetail() {
 
               {/* Price */}
               <div className="flex items-center gap-4 mb-8">
-                <span className="font-serif text-3xl font-semibold">${product.price}</span>
+                <span className="font-serif text-3xl font-semibold">₦{product.price.toLocaleString()}</span>
                 {product.originalPrice && (
                   <>
                     <span className="text-xl text-muted-foreground line-through">
-                      ${product.originalPrice}
+                      ₦{product.originalPrice.toLocaleString()}
                     </span>
-                    <span className="px-2 py-1 bg-destructive text-destructive-foreground text-sm font-semibold rounded">
+                    <span className="px-2 py-1 bg-accent text-accent-foreground text-sm font-semibold rounded">
                       -{discount}%
                     </span>
                   </>
@@ -284,66 +285,62 @@ export default function ProductDetail() {
               </div>
 
               {/* Specifications */}
-              <div className="grid grid-cols-2 gap-4 p-4 bg-secondary/50 rounded-xl mb-8">
-                <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Hair Type</p>
-                  <p className="font-medium">{product.hairType}</p>
+              {specs.length > 0 && (
+                <div className={`grid grid-cols-${Math.min(specs.length, 2)} gap-4 p-4 bg-secondary/50 rounded-xl mb-8`}>
+                  {specs.map((spec) => (
+                    <div key={spec.label}>
+                      <p className="text-xs text-muted-foreground uppercase tracking-wider">{spec.label}</p>
+                      <p className="font-medium">{spec.value}</p>
+                    </div>
+                  ))}
                 </div>
-                <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Lace Type</p>
-                  <p className="font-medium">{product.laceType}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Length</p>
-                  <p className="font-medium">{product.length}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Density</p>
-                  <p className="font-medium">{product.density}</p>
-                </div>
-              </div>
+              )}
 
               {/* Color Selection */}
-              <div className="mb-6">
-                <p className="font-medium mb-3">Color: <span className="text-muted-foreground">{selectedColor}</span></p>
-                <div className="flex flex-wrap gap-3">
-                  {product.colors.map((color) => (
-                    <button
-                      key={color}
-                      onClick={() => setSelectedColor(color)}
-                      className={cn(
-                        'px-4 py-2 rounded-lg border text-sm transition-all',
-                        selectedColor === color
-                          ? 'border-gold bg-gold/10 text-foreground'
-                          : 'border-border hover:border-gold'
-                      )}
-                    >
-                      {color}
-                    </button>
-                  ))}
+              {product.colors.length > 0 && (
+                <div className="mb-6">
+                  <p className="font-medium mb-3">Color: <span className="text-muted-foreground">{selectedColor}</span></p>
+                  <div className="flex flex-wrap gap-3">
+                    {product.colors.map((color) => (
+                      <button
+                        key={color}
+                        onClick={() => setSelectedColor(color)}
+                        className={cn(
+                          'px-4 py-2 rounded-lg border text-sm transition-all',
+                          selectedColor === color
+                            ? 'border-accent bg-accent/10 text-foreground'
+                            : 'border-border hover:border-accent'
+                        )}
+                      >
+                        {color}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
-              {/* Cap Size Selection */}
-              <div className="mb-8">
-                <p className="font-medium mb-3">Cap Size: <span className="text-muted-foreground">{selectedCapSize}</span></p>
-                <div className="flex flex-wrap gap-3">
-                  {product.capSize.map((size) => (
-                    <button
-                      key={size}
-                      onClick={() => setSelectedCapSize(size)}
-                      className={cn(
-                        'px-4 py-2 rounded-lg border text-sm transition-all',
-                        selectedCapSize === size
-                          ? 'border-gold bg-gold/10 text-foreground'
-                          : 'border-border hover:border-gold'
-                      )}
-                    >
-                      {size}
-                    </button>
-                  ))}
+              {/* Size Selection */}
+              {product.capSize.length > 0 && (
+                <div className="mb-8">
+                  <p className="font-medium mb-3">Size: <span className="text-muted-foreground">{selectedSize}</span></p>
+                  <div className="flex flex-wrap gap-3">
+                    {product.capSize.map((size) => (
+                      <button
+                        key={size}
+                        onClick={() => setSelectedSize(size)}
+                        className={cn(
+                          'px-4 py-2 rounded-lg border text-sm transition-all',
+                          selectedSize === size
+                            ? 'border-accent bg-accent/10 text-foreground'
+                            : 'border-border hover:border-accent'
+                        )}
+                      >
+                        {size}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Quantity & Add to Cart */}
               <div className="flex gap-4 mb-6">
@@ -373,7 +370,7 @@ export default function ProductDetail() {
                 <Button
                   variant="outline"
                   size="icon"
-                  className={cn('h-12 w-12', isWishlisted && 'text-rose border-rose')}
+                  className={cn('h-12 w-12', isWishlisted && 'text-accent border-accent')}
                   onClick={handleWishlistClick}
                 >
                   <Heart className={cn('w-5 h-5', isWishlisted && 'fill-current')} />
@@ -392,7 +389,7 @@ export default function ProductDetail() {
               {/* Buy Now */}
               <Button
                 variant="outline"
-                className="w-full h-12 border-2 border-gold text-gold hover:bg-gold hover:text-accent-foreground mb-8"
+                className="w-full h-12 border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground mb-8"
                 asChild
               >
                 <Link to="/checkout">Buy Now</Link>
@@ -401,16 +398,16 @@ export default function ProductDetail() {
               {/* Trust Badges */}
               <div className="grid grid-cols-3 gap-4 pt-8 border-t border-border">
                 <div className="text-center">
-                  <Truck className="w-6 h-6 mx-auto text-gold mb-2" />
-                  <p className="text-xs text-muted-foreground">Free Shipping</p>
+                  <Truck className="w-6 h-6 mx-auto text-accent mb-2" />
+                  <p className="text-xs text-muted-foreground">Worldwide Shipping</p>
                 </div>
                 <div className="text-center">
-                  <Shield className="w-6 h-6 mx-auto text-gold mb-2" />
+                  <Shield className="w-6 h-6 mx-auto text-accent mb-2" />
                   <p className="text-xs text-muted-foreground">Quality Guarantee</p>
                 </div>
                 <div className="text-center">
-                  <RotateCcw className="w-6 h-6 mx-auto text-gold mb-2" />
-                  <p className="text-xs text-muted-foreground">30-Day Returns</p>
+                  <RotateCcw className="w-6 h-6 mx-auto text-accent mb-2" />
+                  <p className="text-xs text-muted-foreground">Easy Returns</p>
                 </div>
               </div>
             </div>
@@ -422,17 +419,19 @@ export default function ProductDetail() {
               <h3 className="font-serif text-2xl font-semibold mb-4">Description</h3>
               <p className="text-muted-foreground leading-relaxed">{product.description}</p>
             </div>
-            <div>
-              <h3 className="font-serif text-2xl font-semibold mb-4">Care Instructions</h3>
-              <ul className="space-y-3">
-                {product.careInstructions.map((instruction, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <Check className="w-5 h-5 text-gold shrink-0 mt-0.5" />
-                    <span className="text-muted-foreground">{instruction}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {product.careInstructions.length > 0 && (
+              <div>
+                <h3 className="font-serif text-2xl font-semibold mb-4">Care Instructions</h3>
+                <ul className="space-y-3">
+                  {product.careInstructions.map((instruction, index) => (
+                    <li key={index} className="flex items-start gap-3">
+                      <Check className="w-5 h-5 text-accent shrink-0 mt-0.5" />
+                      <span className="text-muted-foreground">{instruction}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
 
           {/* Reviews */}

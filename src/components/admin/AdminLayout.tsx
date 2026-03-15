@@ -79,8 +79,8 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
           <div className="h-16 flex items-center justify-between px-4 border-b">
             {sidebarOpen && (
               <Link to="/" className="flex items-center gap-2">
-                <Sparkles className="h-6 w-6 text-accent" />
-                <span className="font-serif text-lg">Trazzie Admin</span>
+                <img src="/images/temmie-logo.png" alt="Temmie Signature" className="h-8 w-auto" />
+                <span className="font-serif text-lg">Admin</span>
               </Link>
             )}
             <Button

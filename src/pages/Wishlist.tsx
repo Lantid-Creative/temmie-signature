@@ -25,7 +25,7 @@ export default function Wishlist() {
   if (!user) {
     return (
       <>
-        <PageMeta title="My Wishlist | Trazzie" description="Sign in to view and manage your saved products on Trazzie." />
+        <PageMeta title="My Wishlist | Temmie Signature" description="Sign in to view and manage your saved products." />
         <Header />
         <main className="pt-32 pb-20">
           <div className="container mx-auto px-4 lg:px-8 text-center">
@@ -48,7 +48,7 @@ export default function Wishlist() {
   if (wishlistProducts.length === 0) {
     return (
       <>
-        <PageMeta title="My Wishlist | Trazzie" description="Browse your saved wigs and add them to cart when you're ready." />
+        <PageMeta title="My Wishlist | Temmie Signature" description="Browse your saved items and add them to cart when you're ready." />
         <Header />
         <main className="pt-32 pb-20">
           <div className="container mx-auto px-4 lg:px-8 text-center">
@@ -73,7 +73,7 @@ export default function Wishlist() {
 
   return (
       <>
-        <PageMeta title="My Wishlist | Trazzie" description="Your saved wigs and accessories. Add to cart anytime." />
+        <PageMeta title="My Wishlist | Temmie Signature" description="Your saved fashion items. Add to cart anytime." />
         <Header />
       <main className="pt-32 pb-20">
         <div className="container mx-auto px-4 lg:px-8">

@@ -15,7 +15,7 @@ export default function Blog() {
 
   return (
     <div className="min-h-screen bg-background">
-      <PageMeta title="Blog — Hair Care Tips & Trends | Trazzie" description="Hair care tips, styling guides, and the latest trends in wigs and beauty from the Trazzie team." />
+      <PageMeta title="Blog — Fashion Tips & Trends | Temmie Signature" description="Fashion tips, styling guides, and the latest trends from the Temmie Signature team." />
       <Header />
       <CartDrawer />
 

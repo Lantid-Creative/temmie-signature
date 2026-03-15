@@ -74,7 +74,7 @@ serve(async (req) => {
       });
     }
 
-    const origin = req.headers.get("origin") || "https://trazzie.com";
+    const origin = req.headers.get("origin") || "https://temmiesignature.com";
 
     // Build session params
     const sessionParams: any = {
@@ -98,7 +98,7 @@ serve(async (req) => {
         amount_off: Math.round(discount * 100),
         currency: "usd",
         duration: "once",
-        name: "Trazzie Discount",
+        name: "Temmie Signature Discount",
       });
       sessionParams.discounts = [{ coupon: stripeCoupon.id }];
     }

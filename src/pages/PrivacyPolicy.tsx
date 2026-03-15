@@ -7,33 +7,29 @@ import { PageMeta } from '@/components/seo/PageMeta';
 export default function PrivacyPolicy() {
   return (
     <div className="min-h-screen bg-background">
-      <PageMeta title="Privacy Policy | Trazzie" description="Learn how Trazzie collects, uses, and protects your personal data. Your privacy matters to us." />
+      <PageMeta title="Privacy Policy | Temmie Signature" description="Learn how Temmie Signature collects, uses, and protects your personal data. Your privacy matters to us." />
       <Header />
       <CartDrawer />
 
       <main className="pt-32 pb-20">
         <div className="container mx-auto px-4 lg:px-8 max-w-4xl">
-          {/* Header */}
           <div className="text-center mb-12">
             <p className="text-accent text-sm font-medium tracking-wider uppercase mb-4">Legal</p>
             <h1 className="font-serif text-4xl lg:text-5xl font-semibold mb-4">Privacy Policy</h1>
-            <p className="text-muted-foreground">Last updated: February 2026</p>
+            <p className="text-muted-foreground">Last updated: March 2026</p>
           </div>
 
           <div className="prose-content space-y-10 text-muted-foreground leading-relaxed">
-
-            {/* Introduction */}
             <section>
               <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">1. Introduction</h2>
               <p>
-                Welcome to Trazzie ("we," "our," or "us"). We are committed to protecting your personal information and your right to privacy. This Privacy Policy describes how we collect, use, and share information about you when you use our website at <span className="text-foreground font-medium">trazzie.com</span> (the "Site") and purchase our products.
+                Welcome to Temmie Signature ("we," "our," or "us"). We are committed to protecting your personal information and your right to privacy. This Privacy Policy describes how we collect, use, and share information about you when you use our website at <span className="text-foreground font-medium">temmiesignature.com</span> (the "Site") and purchase our products.
               </p>
               <p className="mt-3">
                 Please read this policy carefully. If you disagree with its terms, please discontinue use of our Site.
               </p>
             </section>
 
-            {/* Information We Collect */}
             <section>
               <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">2. Information We Collect</h2>
               <h3 className="font-semibold text-foreground mb-2">Personal Information You Provide</h3>
@@ -55,7 +51,6 @@ export default function PrivacyPolicy() {
               </ul>
             </section>
 
-            {/* How We Use Your Information */}
             <section>
               <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">3. How We Use Your Information</h2>
               <p>We use the information we collect to:</p>
@@ -70,7 +65,6 @@ export default function PrivacyPolicy() {
               </ul>
             </section>
 
-            {/* Sharing Your Information */}
             <section>
               <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">4. Sharing Your Information</h2>
               <p>We do not sell your personal information. We may share your data with trusted third parties only as necessary:</p>
@@ -83,26 +77,17 @@ export default function PrivacyPolicy() {
               </ul>
             </section>
 
-            {/* Cookies */}
             <section>
               <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">5. Cookies</h2>
-              <p>
-                We use cookies and similar tracking technologies to enhance your experience on our Site. Cookies help us remember your preferences, keep items in your cart, and understand how visitors use our Site.
-              </p>
-              <p className="mt-3">
-                You can control cookie settings through your browser settings. Note that disabling cookies may affect the functionality of our Site.
-              </p>
+              <p>We use cookies and similar tracking technologies to enhance your experience on our Site.</p>
+              <p className="mt-3">You can control cookie settings through your browser settings.</p>
             </section>
 
-            {/* Data Security */}
             <section>
               <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">6. Data Security</h2>
-              <p>
-                We implement industry-standard security measures including SSL encryption, secure servers, and regular security audits to protect your personal information. However, no method of transmission over the internet is 100% secure, and we cannot guarantee absolute security.
-              </p>
+              <p>We implement industry-standard security measures including SSL encryption, secure servers, and regular security audits to protect your personal information.</p>
             </section>
 
-            {/* Your Rights */}
             <section>
               <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">7. Your Rights</h2>
               <p>You have the right to:</p>
@@ -114,34 +99,17 @@ export default function PrivacyPolicy() {
                 <li>Data portability (receive your data in a structured format)</li>
               </ul>
               <p className="mt-3">
-                To exercise these rights, please contact us at <a href="mailto:privacy@trazzie.com" className="text-accent hover:underline">privacy@trazzie.com</a>.
+                To exercise these rights, please contact us at <a href="mailto:hello@temmiesignature.com" className="text-accent hover:underline">hello@temmiesignature.com</a>.
               </p>
             </section>
 
-            {/* Children's Privacy */}
-            <section>
-              <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">8. Children's Privacy</h2>
-              <p>
-                Our Site is not directed to children under the age of 13. We do not knowingly collect personal information from children. If you believe we have inadvertently collected information from a child, please contact us immediately.
-              </p>
-            </section>
-
-            {/* Changes to This Policy */}
-            <section>
-              <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">9. Changes to This Policy</h2>
-              <p>
-                We may update this Privacy Policy from time to time. We will notify you of any significant changes by posting the new policy on this page with an updated "Last updated" date. We encourage you to review this policy periodically.
-              </p>
-            </section>
-
-            {/* Contact */}
             <section className="bg-secondary/30 rounded-2xl p-8">
-              <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">10. Contact Us</h2>
+              <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">8. Contact Us</h2>
               <p>If you have questions or concerns about this Privacy Policy, please contact us:</p>
               <div className="mt-4 space-y-2">
-                <p><span className="text-foreground font-medium">Email:</span> <a href="mailto:privacy@trazzie.com" className="text-accent hover:underline">privacy@trazzie.com</a></p>
-                <p><span className="text-foreground font-medium">Company:</span> Trazzie</p>
-                <p><span className="text-foreground font-medium">Website:</span> <a href="https://trazzie.com" className="text-accent hover:underline">trazzie.com</a></p>
+                <p><span className="text-foreground font-medium">Email:</span> <a href="mailto:hello@temmiesignature.com" className="text-accent hover:underline">hello@temmiesignature.com</a></p>
+                <p><span className="text-foreground font-medium">Company:</span> Temmie Signature</p>
+                <p><span className="text-foreground font-medium">Website:</span> <a href="https://temmiesignature.com" className="text-accent hover:underline">temmiesignature.com</a></p>
               </div>
             </section>
           </div>
@@ -149,7 +117,6 @@ export default function PrivacyPolicy() {
       </main>
 
       <Footer />
-      
     </div>
   );
 }
