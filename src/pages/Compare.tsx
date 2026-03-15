@@ -32,7 +32,7 @@ export default function Compare() {
   if (compareProducts.length === 0) {
     return (
       <>
-        <PageMeta title="Compare Products | Trazzie" description="Compare wigs side by side — hair type, lace, length, price and more." />
+        <PageMeta title="Compare Products | Temmie Signature" description="Compare fashion items side by side — style, material, size, price and more." />
         <Header />
         <main className="pt-32 pb-20">
           <div className="container mx-auto px-4 lg:px-8 text-center">
