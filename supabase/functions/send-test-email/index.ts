@@ -64,8 +64,8 @@ serve(async (req: Request) => {
         <style>
           body { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.7; color: #2d2d2d; margin: 0; padding: 0; background-color: #f5f0eb; }
           .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
-          .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 48px 30px; text-align: center; }
-          .logo { font-size: 32px; font-weight: 700; color: #d4af37; letter-spacing: 3px; font-family: Georgia, 'Times New Roman', serif; }
+          .header { background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%); padding: 48px 30px; text-align: center; }
+          .logo { font-size: 32px; font-weight: 700; color: #ffffff; letter-spacing: 3px; font-family: Georgia, 'Times New Roman', serif; }
           .content { padding: 48px 36px; }
           .footer { background: #1a1a2e; color: rgba(255,255,255,0.5); padding: 36px; text-align: center; font-size: 12px; }
           h1 { font-family: Georgia, 'Times New Roman', serif; color: #1a1a2e; font-size: 24px; }
