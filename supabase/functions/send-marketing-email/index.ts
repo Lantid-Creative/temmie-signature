@@ -124,7 +124,7 @@ serve(async (req: Request) => {
               <div style="white-space: pre-wrap; color: #555; font-size: 15px; line-height: 1.7;">${emailData.body}</div>
               ${emailData.ctaText ? `
                 <p style="text-align: center; margin: 36px 0;">
-                  <a href="${emailData.ctaLink || 'https://trazzie.com'}" class="button">${emailData.ctaText}</a>
+                  <a href="${emailData.ctaLink || 'https://temmiesignature.com'}" class="button">${emailData.ctaText}</a>
                 </p>
               ` : ''}
             </div>
