@@ -25,7 +25,7 @@ export default function Wishlist() {
   if (!user) {
     return (
       <>
-        <PageMeta title="My Wishlist | Trazzie" description="Sign in to view and manage your saved products on Trazzie." />
+        <PageMeta title="My Wishlist | Temmie Signature" description="Sign in to view and manage your saved products." />
         <Header />
         <main className="pt-32 pb-20">
           <div className="container mx-auto px-4 lg:px-8 text-center">
