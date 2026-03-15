@@ -115,8 +115,8 @@ serve(async (req: Request) => {
         </head><body>
           <div class="container">
             <div class="header">
-              <div class="logo">TRAZZIE✦</div>
-              <div class="tagline">Premium Hair & Beauty</div>
+              <div class="logo">TEMMIE SIGNATURE</div>
+              <div class="tagline">Best Feet, Best Fits</div>
               ${emailData.preheader ? `<p style="color: rgba(255,255,255,0.4); font-size: 12px; margin-top: 10px;">${emailData.preheader}</p>` : ''}
             </div>
             <div class="content">

@@ -84,7 +84,7 @@ serve(async (req: Request) => {
             <pre>${JSON.stringify(testData, null, 2)}</pre>
           </div>
           <div class="footer">
-            <p>This is a test email from Trazzie Admin</p>
+            <p>This is a test email from Temmie Signature Admin</p>
           </div>
         </div>
       </body></html>
