@@ -74,7 +74,7 @@ serve(async (req) => {
       });
     }
 
-    const origin = req.headers.get("origin") || "https://trazzie.com";
+    const origin = req.headers.get("origin") || "https://temmiesignature.com";
 
     // Build session params
     const sessionParams: any = {
