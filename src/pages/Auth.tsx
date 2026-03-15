@@ -118,7 +118,7 @@ const Auth = () => {
         } else {
           toast({
             title: 'Account Created!',
-            description: 'Welcome to Trazzie. Your account has been created.',
+            description: 'Welcome to Temmie Signature. Your account has been created.',
           });
           navigate(from, { replace: true });
         }
