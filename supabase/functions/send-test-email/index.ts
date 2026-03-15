@@ -58,7 +58,7 @@ serve(async (req: Request) => {
       resetUrl: "https://temmiesignature.com/reset-password?token=test",
     };
 
-    const subject = `[TEST] ${templateType.replace(/_/g, ' ').toUpperCase()} Email — Trazzie`;
+    const subject = `[TEST] ${templateType.replace(/_/g, ' ').toUpperCase()} Email — Temmie Signature`;
     const html = `
       <!DOCTYPE html><html><head>
         <style>
