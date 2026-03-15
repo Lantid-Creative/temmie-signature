@@ -48,14 +48,14 @@ serve(async (req: Request) => {
       orderNumber: "TEST-12345",
       orderDate: new Date().toLocaleDateString(),
       total: "299.99",
-      shopUrl: "https://trazzie.com/shop",
-      cartUrl: "https://trazzie.com/cart",
-      wishlistUrl: "https://trazzie.com/wishlist",
-      trackingUrl: "https://trazzie.com/account",
+      shopUrl: "https://temmiesignature.com/shop",
+      cartUrl: "https://temmiesignature.com/cart",
+      wishlistUrl: "https://temmiesignature.com/wishlist",
+      trackingUrl: "https://temmiesignature.com/account",
       trackingNumber: "1Z999AA10123456784",
-      carrier: "UPS",
-      estimatedDelivery: "January 25, 2026",
-      resetUrl: "https://trazzie.com/reset-password?token=test",
+      carrier: "DHL",
+      estimatedDelivery: "April 10, 2026",
+      resetUrl: "https://temmiesignature.com/reset-password?token=test",
     };
 
     const subject = `[TEST] ${templateType.replace(/_/g, ' ').toUpperCase()} Email — Trazzie`;
