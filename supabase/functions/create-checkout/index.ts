@@ -98,7 +98,7 @@ serve(async (req) => {
         amount_off: Math.round(discount * 100),
         currency: "usd",
         duration: "once",
-        name: "Trazzie Discount",
+        name: "Temmie Signature Discount",
       });
       sessionParams.discounts = [{ coupon: stripeCoupon.id }];
     }

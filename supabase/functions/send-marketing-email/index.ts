@@ -129,9 +129,9 @@ serve(async (req: Request) => {
               ` : ''}
             </div>
             <div class="footer">
-              <p>Questions? Email us at <a href="mailto:hello@trazzie.com">hello@trazzie.com</a></p>
+              <p>Questions? Email us at <a href="mailto:hello@temmiesignature.com">hello@temmiesignature.com</a></p>
               <p style="margin-top: 12px;"><a href="#">Unsubscribe</a> · <a href="#">View in browser</a></p>
-              <p style="margin-top: 8px; opacity: 0.4;">© ${new Date().getFullYear()} Trazzie. All rights reserved.</p>
+              <p style="margin-top: 8px; opacity: 0.4;">© ${new Date().getFullYear()} Temmie Signature. All rights reserved.</p>
             </div>
           </div>
         </body></html>
