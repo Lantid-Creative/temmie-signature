@@ -67,8 +67,8 @@ serve(async (req: Request) => {
           .header { background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%); padding: 48px 30px; text-align: center; }
           .logo { font-size: 32px; font-weight: 700; color: #ffffff; letter-spacing: 3px; font-family: Georgia, 'Times New Roman', serif; }
           .content { padding: 48px 36px; }
-          .footer { background: #1a1a2e; color: rgba(255,255,255,0.5); padding: 36px; text-align: center; font-size: 12px; }
-          h1 { font-family: Georgia, 'Times New Roman', serif; color: #1a1a2e; font-size: 24px; }
+          .footer { background: #0d0d0d; color: rgba(255,255,255,0.5); padding: 36px; text-align: center; font-size: 12px; }
+          h1 { font-family: Georgia, 'Times New Roman', serif; color: #0d0d0d; font-size: 24px; }
           pre { background: #faf8f5; border: 1px solid #ebe6de; padding: 16px; border-radius: 8px; overflow: auto; font-size: 12px; }
         </style>
       </head><body>
