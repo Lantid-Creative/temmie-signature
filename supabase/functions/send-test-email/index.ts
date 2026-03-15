@@ -74,7 +74,7 @@ serve(async (req: Request) => {
       </head><body>
         <div class="container">
           <div class="header">
-            <div class="logo">TRAZZIE✦</div>
+            <div class="logo">TEMMIE SIGNATURE</div>
             <p style="color: #ff6b6b; font-size: 12px; margin-top: 8px;">⚠️ TEST EMAIL</p>
           </div>
           <div class="content">
