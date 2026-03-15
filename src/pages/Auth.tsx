@@ -289,9 +289,9 @@ const Auth = () => {
             transition={{ delay: 0.2 }}
           >
             <Sparkles className="h-16 w-16 mx-auto mb-6 text-accent" />
-            <h2 className="text-4xl font-serif mb-4">TRAZZIE✦</h2>
+            <h2 className="text-4xl font-serif mb-4">TEMMIE SIGNATURE</h2>
             <p className="text-xl text-muted-foreground max-w-md mx-auto">
-              Discover luxury wigs and hair products crafted for confidence and beauty.
+              Discover premium fashion crafted for strength, style, and sophistication.
             </p>
           </motion.div>
 
