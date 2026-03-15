@@ -156,7 +156,7 @@ const Auth = () => {
             <p className="text-muted-foreground">
               {isLogin
                 ? 'Sign in to access your account'
-                : 'Join Trazzie for exclusive offers'}
+                : 'Join Temmie Signature for exclusive offers'}
             </p>
           </div>
 
