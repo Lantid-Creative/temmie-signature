@@ -106,9 +106,9 @@ serve(async (req: Request) => {
             .logo { font-size: 28px; font-weight: 700; color: #ffffff; letter-spacing: 3px; font-family: Georgia, 'Times New Roman', serif; }
             .tagline { color: rgba(255,255,255,0.6); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 8px; }
             .content { padding: 48px 36px; }
-            .button { display: inline-block; background: linear-gradient(135deg, #d4af37 0%, #c49b2a 100%); color: #1a1a2e !important; text-decoration: none; padding: 16px 36px; border-radius: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; font-size: 13px; }
-            .footer { background: #1a1a2e; color: rgba(255,255,255,0.5); padding: 36px; text-align: center; font-size: 12px; }
-            .footer a { color: #d4af37; text-decoration: none; }
+            .button { display: inline-block; background: #c42020; color: #ffffff !important; text-decoration: none; padding: 16px 36px; border-radius: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; font-size: 13px; }
+            .footer { background: #0d0d0d; color: rgba(255,255,255,0.5); padding: 36px; text-align: center; font-size: 12px; }
+            .footer a { color: #c42020; text-decoration: none; }
             h1 { font-family: Georgia, 'Times New Roman', serif; color: #1a1a2e; margin: 0 0 20px; font-size: 28px; }
             p { color: #555; font-size: 15px; }
           </style>
