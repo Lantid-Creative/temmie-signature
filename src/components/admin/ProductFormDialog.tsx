@@ -30,6 +30,11 @@ const productSchema = z.object({
   stock_quantity: z.number().min(0, 'Stock must be positive'),
 });
 
+const productTypeOptions = ['Two Piece', 'Kaftan', 'Agbada', 'Suit', 'Bubu', 'Loafers', 'Half Shoe', 'Party Shoes', 'Sneakers', 'Shirt', 'Trouser', 'Accessories'];
+const materialOptions = ['Leather', 'Suede', 'Cotton', 'Linen', 'Silk', 'Polyester', 'Wool', 'Denim', 'Lace', 'Ankara'];
+const clothingSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
+const shoeSizes = ['38', '39', '40', '41', '42', '43', '44', '45', '46'];
+
 interface ProductFormDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -55,11 +60,11 @@ export const ProductFormDialog = ({ open, onOpenChange, productId }: ProductForm
     stock_quantity: 0,
     low_stock_threshold: 5,
     category_id: null as string | null,
-    hair_type: '',
-    lace_type: '',
-    length: '',
-    density: '',
-    cap_size: [] as string[],
+    hair_type: '',    // Used as "Product Type"
+    lace_type: '',    // Used as "Material"
+    length: '',       // Used as "Fit" or general attribute
+    density: '',      // Used as "Collection"
+    cap_size: [] as string[],  // Used as "Available Sizes"
     colors: [] as string[],
     images: [] as string[],
     featured_image: '',
@@ -72,7 +77,7 @@ export const ProductFormDialog = ({ open, onOpenChange, productId }: ProductForm
     tags: [] as string[],
   });
 
-  const [newCapSize, setNewCapSize] = useState('');
+  const [newSize, setNewSize] = useState('');
   const [newColor, setNewColor] = useState('');
   const [newTag, setNewTag] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -200,6 +205,13 @@ export const ProductFormDialog = ({ open, onOpenChange, productId }: ProductForm
     }));
   };
 
+  const addPresetSizes = (presetSizes: string[]) => {
+    setForm((f) => ({
+      ...f,
+      cap_size: [...new Set([...f.cap_size, ...presetSizes])],
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -305,32 +317,32 @@ export const ProductFormDialog = ({ open, onOpenChange, productId }: ProductForm
               {/* Pricing */}
               <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="price">Price ($) *</Label>
+                  <Label htmlFor="price">Price (₦) *</Label>
                   <Input
                     id="price"
                     type="number"
-                    step="0.01"
+                    step="100"
                     value={form.price}
                     onChange={(e) => setForm((f) => ({ ...f, price: parseFloat(e.target.value) || 0 }))}
                   />
                   {errors.price && <p className="text-sm text-destructive">{errors.price}</p>}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="compare_price">Compare at Price ($)</Label>
+                  <Label htmlFor="compare_price">Compare at Price (₦)</Label>
                   <Input
                     id="compare_price"
                     type="number"
-                    step="0.01"
+                    step="100"
                     value={form.compare_at_price || ''}
                     onChange={(e) => setForm((f) => ({ ...f, compare_at_price: parseFloat(e.target.value) || null }))}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="cost_price">Cost Price ($)</Label>
+                  <Label htmlFor="cost_price">Cost Price (₦)</Label>
                   <Input
                     id="cost_price"
                     type="number"
-                    step="0.01"
+                    step="100"
                     value={form.cost_price || ''}
                     onChange={(e) => setForm((f) => ({ ...f, cost_price: parseFloat(e.target.value) || null }))}
                   />
@@ -388,76 +400,73 @@ export const ProductFormDialog = ({ open, onOpenChange, productId }: ProductForm
                 </Select>
               </div>
 
-              {/* Wig Specifications */}
+              {/* Fashion Specifications */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="hair_type">Hair Type</Label>
+                  <Label htmlFor="product_type">Product Type</Label>
                   <Select
                     value={form.hair_type || 'none'}
                     onValueChange={(v) => setForm((f) => ({ ...f, hair_type: v === 'none' ? '' : v }))}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select hair type" />
+                      <SelectValue placeholder="Select product type" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="none">Not specified</SelectItem>
-                      <SelectItem value="Human Hair">Human Hair</SelectItem>
-                      <SelectItem value="Synthetic">Synthetic</SelectItem>
-                      <SelectItem value="Blend">Blend</SelectItem>
+                      {productTypeOptions.map((type) => (
+                        <SelectItem key={type} value={type}>{type}</SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lace_type">Lace Type</Label>
+                  <Label htmlFor="material">Material</Label>
                   <Select
                     value={form.lace_type || 'none'}
                     onValueChange={(v) => setForm((f) => ({ ...f, lace_type: v === 'none' ? '' : v }))}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select lace type" />
+                      <SelectValue placeholder="Select material" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="none">Not specified</SelectItem>
-                      <SelectItem value="13x4 HD Lace">13x4 HD Lace</SelectItem>
-                      <SelectItem value="13x6 Frontal">13x6 Frontal</SelectItem>
-                      <SelectItem value="4x4 Closure">4x4 Closure</SelectItem>
-                      <SelectItem value="5x5 Closure">5x5 Closure</SelectItem>
-                      <SelectItem value="Full Lace">Full Lace</SelectItem>
+                      {materialOptions.map((mat) => (
+                        <SelectItem key={mat} value={mat}>{mat}</SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="length">Length</Label>
+                  <Label htmlFor="length">Fit / Style</Label>
                   <Input
                     id="length"
                     value={form.length}
                     onChange={(e) => setForm((f) => ({ ...f, length: e.target.value }))}
-                    placeholder='e.g. 22"'
+                    placeholder='e.g. Regular Fit, Slim Fit'
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="density">Density</Label>
+                  <Label htmlFor="collection">Collection</Label>
                   <Select
                     value={form.density || 'none'}
                     onValueChange={(v) => setForm((f) => ({ ...f, density: v === 'none' ? '' : v }))}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select density" />
+                      <SelectValue placeholder="Select collection" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="none">Not specified</SelectItem>
-                      <SelectItem value="130%">130%</SelectItem>
-                      <SelectItem value="150%">150%</SelectItem>
-                      <SelectItem value="180%">180%</SelectItem>
-                      <SelectItem value="200%">200%</SelectItem>
+                      <SelectItem value="TMS GM01">TMS GM01</SelectItem>
+                      <SelectItem value="Adedotun">Adedotun</SelectItem>
+                      <SelectItem value="Urban Safari">Urban Safari</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
 
-              {/* Cap Sizes */}
+              {/* Available Sizes */}
               <div className="space-y-2">
-                <Label>Cap Sizes</Label>
+                <Label>Available Sizes</Label>
                 <div className="flex gap-2 flex-wrap mb-2">
                   {form.cap_size.map((size, i) => (
                     <span
@@ -471,14 +480,22 @@ export const ProductFormDialog = ({ open, onOpenChange, productId }: ProductForm
                     </span>
                   ))}
                 </div>
+                <div className="flex gap-2 mb-2">
+                  <Button type="button" variant="outline" size="sm" onClick={() => addPresetSizes(clothingSizes)}>
+                    + Clothing Sizes (XS-3XL)
+                  </Button>
+                  <Button type="button" variant="outline" size="sm" onClick={() => addPresetSizes(shoeSizes)}>
+                    + Shoe Sizes (38-46)
+                  </Button>
+                </div>
                 <div className="flex gap-2">
                   <Input
-                    placeholder="Add cap size (e.g. Medium)"
-                    value={newCapSize}
-                    onChange={(e) => setNewCapSize(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addItem('cap_size', newCapSize, setNewCapSize))}
+                    placeholder="Add custom size"
+                    value={newSize}
+                    onChange={(e) => setNewSize(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addItem('cap_size', newSize, setNewSize))}
                   />
-                  <Button type="button" variant="outline" onClick={() => addItem('cap_size', newCapSize, setNewCapSize)}>
+                  <Button type="button" variant="outline" onClick={() => addItem('cap_size', newSize, setNewSize)}>
                     <Plus className="h-4 w-4" />
                   </Button>
                 </div>
@@ -502,7 +519,7 @@ export const ProductFormDialog = ({ open, onOpenChange, productId }: ProductForm
                 </div>
                 <div className="flex gap-2">
                   <Input
-                    placeholder="Add color (e.g. Natural Black)"
+                    placeholder="Add color (e.g. Black, Red, White)"
                     value={newColor}
                     onChange={(e) => setNewColor(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addItem('colors', newColor, setNewColor))}
@@ -530,12 +547,12 @@ export const ProductFormDialog = ({ open, onOpenChange, productId }: ProductForm
                       <button
                         type="button"
                         onClick={() => removeImage(i)}
-                        className="absolute top-1 right-1 p-1 bg-black/50 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="absolute top-1 right-1 p-1 bg-foreground/50 rounded-full text-background opacity-0 group-hover:opacity-100 transition-opacity"
                       >
                         <X className="h-4 w-4" />
                       </button>
                       {url === form.featured_image && (
-                        <span className="absolute bottom-1 left-1 px-2 py-0.5 bg-accent text-xs rounded text-foreground">
+                        <span className="absolute bottom-1 left-1 px-2 py-0.5 bg-accent text-accent-foreground text-xs rounded">
                           Featured
                         </span>
                       )}

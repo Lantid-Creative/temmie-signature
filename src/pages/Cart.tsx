@@ -20,7 +20,7 @@ export default function Cart() {
 
   return (
     <div className="min-h-screen bg-background">
-      <PageMeta title="Shopping Cart | Trazzie" description="Review your selected wigs and accessories. Enjoy free shipping on orders over $200." />
+      <PageMeta title="Shopping Cart | Temmie Signature" description="Review your selected fashion items. Worldwide shipping available." />
       <Header />
       <CartDrawer />
 

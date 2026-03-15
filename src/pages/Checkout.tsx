@@ -230,7 +230,7 @@ export default function Checkout() {
 
   return (
     <div className="min-h-screen bg-background">
-      <PageMeta title="Checkout | Trazzie" description="Complete your Trazzie order securely with Stripe. Free shipping on orders over $200." />
+      <PageMeta title="Checkout | Temmie Signature" description="Complete your Temmie Signature order securely. Worldwide shipping available." />
       <Header />
       <main className="pt-32 pb-20">
         <div className="container mx-auto px-4 lg:px-8">

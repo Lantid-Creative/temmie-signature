@@ -56,7 +56,7 @@ export default function Compare() {
 
   return (
       <>
-        <PageMeta title="Compare Products | Trazzie" description="Compare wigs side by side to find your perfect match." />
+        <PageMeta title="Compare Products | Temmie Signature" description="Compare fashion items side by side to find your perfect match." />
         <Header />
       <main className="pt-32 pb-20">
         <div className="container mx-auto px-4 lg:px-8">
