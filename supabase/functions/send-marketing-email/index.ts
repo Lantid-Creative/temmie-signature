@@ -102,8 +102,8 @@ serve(async (req: Request) => {
           <style>
             body { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.7; color: #2d2d2d; margin: 0; padding: 0; background-color: #f5f0eb; }
             .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
-            .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 48px 30px; text-align: center; }
-            .logo { font-size: 32px; font-weight: 700; color: #d4af37; letter-spacing: 3px; font-family: Georgia, 'Times New Roman', serif; }
+            .header { background: #0d0d0d; padding: 48px 30px; text-align: center; }
+            .logo { font-size: 28px; font-weight: 700; color: #ffffff; letter-spacing: 3px; font-family: Georgia, 'Times New Roman', serif; }
             .tagline { color: rgba(255,255,255,0.6); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 8px; }
             .content { padding: 48px 36px; }
             .button { display: inline-block; background: linear-gradient(135deg, #d4af37 0%, #c49b2a 100%); color: #1a1a2e !important; text-decoration: none; padding: 16px 36px; border-radius: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; font-size: 13px; }
