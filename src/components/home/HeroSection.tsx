@@ -75,17 +75,19 @@ export function HeroSection() {
         <div
           key={index}
           className={cn(
-            'absolute inset-0 transition-all duration-[1.2s] ease-in-out',
+            'absolute inset-0 transition-all ease-in-out',
             index === current ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
           )}
+          style={{ transitionDuration: '1200ms' }}
         >
           <img
             src={slide.image}
             alt={slide.title}
             className={cn(
               'w-full h-full object-cover',
-              !reduceMotion && index === current && 'scale-[1.03] transition-transform duration-[6000ms] ease-out'
+              !reduceMotion && index === current && 'scale-[1.03] transition-transform ease-out'
             )}
+            style={!reduceMotion && index === current ? { transitionDuration: '6000ms' } : undefined}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-foreground/88 via-foreground/50 to-foreground/12" />
         </div>
