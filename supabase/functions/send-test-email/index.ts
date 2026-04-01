@@ -47,7 +47,7 @@ serve(async (req: Request) => {
       name: "Test User",
       orderNumber: "TEST-12345",
       orderDate: new Date().toLocaleDateString(),
-      total: "299.99",
+      total: "299,999",
       shopUrl: "https://temmiesignature.com/shop",
       cartUrl: "https://temmiesignature.com/cart",
       wishlistUrl: "https://temmiesignature.com/wishlist",
@@ -62,20 +62,20 @@ serve(async (req: Request) => {
     const html = `
       <!DOCTYPE html><html><head>
         <style>
-          body { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.7; color: #2d2d2d; margin: 0; padding: 0; background-color: #f5f0eb; }
+          body { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.7; color: #171717; margin: 0; padding: 0; background-color: #f4f4f4; }
           .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
-          .header { background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%); padding: 48px 30px; text-align: center; }
+          .header { background: linear-gradient(135deg, #0d0d0d 0%, #7f1d1d 100%); padding: 48px 30px; text-align: center; }
           .logo { font-size: 32px; font-weight: 700; color: #ffffff; letter-spacing: 3px; font-family: Georgia, 'Times New Roman', serif; }
           .content { padding: 48px 36px; }
           .footer { background: #0d0d0d; color: rgba(255,255,255,0.5); padding: 36px; text-align: center; font-size: 12px; }
           h1 { font-family: Georgia, 'Times New Roman', serif; color: #0d0d0d; font-size: 24px; }
-          pre { background: #faf8f5; border: 1px solid #ebe6de; padding: 16px; border-radius: 8px; overflow: auto; font-size: 12px; }
+          pre { background: #f7f7f7; border: 1px solid #e5e5e5; padding: 16px; border-radius: 8px; overflow: auto; font-size: 12px; }
         </style>
       </head><body>
         <div class="container">
           <div class="header">
             <div class="logo">TEMMIE SIGNATURE</div>
-            <p style="color: #ff6b6b; font-size: 12px; margin-top: 8px;">⚠️ TEST EMAIL</p>
+            <p style="color: #ffffff; font-size: 12px; margin-top: 8px; letter-spacing: 1.5px;">⚠️ TEST EMAIL</p>
           </div>
           <div class="content">
             <h1>Test: ${templateType.replace(/_/g, ' ')}</h1>

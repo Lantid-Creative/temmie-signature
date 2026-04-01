@@ -8,43 +8,43 @@
   :root {
     /* Temmie Signature: Black, Red & White */
     --background: 0 0% 100%;
-    --foreground: 0 0% 5%;
+    --foreground: 0 0% 4%;
 
-    --card: 0 0% 99%;
-    --card-foreground: 0 0% 5%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 4%;
 
-    --popover: 0 0% 99%;
-    --popover-foreground: 0 0% 5%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 4%;
 
-    --primary: 0 0% 5%;
+    --primary: 0 0% 4%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 5%;
+    --secondary: 0 0% 97%;
+    --secondary-foreground: 0 0% 8%;
 
-    --muted: 0 0% 94%;
-    --muted-foreground: 0 0% 40%;
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 36%;
 
-    --accent: 0 85% 45%;
+    --accent: 0 79% 47%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 0 85% 45%;
+    --border: 0 0% 88%;
+    --input: 0 0% 88%;
+    --ring: 0 79% 47%;
 
     --radius: 0.5rem;
 
     /* Custom Brand Colors */
-    --brand-red: 0 85% 45%;
-    --brand-red-light: 0 70% 55%;
-    --brand-red-dark: 0 90% 35%;
-    --brand-black: 0 0% 5%;
+    --brand-red: 0 79% 47%;
+    --brand-red-light: 0 86% 57%;
+    --brand-red-dark: 0 84% 34%;
+    --brand-black: 0 0% 4%;
     --brand-white: 0 0% 100%;
-    --brand-gray: 0 0% 94%;
-    --brand-gray-dark: 0 0% 75%;
+    --brand-gray: 0 0% 95%;
+    --brand-gray-dark: 0 0% 70%;
 
     --sidebar-background: 0 0% 99%;
     --sidebar-foreground: 0 0% 26%;
@@ -104,6 +104,10 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'DM Sans', sans-serif;
+    background-image:
+      radial-gradient(circle at top, hsl(var(--accent) / 0.08), transparent 32%),
+      linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--secondary)) 100%);
+    background-attachment: fixed;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -118,26 +122,26 @@
   }
 
   .text-brand-gradient {
-    background: linear-gradient(135deg, hsl(0 85% 45%) 0%, hsl(0 90% 35%) 100%);
+    background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--brand-red-dark)) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .bg-brand-gradient {
-    background: linear-gradient(135deg, hsl(0 0% 5%) 0%, hsl(0 0% 15%) 100%);
+    background: linear-gradient(135deg, hsl(var(--brand-black)) 0%, hsl(var(--brand-red-dark)) 58%, hsl(var(--brand-black)) 100%);
   }
 
   .bg-cream-gradient {
-    background: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(0 0% 96%) 100%);
+    background: linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--secondary)) 100%);
   }
 
   .brand-border {
-    border: 1px solid hsl(0 85% 45% / 0.3);
+    border: 1px solid hsl(var(--accent) / 0.22);
   }
 
   .brand-glow {
-    box-shadow: 0 0 40px hsl(0 85% 45% / 0.12);
+    box-shadow: 0 22px 60px hsl(var(--accent) / 0.14);
   }
 
   .card-hover {
@@ -146,7 +150,7 @@
 
   .card-hover:hover {
     transform: translateY(-8px);
-    box-shadow: 0 20px 40px hsl(0 0% 0% / 0.08);
+    box-shadow: 0 24px 50px hsl(var(--accent) / 0.1);
   }
 
   .image-zoom {
@@ -197,9 +201,9 @@
   .shimmer {
     background: linear-gradient(
       90deg,
-      hsl(0 0% 100%) 0%,
-      hsl(0 85% 45% / 0.08) 50%,
-      hsl(0 0% 100%) 100%
+      hsl(var(--background)) 0%,
+      hsl(var(--accent) / 0.08) 50%,
+      hsl(var(--background)) 100%
     );
     background-size: 200% 100%;
     animation: shimmer 2s infinite;
