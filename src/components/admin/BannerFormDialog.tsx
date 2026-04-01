@@ -58,6 +58,9 @@ export const BannerFormDialog = ({ open, onOpenChange, bannerId }: BannerFormDia
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label>Banner Image *</Label>
+            <p className="text-xs text-muted-foreground">
+              Recommended for homepage hero: 1920 × 1080px landscape, JPG/PNG/WebP, max 5MB.
+            </p>
             {form.image_url ? (
               <div className="relative"><img src={form.image_url} alt="Banner" className="w-full h-40 object-cover rounded-lg" /><Button type="button" variant="secondary" size="sm" className="absolute top-2 right-2" onClick={() => fileInputRef.current?.click()}>Change</Button></div>
             ) : (

@@ -533,6 +533,9 @@ export const ProductFormDialog = ({ open, onOpenChange, productId }: ProductForm
               {/* Images */}
               <div className="space-y-2">
                 <Label>Product Images</Label>
+                <p className="text-xs text-muted-foreground">
+                  Recommended: 1200 × 1500px portrait for product photos. Keep all images the same ratio for a cleaner shop layout. JPG/PNG/WebP, max 5MB each.
+                </p>
                 <div className="grid grid-cols-4 gap-4">
                   {form.images.map((url, i) => (
                     <div key={i} className="relative group aspect-square">
