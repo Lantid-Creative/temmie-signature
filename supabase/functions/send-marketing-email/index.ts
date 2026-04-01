@@ -100,7 +100,7 @@ serve(async (req: Request) => {
       const html = `
         <!DOCTYPE html><html><head>
           <style>
-            body { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.7; color: #2d2d2d; margin: 0; padding: 0; background-color: #f5f0eb; }
+            body { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.7; color: #171717; margin: 0; padding: 0; background-color: #f4f4f4; }
             .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
             .header { background: #0d0d0d; padding: 48px 30px; text-align: center; }
             .logo { font-size: 28px; font-weight: 700; color: #ffffff; letter-spacing: 3px; font-family: Georgia, 'Times New Roman', serif; }
@@ -109,7 +109,7 @@ serve(async (req: Request) => {
             .button { display: inline-block; background: #c42020; color: #ffffff !important; text-decoration: none; padding: 16px 36px; border-radius: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; font-size: 13px; }
             .footer { background: #0d0d0d; color: rgba(255,255,255,0.5); padding: 36px; text-align: center; font-size: 12px; }
             .footer a { color: #c42020; text-decoration: none; }
-            h1 { font-family: Georgia, 'Times New Roman', serif; color: #1a1a2e; margin: 0 0 20px; font-size: 28px; }
+            h1 { font-family: Georgia, 'Times New Roman', serif; color: #0d0d0d; margin: 0 0 20px; font-size: 28px; }
             p { color: #555; font-size: 15px; }
           </style>
         </head><body>

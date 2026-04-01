@@ -57,7 +57,7 @@ const emailTemplates: EmailTemplate[] = [
   {
     id: 'welcome',
     name: 'Welcome Email',
-    subject: 'Welcome to Trazzy Beauty! 💕',
+    subject: 'Welcome to Temmie Signature! ✨',
     type: 'transactional',
     description: 'Sent when a new user signs up',
   },
@@ -174,11 +174,11 @@ const EmailMarketing = () => {
   const getTypeBadge = (type: string) => {
     switch (type) {
       case 'marketing':
-        return <Badge className="bg-purple-500">Marketing</Badge>;
+        return <Badge className="bg-accent text-accent-foreground">Marketing</Badge>;
       case 'transactional':
-        return <Badge className="bg-blue-500">Transactional</Badge>;
+        return <Badge className="bg-primary text-primary-foreground">Transactional</Badge>;
       case 'automated':
-        return <Badge className="bg-green-500">Automated</Badge>;
+        return <Badge className="border border-border bg-secondary text-secondary-foreground">Automated</Badge>;
       default:
         return <Badge>Unknown</Badge>;
     }
@@ -442,7 +442,7 @@ const EmailMarketing = () => {
                 <div className="grid gap-4">
                   <div className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex items-center gap-3">
-                      <ShoppingCart className="h-8 w-8 text-orange-500" />
+                      <ShoppingCart className="h-8 w-8 text-accent" />
                       <div>
                         <h4 className="font-medium">Abandoned Cart Recovery</h4>
                         <p className="text-sm text-muted-foreground">
@@ -450,11 +450,11 @@ const EmailMarketing = () => {
                         </p>
                       </div>
                     </div>
-                    <Badge className="bg-green-500">Active</Badge>
+                    <Badge className="bg-accent text-accent-foreground">Active</Badge>
                   </div>
                   <div className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex items-center gap-3">
-                      <Heart className="h-8 w-8 text-pink-500" />
+                      <Heart className="h-8 w-8 text-accent" />
                       <div>
                         <h4 className="font-medium">Wishlist Reminder</h4>
                         <p className="text-sm text-muted-foreground">
@@ -462,11 +462,11 @@ const EmailMarketing = () => {
                         </p>
                       </div>
                     </div>
-                    <Badge className="bg-green-500">Active</Badge>
+                    <Badge className="bg-accent text-accent-foreground">Active</Badge>
                   </div>
                   <div className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex items-center gap-3">
-                      <Package className="h-8 w-8 text-blue-500" />
+                      <Package className="h-8 w-8 text-primary" />
                       <div>
                         <h4 className="font-medium">Order Updates</h4>
                         <p className="text-sm text-muted-foreground">
@@ -474,11 +474,11 @@ const EmailMarketing = () => {
                         </p>
                       </div>
                     </div>
-                    <Badge className="bg-green-500">Active</Badge>
+                    <Badge className="bg-accent text-accent-foreground">Active</Badge>
                   </div>
                   <div className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex items-center gap-3">
-                      <AlertCircle className="h-8 w-8 text-purple-500" />
+                      <AlertCircle className="h-8 w-8 text-accent" />
                       <div>
                         <h4 className="font-medium">Back in Stock Alert</h4>
                         <p className="text-sm text-muted-foreground">
@@ -486,7 +486,7 @@ const EmailMarketing = () => {
                         </p>
                       </div>
                     </div>
-                    <Badge className="bg-green-500">Active</Badge>
+                    <Badge className="bg-accent text-accent-foreground">Active</Badge>
                   </div>
                 </div>
               </CardContent>

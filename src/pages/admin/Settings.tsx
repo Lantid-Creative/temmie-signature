@@ -187,7 +187,7 @@ const Settings = () => {
                     id="whatsapp_message"
                     value={getValue('whatsapp_message')}
                     onChange={(e) => handleChange('whatsapp_message', `"${e.target.value}"`)}
-                    placeholder="Hello! I have a question about Trazzy Beauty products."
+                      placeholder="Hello! I have a question about Temmie Signature products."
                   />
                   <p className="text-xs text-muted-foreground">
                     Pre-filled message when customers click the WhatsApp button
