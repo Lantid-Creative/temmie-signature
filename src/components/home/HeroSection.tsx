@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useBanners } from '@/hooks/useProducts';
 import { cn } from '@/lib/utils';
 
-const slides = [
+const fallbackSlides = [
   {
     title: 'TMS GM01',
     subtitle: 'Make your Wedding Day Memorable',
@@ -30,13 +31,33 @@ const slides = [
 
 export function HeroSection() {
   const [current, setCurrent] = useState(0);
+  const { data: banners } = useBanners('hero');
+
+  const slides = banners?.length
+    ? banners.map((banner) => ({
+        title: banner.title,
+        subtitle: banner.subtitle || banner.description || '',
+        cta: banner.button_text || 'Shop Now',
+        image: banner.mobile_image_url || banner.image_url,
+        link: banner.link_url || '/shop',
+      }))
+    : fallbackSlides;
 
   useEffect(() => {
+    if (slides.length <= 1) return;
+
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length);
     }, 6000);
+
     return () => clearInterval(timer);
-  }, []);
+  }, [slides.length]);
+
+  useEffect(() => {
+    if (current >= slides.length) {
+      setCurrent(0);
+    }
+  }, [current, slides.length]);
 
   const goTo = (idx: number) => setCurrent((idx + slides.length) % slides.length);
 
