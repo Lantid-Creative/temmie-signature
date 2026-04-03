@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
 import { PageMeta } from '@/components/seo/PageMeta';
 import { ProductReviews } from '@/components/products/ProductReviews';
+import { SizeGuide } from '@/components/product/SizeGuide';
 
 import { ProductCardNew } from '@/components/products/ProductCardNew';
 import { products as mockProducts } from '@/lib/data';
@@ -322,7 +323,10 @@ export default function ProductDetail() {
               {/* Size Selection */}
               {product.capSize.length > 0 && (
                 <div className="mb-8">
-                  <p className="font-medium mb-3">Size: <span className="text-muted-foreground">{selectedSize}</span></p>
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="font-medium">Size: <span className="text-muted-foreground">{selectedSize}</span></p>
+                    <SizeGuide category={product.category} />
+                  </div>
                   <div className="flex flex-wrap gap-3">
                     {product.capSize.map((size) => (
                       <button
