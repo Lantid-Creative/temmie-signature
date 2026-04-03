@@ -58,14 +58,14 @@ export default function About() {
           <div className="grid lg:grid-cols-2 gap-8">
             <div className="aspect-[4/5] rounded-lg overflow-hidden">
               <img
-                src="https://temmiesignature.com/wp-content/uploads/2025/11/5.png"
+                src="https://uyupxiwhdvrhwtipanrm.supabase.co/storage/v1/object/public/site-assets/images/2025_11_5.png"
                 alt="Temmie Signature Adedotun Collection"
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="aspect-[4/5] rounded-lg overflow-hidden lg:mt-16">
               <img
-                src="https://temmiesignature.com/wp-content/uploads/2025/11/DSC03812.jpg"
+                src="https://uyupxiwhdvrhwtipanrm.supabase.co/storage/v1/object/public/site-assets/images/2025_11_DSC03812.jpg"
                 alt="Temmie Signature Urban Safari Collection"
                 className="w-full h-full object-cover"
               />
