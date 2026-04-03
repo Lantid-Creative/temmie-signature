@@ -437,6 +437,176 @@ const Settings = () => {
               </CardContent>
             </Card>
           </TabsContent>
+
+          <TabsContent value="size-guide">
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Clothing Size Guide</CardTitle>
+                  <CardDescription>Manage the clothing size chart shown on product pages (S, M, L, etc.)</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>Size Chart (JSON format)</Label>
+                    <Textarea
+                      value={getValue('size_guide_clothing', JSON.stringify([
+                        { size: 'S', chest: '36-38', waist: '28-30', hips: '36-38' },
+                        { size: 'M', chest: '38-40', waist: '30-32', hips: '38-40' },
+                        { size: 'L', chest: '40-42', waist: '32-34', hips: '40-42' },
+                        { size: 'XL', chest: '42-44', waist: '34-36', hips: '42-44' },
+                        { size: 'XXL', chest: '44-46', waist: '36-38', hips: '44-46' },
+                      ], null, 2))}
+                      onChange={(e) => handleChange('size_guide_clothing', e.target.value)}
+                      rows={12}
+                      className="font-mono text-sm"
+                    />
+                    <p className="text-xs text-muted-foreground">Each row: size, chest, waist, hips (in inches)</p>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Shoe Size Guide</CardTitle>
+                  <CardDescription>Manage the shoe size chart shown on shoe product pages</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>Size Chart (JSON format)</Label>
+                    <Textarea
+                      value={getValue('size_guide_shoes', JSON.stringify([
+                        { size: '38', eu: '38', uk: '5', us: '6', cm: '24' },
+                        { size: '39', eu: '39', uk: '6', us: '7', cm: '24.5' },
+                        { size: '40', eu: '40', uk: '6.5', us: '7.5', cm: '25' },
+                        { size: '41', eu: '41', uk: '7', us: '8', cm: '25.5' },
+                        { size: '42', eu: '42', uk: '8', us: '9', cm: '26' },
+                        { size: '43', eu: '43', uk: '9', us: '10', cm: '27' },
+                        { size: '44', eu: '44', uk: '9.5', us: '10.5', cm: '27.5' },
+                        { size: '45', eu: '45', uk: '10.5', us: '11.5', cm: '28' },
+                      ], null, 2))}
+                      onChange={(e) => handleChange('size_guide_shoes', e.target.value)}
+                      rows={12}
+                      className="font-mono text-sm"
+                    />
+                    <p className="text-xs text-muted-foreground">Each row: size, eu, uk, us, cm</p>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Size Guide Note</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Textarea
+                    value={getValue('size_guide_note', 'All measurements are in inches. For the best fit, we recommend taking your measurements and comparing them with our size chart.')}
+                    onChange={(e) => handleChange('size_guide_note', `"${e.target.value}"`)}
+                    rows={3}
+                  />
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="content">
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Privacy Policy</CardTitle>
+                  <CardDescription>Edit the privacy policy page content (HTML supported)</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Textarea
+                    value={getValue('privacy_policy_content')}
+                    onChange={(e) => handleChange('privacy_policy_content', `"${e.target.value.replace(/"/g, '\\"').replace(/\n/g, '\\n')}"`)}
+                    rows={15}
+                    placeholder="Enter your privacy policy content..."
+                  />
+                  <p className="text-xs text-muted-foreground mt-2">Leave empty to use the default privacy policy.</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Terms of Service</CardTitle>
+                  <CardDescription>Edit the terms of service page content (HTML supported)</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Textarea
+                    value={getValue('terms_of_service_content')}
+                    onChange={(e) => handleChange('terms_of_service_content', `"${e.target.value.replace(/"/g, '\\"').replace(/\n/g, '\\n')}"`)}
+                    rows={15}
+                    placeholder="Enter your terms of service content..."
+                  />
+                  <p className="text-xs text-muted-foreground mt-2">Leave empty to use the default terms of service.</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle>About Page Content</CardTitle>
+                  <CardDescription>Edit the about page description</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Textarea
+                    value={getValue('about_page_content')}
+                    onChange={(e) => handleChange('about_page_content', `"${e.target.value.replace(/"/g, '\\"').replace(/\n/g, '\\n')}"`)}
+                    rows={10}
+                    placeholder="Enter your about page content..."
+                  />
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="footer">
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Footer Content</CardTitle>
+                  <CardDescription>Customize the footer information</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>Footer Tagline</Label>
+                    <Input
+                      value={getValue('footer_tagline', 'Crafted for those who value strength, style, and sophistication. Best Feet, Best Fits.')}
+                      onChange={(e) => handleChange('footer_tagline', `"${e.target.value}"`)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Copyright Text</Label>
+                    <Input
+                      value={getValue('footer_copyright', '© 2026 Temmie Signature. All rights reserved.')}
+                      onChange={(e) => handleChange('footer_copyright', `"${e.target.value}"`)}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Trust Badges</CardTitle>
+                  <CardDescription>Customize the trust badges shown in the footer</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div key={i} className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label>Badge {i} Icon (emoji)</Label>
+                        <Input
+                          value={getValue(`trust_badge_${i}_icon`, ['🚚', '↩️', '🔒', '💬'][i - 1])}
+                          onChange={(e) => handleChange(`trust_badge_${i}_icon`, `"${e.target.value}"`)}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Badge {i} Text</Label>
+                        <Input
+                          value={getValue(`trust_badge_${i}_text`, ['Worldwide Shipping', 'Refund Policy', 'Secured Payment', 'Support 24/7'][i - 1])}
+                          onChange={(e) => handleChange(`trust_badge_${i}_text`, `"${e.target.value}"`)}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
         </Tabs>
       </div>
     </AdminLayout>
