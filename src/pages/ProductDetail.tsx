@@ -323,7 +323,10 @@ export default function ProductDetail() {
               {/* Size Selection */}
               {product.capSize.length > 0 && (
                 <div className="mb-8">
-                  <p className="font-medium mb-3">Size: <span className="text-muted-foreground">{selectedSize}</span></p>
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="font-medium">Size: <span className="text-muted-foreground">{selectedSize}</span></p>
+                    <SizeGuide category={product.category} />
+                  </div>
                   <div className="flex flex-wrap gap-3">
                     {product.capSize.map((size) => (
                       <button
