@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
 import { PageMeta } from '@/components/seo/PageMeta';
 import { ProductReviews } from '@/components/products/ProductReviews';
+import { SizeGuide } from '@/components/product/SizeGuide';
 
 import { ProductCardNew } from '@/components/products/ProductCardNew';
 import { products as mockProducts } from '@/lib/data';
