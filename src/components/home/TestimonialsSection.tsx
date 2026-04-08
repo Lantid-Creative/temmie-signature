@@ -1,13 +1,28 @@
 import { Star, Quote } from 'lucide-react';
-import { reviews } from '@/lib/data';
+import { reviews as fallbackReviews } from '@/lib/data';
+import { useTestimonials } from '@/hooks/useProducts';
 import { SectionReveal } from '@/components/home/SectionReveal';
 
 export function TestimonialsSection() {
+  const { data: dbTestimonials } = useTestimonials();
+
+  const reviews = dbTestimonials?.length
+    ? dbTestimonials.filter(t => t.is_active).map(t => ({
+        id: t.id,
+        author: t.author_name,
+        avatar: t.author_avatar || '',
+        rating: t.rating,
+        date: t.date_label || '',
+        content: t.content,
+        productName: t.product_name || '',
+        verified: t.is_verified,
+      }))
+    : fallbackReviews;
+
   return (
     <section className="relative overflow-hidden bg-background py-20 lg:py-28">
       <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-secondary/70 to-transparent" />
       <div className="container mx-auto px-4 lg:px-8">
-        {/* Header */}
         <SectionReveal className="mb-12 text-center lg:mb-16">
           <p className="text-accent text-sm font-medium tracking-wider uppercase mb-3">
             Real Reviews
@@ -20,7 +35,6 @@ export function TestimonialsSection() {
           </p>
         </SectionReveal>
 
-        {/* Reviews Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {reviews.map((review, index) => (
             <SectionReveal key={review.id} delay={index * 0.08}>
@@ -34,28 +48,25 @@ export function TestimonialsSection() {
                     Client Note
                   </span>
                 </div>
-
                 <div className="mb-4 flex gap-1">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      className={`w-4 h-4 ${
-                        i < review.rating ? 'text-accent fill-accent' : 'text-muted-foreground'
-                      }`}
+                      className={`w-4 h-4 ${i < review.rating ? 'text-accent fill-accent' : 'text-muted-foreground'}`}
                     />
                   ))}
                 </div>
-
                 <p className="mb-6 text-sm leading-relaxed text-muted-foreground">
                   "{review.content}"
                 </p>
-
                 <div className="flex items-center gap-3 border-t border-border/70 pt-4">
-                  <img
-                    src={review.avatar}
-                    alt={review.author}
-                    className="h-10 w-10 rounded-full object-cover ring-2 ring-accent/15"
-                  />
+                  {review.avatar && (
+                    <img
+                      src={review.avatar}
+                      alt={review.author}
+                      className="h-10 w-10 rounded-full object-cover ring-2 ring-accent/15"
+                    />
+                  )}
                   <div>
                     <p className="flex items-center gap-2 text-sm font-medium">
                       {review.author}

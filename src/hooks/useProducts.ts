@@ -595,7 +595,6 @@ export const useUpdateSiteSetting = () => {
 
   return useMutation({
     mutationFn: async ({ key, value }: { key: string; value: string | number | boolean }) => {
-      // First check if setting exists
       const { data: existing } = await supabase
         .from('site_settings')
         .select('id')
@@ -609,7 +608,6 @@ export const useUpdateSiteSetting = () => {
           .eq('key', key)
           .select()
           .single();
-
         if (error) throw error;
         return data;
       } else {
@@ -618,7 +616,6 @@ export const useUpdateSiteSetting = () => {
           .insert({ key, value: JSON.stringify(value) })
           .select()
           .single();
-
         if (error) throw error;
         return data;
       }
@@ -629,6 +626,176 @@ export const useUpdateSiteSetting = () => {
     },
     onError: (error: Error) => {
       toast({ title: 'Error updating setting', description: error.message, variant: 'destructive' });
+    },
+  });
+};
+
+// Collections hooks
+export interface CollectionItem {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  image_url: string | null;
+  product_count: number;
+  display_order: number;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export const useCollections = () => {
+  return useQuery({
+    queryKey: ['collections'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('collections')
+        .select('*')
+        .order('display_order', { ascending: true });
+      if (error) throw error;
+      return data as CollectionItem[];
+    },
+  });
+};
+
+export const useCreateCollection = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  return useMutation({
+    mutationFn: async (collection: Omit<CollectionItem, 'id' | 'created_at' | 'updated_at'>) => {
+      const { data, error } = await supabase.from('collections').insert(collection).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['collections'] });
+      toast({ title: 'Collection created successfully' });
+    },
+    onError: (error: Error) => {
+      toast({ title: 'Error creating collection', description: error.message, variant: 'destructive' });
+    },
+  });
+};
+
+export const useUpdateCollection = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  return useMutation({
+    mutationFn: async ({ id, ...collection }: Partial<CollectionItem> & { id: string }) => {
+      const { data, error } = await supabase.from('collections').update(collection).eq('id', id).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['collections'] });
+      toast({ title: 'Collection updated successfully' });
+    },
+    onError: (error: Error) => {
+      toast({ title: 'Error updating collection', description: error.message, variant: 'destructive' });
+    },
+  });
+};
+
+export const useDeleteCollection = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from('collections').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['collections'] });
+      toast({ title: 'Collection deleted successfully' });
+    },
+    onError: (error: Error) => {
+      toast({ title: 'Error deleting collection', description: error.message, variant: 'destructive' });
+    },
+  });
+};
+
+// Testimonials hooks
+export interface Testimonial {
+  id: string;
+  author_name: string;
+  author_avatar: string | null;
+  rating: number;
+  content: string;
+  product_name: string | null;
+  date_label: string | null;
+  is_verified: boolean;
+  is_active: boolean;
+  display_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export const useTestimonials = () => {
+  return useQuery({
+    queryKey: ['testimonials'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('testimonials')
+        .select('*')
+        .order('display_order', { ascending: true });
+      if (error) throw error;
+      return data as Testimonial[];
+    },
+  });
+};
+
+export const useCreateTestimonial = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  return useMutation({
+    mutationFn: async (testimonial: Omit<Testimonial, 'id' | 'created_at' | 'updated_at'>) => {
+      const { data, error } = await supabase.from('testimonials').insert(testimonial).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['testimonials'] });
+      toast({ title: 'Testimonial created successfully' });
+    },
+    onError: (error: Error) => {
+      toast({ title: 'Error creating testimonial', description: error.message, variant: 'destructive' });
+    },
+  });
+};
+
+export const useUpdateTestimonial = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  return useMutation({
+    mutationFn: async ({ id, ...testimonial }: Partial<Testimonial> & { id: string }) => {
+      const { data, error } = await supabase.from('testimonials').update(testimonial).eq('id', id).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['testimonials'] });
+      toast({ title: 'Testimonial updated successfully' });
+    },
+    onError: (error: Error) => {
+      toast({ title: 'Error updating testimonial', description: error.message, variant: 'destructive' });
+    },
+  });
+};
+
+export const useDeleteTestimonial = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from('testimonials').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['testimonials'] });
+      toast({ title: 'Testimonial deleted successfully' });
+    },
+    onError: (error: Error) => {
+      toast({ title: 'Error deleting testimonial', description: error.message, variant: 'destructive' });
     },
   });
 };

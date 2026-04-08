@@ -36,6 +36,8 @@ import EmailMarketing from "./pages/admin/EmailMarketing";
 import Blog from "./pages/Blog";
 import BlogPostPage from "./pages/BlogPost";
 import BlogPosts from "./pages/admin/BlogPosts";
+import CollectionsAdmin from "./pages/admin/CollectionsAdmin";
+import TestimonialsAdmin from "./pages/admin/TestimonialsAdmin";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 
@@ -80,6 +82,8 @@ const App = () => (
                   <Route path="/admin/settings" element={<ProtectedRoute requireAdmin><Settings /></ProtectedRoute>} />
                   <Route path="/admin/email-marketing" element={<ProtectedRoute requireAdmin><EmailMarketing /></ProtectedRoute>} />
                   <Route path="/admin/blog" element={<ProtectedRoute requireAdmin><BlogPosts /></ProtectedRoute>} />
+                  <Route path="/admin/collections" element={<ProtectedRoute requireAdmin><CollectionsAdmin /></ProtectedRoute>} />
+                  <Route path="/admin/testimonials" element={<ProtectedRoute requireAdmin><TestimonialsAdmin /></ProtectedRoute>} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
                 <CompareBar />

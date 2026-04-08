@@ -166,6 +166,45 @@ export type Database = {
           },
         ]
       }
+      collections: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_order: number
+          id: string
+          image_url: string | null
+          is_active: boolean
+          name: string
+          product_count: number
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          name: string
+          product_count?: number
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          name?: string
+          product_count?: number
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       newsletter_subscribers: {
         Row: {
           email: string
@@ -559,6 +598,51 @@ export type Database = {
           starts_at?: string | null
           updated_at?: string
           uses_count?: number
+        }
+        Relationships: []
+      }
+      testimonials: {
+        Row: {
+          author_avatar: string | null
+          author_name: string
+          content: string
+          created_at: string
+          date_label: string | null
+          display_order: number
+          id: string
+          is_active: boolean
+          is_verified: boolean
+          product_name: string | null
+          rating: number
+          updated_at: string
+        }
+        Insert: {
+          author_avatar?: string | null
+          author_name: string
+          content: string
+          created_at?: string
+          date_label?: string | null
+          display_order?: number
+          id?: string
+          is_active?: boolean
+          is_verified?: boolean
+          product_name?: string | null
+          rating?: number
+          updated_at?: string
+        }
+        Update: {
+          author_avatar?: string | null
+          author_name?: string
+          content?: string
+          created_at?: string
+          date_label?: string | null
+          display_order?: number
+          id?: string
+          is_active?: boolean
+          is_verified?: boolean
+          product_name?: string | null
+          rating?: number
+          updated_at?: string
         }
         Relationships: []
       }
