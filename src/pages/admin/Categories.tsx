@@ -242,6 +242,7 @@ const Categories = () => {
                     onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
                     placeholder="https://..."
                   />
+                  <p className="text-xs text-muted-foreground">Recommended: 600 × 600px square. JPG/PNG/WebP. Max 5 MB.</p>
                 </div>
 
                 <div className="space-y-2">
