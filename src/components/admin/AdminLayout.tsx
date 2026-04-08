@@ -18,6 +18,8 @@ import {
   FolderTree,
   FileText,
   Mail,
+  Layers,
+  MessageSquareQuote,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
@@ -31,8 +33,10 @@ const navItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/admin' },
   { icon: Package, label: 'Products', path: '/admin/products' },
   { icon: FolderTree, label: 'Categories', path: '/admin/categories' },
+  { icon: Layers, label: 'Collections', path: '/admin/collections' },
   { icon: ShoppingCart, label: 'Orders', path: '/admin/orders' },
   { icon: Image, label: 'Banners', path: '/admin/banners' },
+  { icon: MessageSquareQuote, label: 'Testimonials', path: '/admin/testimonials' },
   { icon: Percent, label: 'Special Offers', path: '/admin/offers' },
   { icon: Users, label: 'Customers', path: '/admin/customers' },
   { icon: FileText, label: 'Blog', path: '/admin/blog' },
