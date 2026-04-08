@@ -4,11 +4,23 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
 import { PageMeta } from '@/components/seo/PageMeta';
-
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
-import { collections } from '@/lib/data';
+import { collections as fallbackCollections } from '@/lib/data';
+import { useCollections } from '@/hooks/useProducts';
 
 export default function Collections() {
+  const { data: dbCollections } = useCollections();
+  
+  const collections = dbCollections?.length
+    ? dbCollections.filter(c => c.is_active).map(c => ({
+        id: c.slug,
+        name: c.name,
+        description: c.description || '',
+        image: c.image_url || '',
+        productCount: c.product_count,
+      }))
+    : fallbackCollections;
+
   return (
     <div className="min-h-screen bg-background">
       <PageMeta title="Collections | Temmie Signature" description="Explore our signature collections — TMS GM01, Adedotun, and Urban Safari. Find your perfect style." />
