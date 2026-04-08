@@ -84,7 +84,7 @@ export function CollectionFormDialog({ open, onOpenChange, collection }: Props) 
           <div>
             <Label>Image URL</Label>
             <Input {...register('image_url')} placeholder="https://..." />
-            <p className="text-xs text-muted-foreground mt-1">Recommended: 800 × 1000px portrait. Max 5 MB.</p>
+            <p className="text-xs text-muted-foreground mt-1">Recommended: 800 × 1067px (3:4 portrait). JPG/PNG/WebP. Max 5 MB.</p>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>

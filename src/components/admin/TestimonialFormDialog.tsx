@@ -79,6 +79,7 @@ export function TestimonialFormDialog({ open, onOpenChange, testimonial }: Props
           <div>
             <Label>Avatar URL</Label>
             <Input {...register('author_avatar')} placeholder="https://..." />
+            <p className="text-xs text-muted-foreground mt-1">Recommended: 150 × 150px square. JPG/PNG. Max 2 MB.</p>
           </div>
           <div>
             <Label>Review Content</Label>
