@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { ImageUploadField } from '@/components/admin/ImageUploadField';
 import { useCreateTestimonial, useUpdateTestimonial, type Testimonial } from '@/hooks/useProducts';
 
 interface Props {
@@ -59,6 +60,8 @@ export function TestimonialFormDialog({ open, onOpenChange, testimonial }: Props
     }
   };
 
+  const avatarUrl = watch('author_avatar');
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg">
@@ -76,11 +79,15 @@ export function TestimonialFormDialog({ open, onOpenChange, testimonial }: Props
               <Input {...register('date_label')} placeholder="e.g. 2 weeks ago" />
             </div>
           </div>
-          <div>
-            <Label>Avatar URL</Label>
-            <Input {...register('author_avatar')} placeholder="https://..." />
-            <p className="text-xs text-muted-foreground mt-1">Recommended: 150 × 150px square. JPG/PNG. Max 2 MB.</p>
-          </div>
+          <ImageUploadField
+            label="Author Avatar"
+            value={avatarUrl}
+            onChange={(url) => setValue('author_avatar', url)}
+            bucket="avatars"
+            hint="Recommended: 150 × 150px square. JPG/PNG. Max 2 MB."
+            previewAspect="square"
+            previewHeight="h-24"
+          />
           <div>
             <Label>Review Content</Label>
             <Textarea {...register('content', { required: true })} rows={4} />
