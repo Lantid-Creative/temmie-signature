@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import {
   Package,
   ShoppingCart,
@@ -6,8 +7,12 @@ import {
   TrendingUp,
   Download,
   AlertTriangle,
+  Eye,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { StatCard } from '@/components/admin/DashboardStats';
 import { RevenueChart } from '@/components/admin/RevenueChart';
@@ -19,20 +24,21 @@ import { exportToCsv } from '@/lib/exportCsv';
 import { useToast } from '@/hooks/use-toast';
 
 const Dashboard = () => {
-  const { data: products, isLoading: productsLoading } = useProducts();
-  const { data: orders, isLoading: ordersLoading } = useOrders();
+  const { data: products } = useProducts();
+  const { data: orders } = useOrders();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const totalProducts = products?.length || 0;
   const totalOrders = orders?.length || 0;
   const totalRevenue = orders?.reduce((acc, order) => acc + Number(order.total), 0) || 0;
   const pendingOrders = orders?.filter(o => o.status === 'pending').length || 0;
-  const lowStockCount = products?.filter(p => p.stock_quantity <= (p.low_stock_threshold || 5) && p.is_active).length || 0;
+  const lowStockProducts = products?.filter(p => p.stock_quantity <= (p.low_stock_threshold || 5) && p.is_active) || [];
 
   const stats = [
     {
       title: 'Total Revenue',
-      value: `$${totalRevenue.toLocaleString()}`,
+      value: `₦${totalRevenue.toLocaleString()}`,
       icon: DollarSign,
       accent: true,
       subtitle: `From ${totalOrders} orders`,
@@ -51,9 +57,9 @@ const Dashboard = () => {
     },
     {
       title: 'Low Stock Alerts',
-      value: lowStockCount.toString(),
+      value: lowStockProducts.length.toString(),
       icon: AlertTriangle,
-      subtitle: lowStockCount > 0 ? 'Needs attention' : 'All stocked',
+      subtitle: lowStockProducts.length > 0 ? 'Needs attention' : 'All stocked',
     },
   ];
 
@@ -119,39 +125,71 @@ const Dashboard = () => {
           ))}
         </div>
 
+        {/* Low Stock Alert Table */}
+        {lowStockProducts.length > 0 && (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
+            <Card className="border-destructive/30">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <AlertTriangle className="h-5 w-5 text-destructive" />
+                  Low Stock Products ({lowStockProducts.length})
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Product</TableHead>
+                      <TableHead>SKU</TableHead>
+                      <TableHead>Stock</TableHead>
+                      <TableHead>Threshold</TableHead>
+                      <TableHead className="text-right">Action</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {lowStockProducts.slice(0, 5).map(product => (
+                      <TableRow key={product.id}>
+                        <TableCell className="font-medium">{product.name}</TableCell>
+                        <TableCell className="font-mono text-sm">{product.sku || '—'}</TableCell>
+                        <TableCell>
+                          <Badge variant="destructive">{product.stock_quantity}</Badge>
+                        </TableCell>
+                        <TableCell className="text-muted-foreground">{product.low_stock_threshold || 5}</TableCell>
+                        <TableCell className="text-right">
+                          <Button variant="ghost" size="sm" onClick={() => navigate('/admin/products')}>
+                            <Eye className="h-4 w-4 mr-1" /> Edit
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+                {lowStockProducts.length > 5 && (
+                  <Button variant="link" className="mt-2" onClick={() => navigate('/admin/products')}>
+                    View all {lowStockProducts.length} low stock products →
+                  </Button>
+                )}
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+
         {/* Charts Row */}
         <div className="grid gap-6 lg:grid-cols-2">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
             <RevenueChart orders={orders} />
           </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
             <TopProductsChart orders={orders} />
           </motion.div>
         </div>
 
         {/* Bottom Row */}
         <div className="grid gap-6 lg:grid-cols-3">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
             <OrderStatusChart orders={orders} />
           </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="lg:col-span-2"
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="lg:col-span-2">
             <RecentActivityFeed orders={orders} products={products} />
           </motion.div>
         </div>

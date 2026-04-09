@@ -201,10 +201,10 @@ const Products = () => {
                     <TableCell className="font-mono text-sm">{product.sku || '—'}</TableCell>
                     <TableCell>
                       <div>
-                        <span className="font-medium">${Number(product.price).toFixed(2)}</span>
+                        <span className="font-medium">₦{Number(product.price).toLocaleString()}</span>
                         {product.compare_at_price && (
                           <span className="text-sm text-muted-foreground line-through ml-2">
-                            ${Number(product.compare_at_price).toFixed(2)}
+                            ₦{Number(product.compare_at_price).toLocaleString()}
                           </span>
                         )}
                       </div>

@@ -38,6 +38,7 @@ import BlogPostPage from "./pages/BlogPost";
 import BlogPosts from "./pages/admin/BlogPosts";
 import CollectionsAdmin from "./pages/admin/CollectionsAdmin";
 import TestimonialsAdmin from "./pages/admin/TestimonialsAdmin";
+import OrderDetail from "./pages/admin/OrderDetail";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 
@@ -76,6 +77,7 @@ const App = () => (
                   <Route path="/admin/products" element={<ProtectedRoute requireAdmin><Products /></ProtectedRoute>} />
                   <Route path="/admin/banners" element={<ProtectedRoute requireAdmin><Banners /></ProtectedRoute>} />
                   <Route path="/admin/orders" element={<ProtectedRoute requireAdmin><Orders /></ProtectedRoute>} />
+                  <Route path="/admin/orders/:id" element={<ProtectedRoute requireAdmin><OrderDetail /></ProtectedRoute>} />
                   <Route path="/admin/categories" element={<ProtectedRoute requireAdmin><Categories /></ProtectedRoute>} />
                   <Route path="/admin/offers" element={<ProtectedRoute requireAdmin><SpecialOffers /></ProtectedRoute>} />
                   <Route path="/admin/customers" element={<ProtectedRoute requireAdmin><UsersPage /></ProtectedRoute>} />

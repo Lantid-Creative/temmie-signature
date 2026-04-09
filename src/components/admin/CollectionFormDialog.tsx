@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { ImageUploadField } from '@/components/admin/ImageUploadField';
 import { useCreateCollection, useUpdateCollection, type CollectionItem } from '@/hooks/useProducts';
 
 interface Props {
@@ -56,6 +57,8 @@ export function CollectionFormDialog({ open, onOpenChange, collection }: Props) 
   };
 
   const nameValue = watch('name');
+  const imageUrl = watch('image_url');
+
   useEffect(() => {
     if (!isEditing && nameValue) {
       setValue('slug', nameValue.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''));
@@ -81,11 +84,14 @@ export function CollectionFormDialog({ open, onOpenChange, collection }: Props) 
             <Label>Description</Label>
             <Textarea {...register('description')} rows={3} />
           </div>
-          <div>
-            <Label>Image URL</Label>
-            <Input {...register('image_url')} placeholder="https://..." />
-            <p className="text-xs text-muted-foreground mt-1">Recommended: 800 × 1067px (3:4 portrait). JPG/PNG/WebP. Max 5 MB.</p>
-          </div>
+          <ImageUploadField
+            label="Collection Image"
+            value={imageUrl}
+            onChange={(url) => setValue('image_url', url)}
+            bucket="site-assets"
+            hint="Recommended: 800 × 1067px (3:4 portrait). JPG/PNG/WebP. Max 5 MB."
+            previewAspect="portrait"
+          />
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Label>Product Count</Label>

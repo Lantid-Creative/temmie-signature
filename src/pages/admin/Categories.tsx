@@ -33,6 +33,7 @@ import { Plus, Pencil, Trash2, FolderTree, Search, GripVertical } from 'lucide-r
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Tables } from '@/integrations/supabase/types';
+import { ImageUploadField } from '@/components/admin/ImageUploadField';
 
 type Category = Tables<'categories'>;
 
@@ -234,16 +235,14 @@ const Categories = () => {
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="image_url">Image URL</Label>
-                  <Input
-                    id="image_url"
+                <ImageUploadField
+                    label="Category Image"
                     value={formData.image_url}
-                    onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                    placeholder="https://..."
+                    onChange={(url) => setFormData({ ...formData, image_url: url })}
+                    bucket="site-assets"
+                    hint="Recommended: 600 × 600px square. JPG/PNG/WebP. Max 5 MB."
+                    previewAspect="square"
                   />
-                  <p className="text-xs text-muted-foreground">Recommended: 600 × 600px square. JPG/PNG/WebP. Max 5 MB.</p>
-                </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="parent">Parent Category</Label>

@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
-import { Save, Store, Truck, CreditCard, Share2, Mail, Bell, Ruler, FileText, LayoutGrid } from 'lucide-react';
+import { Save, Store, Truck, CreditCard, Share2, Mail, Bell, Ruler, FileText, LayoutGrid, Globe } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Tables } from '@/integrations/supabase/types';
@@ -142,6 +142,10 @@ const Settings = () => {
             <TabsTrigger value="footer" className="flex items-center gap-2">
               <LayoutGrid className="h-4 w-4" />
               <span className="hidden sm:inline">Footer</span>
+            </TabsTrigger>
+            <TabsTrigger value="seo" className="flex items-center gap-2">
+              <Globe className="h-4 w-4" />
+              <span className="hidden sm:inline">SEO</span>
             </TabsTrigger>
           </TabsList>
 
@@ -603,6 +607,62 @@ const Settings = () => {
                       </div>
                     </div>
                   ))}
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="seo">
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Global SEO Settings</CardTitle>
+                  <CardDescription>Default SEO meta tags for your store</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>Site Title</Label>
+                    <Input
+                      value={getValue('seo_site_title', 'Temmie Signature - Premium Fashion')}
+                      onChange={(e) => handleChange('seo_site_title', `"${e.target.value}"`)}
+                    />
+                    <p className="text-xs text-muted-foreground">Recommended: Under 60 characters</p>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Meta Description</Label>
+                    <Textarea
+                      value={getValue('seo_meta_description', 'Discover premium Nigerian fashion at Temmie Signature. Shop designer kaftans, agbada, suits, and shoes.')}
+                      onChange={(e) => handleChange('seo_meta_description', `"${e.target.value}"`)}
+                      rows={3}
+                    />
+                    <p className="text-xs text-muted-foreground">Recommended: 150-160 characters</p>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Keywords</Label>
+                    <Input
+                      value={getValue('seo_keywords', 'Nigerian fashion, kaftan, agbada, suits, shoes, Temmie Signature')}
+                      onChange={(e) => handleChange('seo_keywords', `"${e.target.value}"`)}
+                      placeholder="Comma-separated keywords"
+                    />
+                  </div>
+                  <Separator />
+                  <div className="space-y-2">
+                    <Label>OG Image URL</Label>
+                    <Input
+                      value={getValue('seo_og_image')}
+                      onChange={(e) => handleChange('seo_og_image', `"${e.target.value}"`)}
+                      placeholder="https://... (1200x630px recommended)"
+                    />
+                    <p className="text-xs text-muted-foreground">Image shown when your site is shared on social media</p>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Google Analytics ID</Label>
+                    <Input
+                      value={getValue('seo_ga_id')}
+                      onChange={(e) => handleChange('seo_ga_id', `"${e.target.value}"`)}
+                      placeholder="G-XXXXXXXXXX"
+                    />
+                  </div>
                 </CardContent>
               </Card>
             </div>
