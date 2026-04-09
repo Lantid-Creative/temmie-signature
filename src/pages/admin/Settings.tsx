@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
-import { Save, Store, Truck, CreditCard, Share2, Mail, Bell, Ruler, FileText, LayoutGrid } from 'lucide-react';
+import { Save, Store, Truck, CreditCard, Share2, Mail, Bell, Ruler, FileText, LayoutGrid, Globe } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Tables } from '@/integrations/supabase/types';
@@ -142,6 +142,10 @@ const Settings = () => {
             <TabsTrigger value="footer" className="flex items-center gap-2">
               <LayoutGrid className="h-4 w-4" />
               <span className="hidden sm:inline">Footer</span>
+            </TabsTrigger>
+            <TabsTrigger value="seo" className="flex items-center gap-2">
+              <Globe className="h-4 w-4" />
+              <span className="hidden sm:inline">SEO</span>
             </TabsTrigger>
           </TabsList>
 
