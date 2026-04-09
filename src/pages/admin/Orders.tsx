@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Search, Package, Download, Filter } from 'lucide-react';
+import { Search, Package, Download, Filter, Eye } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -24,6 +25,7 @@ const statusColors: Record<string, string> = {
 const Orders = () => {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const navigate = useNavigate();
   const { data: orders, isLoading } = useOrders();
   const updateOrder = useUpdateOrder();
   const { toast } = useToast();
@@ -145,8 +147,9 @@ const Orders = () => {
           ) : (
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead>Order</TableHead>
+                 <TableRow>
+                   <TableHead className="w-12"></TableHead>
+                   <TableHead>Order</TableHead>
                   <TableHead>Customer</TableHead>
                   <TableHead>Items</TableHead>
                   <TableHead>Total</TableHead>
@@ -157,6 +160,11 @@ const Orders = () => {
               <TableBody>
                 {filteredOrders?.map(order => (
                   <TableRow key={order.id} className="group">
+                    <TableCell>
+                      <Button variant="ghost" size="icon" onClick={() => navigate(`/admin/orders/${order.id}`)}>
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                    </TableCell>
                     <TableCell className="font-medium font-mono text-sm">{order.order_number}</TableCell>
                     <TableCell>
                       <div>

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
-type BucketType = 'products' | 'banners' | 'avatars';
+type BucketType = 'products' | 'banners' | 'avatars' | 'site-assets';
 
 export const useImageUpload = (bucket: BucketType) => {
   const [isUploading, setIsUploading] = useState(false);
