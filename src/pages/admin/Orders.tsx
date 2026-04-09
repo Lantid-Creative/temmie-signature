@@ -175,7 +175,7 @@ const Orders = () => {
                     <TableCell>
                       <span className="text-sm">{order.order_items?.length || 0} items</span>
                     </TableCell>
-                    <TableCell className="font-medium">${Number(order.total).toFixed(2)}</TableCell>
+                    <TableCell className="font-medium">₦{Number(order.total).toLocaleString()}</TableCell>
                     <TableCell>
                       <Select value={order.status} onValueChange={v => handleStatusChange(order.id, v)}>
                         <SelectTrigger className="w-[130px] h-8 border-0 bg-transparent p-0">
