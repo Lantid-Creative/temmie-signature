@@ -1,4 +1,4 @@
-import { Mail, MapPin, Clock, Instagram, Facebook, Phone } from 'lucide-react';
+import { Mail, MapPin, Clock, Instagram, Facebook, Phone, Twitter, Music2, Pin, MessageCircle } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/layout/CartDrawer';
@@ -25,13 +25,19 @@ const contactInfo = [
     icon: MapPin,
     title: 'Store Location',
     value: '3, Gbongan - Ibadan Rd, beside old Jaiz Bank Building, Olaiya, Osogbo, Osun.',
-    href: '#',
+    href: 'https://www.google.com/maps/search/?api=1&query=3%2C%20Gbongan%20-%20Ibadan%20Rd%2C%20beside%20old%20Jaiz%20Bank%20Building%2C%20Olaiya%2C%20Osogbo%2C%20Osun',
   },
   {
     icon: Clock,
     title: 'Hours',
     value: 'Monday - Sunday: 24/7 Active',
     href: '#',
+  },
+  {
+    icon: MessageCircle,
+    title: 'WhatsApp',
+    value: '+234 816 985 0284',
+    href: 'https://wa.me/2348169850284?text=Hello%20Temmie%20Signature%2C%20I%27d%20like%20to%20make%20an%20enquiry.',
   },
 ];
 
@@ -101,6 +107,8 @@ export default function Contact() {
                   <a
                     key={info.title}
                     href={info.href}
+                    target={info.href.startsWith('http') ? '_blank' : undefined}
+                    rel={info.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                     className="flex items-start gap-4 p-4 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
                   >
                     <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
@@ -119,7 +127,7 @@ export default function Contact() {
                 <h3 className="font-serif text-xl font-semibold mb-4">Follow Us</h3>
                 <div className="flex gap-4">
                   <a
-                    href="https://instagram.com/officialtemmiesignature"
+                    href="https://www.instagram.com/officialtemmiesignature"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center hover:bg-accent hover:text-accent-foreground transition-colors"
@@ -127,10 +135,36 @@ export default function Contact() {
                     <Instagram className="w-5 h-5" />
                   </a>
                   <a
-                    href="#"
+                    href="https://www.facebook.com/share/1XfLibv6vk/"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center hover:bg-accent hover:text-accent-foreground transition-colors"
                   >
                     <Facebook className="w-5 h-5" />
+                  </a>
+                  <a
+                    href="https://x.com/Temsignature01"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center hover:bg-accent hover:text-accent-foreground transition-colors"
+                  >
+                    <Twitter className="w-5 h-5" />
+                  </a>
+                  <a
+                    href="https://www.tiktok.com/@temmiesignature"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center hover:bg-accent hover:text-accent-foreground transition-colors"
+                  >
+                    <Music2 className="w-5 h-5" />
+                  </a>
+                  <a
+                    href="https://pin.it/5XCf3tm6D"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center hover:bg-accent hover:text-accent-foreground transition-colors"
+                  >
+                    <Pin className="w-5 h-5" />
                   </a>
                 </div>
               </div>

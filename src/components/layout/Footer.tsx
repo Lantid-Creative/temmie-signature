@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Instagram, Facebook, Twitter, Mail, Phone, MapPin } from 'lucide-react';
+import { Instagram, Facebook, Twitter, Mail, Phone, MapPin, MessageCircle, Music2, Pin } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
@@ -26,9 +26,11 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { icon: Instagram, href: 'https://instagram.com/officialtemmiesignature', label: 'Instagram' },
-  { icon: Facebook, href: '#', label: 'Facebook' },
-  { icon: Twitter, href: '#', label: 'Twitter' },
+  { icon: Instagram, href: 'https://www.instagram.com/officialtemmiesignature', label: 'Instagram' },
+  { icon: Facebook, href: 'https://www.facebook.com/share/1XfLibv6vk/', label: 'Facebook' },
+  { icon: Twitter, href: 'https://x.com/Temsignature01', label: 'X' },
+  { icon: Music2, href: 'https://www.tiktok.com/@temmiesignature', label: 'TikTok' },
+  { icon: Pin, href: 'https://pin.it/5XCf3tm6D', label: 'Pinterest' },
 ];
 
 const trustBadges = [
@@ -93,6 +95,8 @@ export function Footer() {
                 <a
                   key={social.label}
                   href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={social.label}
                   className="w-10 h-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-accent hover:text-accent-foreground transition-colors"
                 >
@@ -154,16 +158,30 @@ export function Footer() {
           <div>
             <h4 className="font-serif text-lg font-semibold mb-4">Contact</h4>
             <div className="space-y-4">
-              <div className="flex items-start gap-3">
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=3%2C%20Gbongan%20-%20Ibadan%20Rd%2C%20beside%20old%20Jaiz%20Bank%20Building%2C%20Olaiya%2C%20Osogbo%2C%20Osun"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-3 text-background/70 hover:text-accent transition-colors"
+              >
                 <MapPin className="w-4 h-4 mt-1 shrink-0 text-accent" />
                 <span className="text-background/70 text-sm">3, Gbongan - Ibadan Rd, beside old Jaiz Bank Building, Olaiya, Osogbo, Osun.</span>
-              </div>
+              </a>
               <a
                 href="tel:+2348169850284"
                 className="flex items-center gap-3 text-background/70 hover:text-accent transition-colors"
               >
                 <Phone className="w-4 h-4 shrink-0" />
                 <span className="text-sm">+234 816 985 0284</span>
+              </a>
+              <a
+                href="https://wa.me/2348169850284?text=Hello%20Temmie%20Signature%2C%20I%27d%20like%20to%20make%20an%20enquiry."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 text-background/70 hover:text-accent transition-colors"
+              >
+                <MessageCircle className="w-4 h-4 shrink-0" />
+                <span className="text-sm">Chat on WhatsApp</span>
               </a>
               <a
                 href="mailto:hello@temmiesignature.com"
